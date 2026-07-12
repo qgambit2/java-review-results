@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>java-review swarm — field test</title>
+<meta name="description" content="A multi-agent Java code-review swarm tested on 7 real Apache/Halo pull requests it had never seen: 2/2 known bugs caught and adversarially confirmed, 0 false positives on 5 already-reviewed PRs (reproduced across two runs).">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128269;</text></svg>">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Does an AI code reviewer catch real bugs — without crying wolf?">
+<meta property="og:description" content="A Java review swarm tested on 7 real Apache/Halo PRs it had never seen: 2/2 known bugs caught, 0 false positives on 5 clean PRs — reproduced across two runs. Method and honest caveats included.">
+<meta property="og:url" content="https://qgambit2.github.io/java-review-results/">
+<meta property="og:site_name" content="java-review">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Does an AI code reviewer catch real bugs — without crying wolf?">
+<meta name="twitter:description" content="A Java review swarm on 7 real Apache/Halo PRs: 2/2 bugs caught, 0 false positives on 5 clean PRs (reproduced twice).">
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #e9edf4; min-height: 100vh; }
+  @media (prefers-color-scheme: dark) { body { background: #0c0e13; } }
+  img { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<style>
+  :root {
+    /* cool-graphite neutrals, biased slightly toward indigo so they read chosen */
+    --bg: #e9edf4;
+    --surface: #ffffff;
+    --surface-2: #f4f6fb;
+    --ink: #14161d;
+    --ink-2: #3b4252;
+    --muted: #697388;
+    --line: #e0e4ee;
+    --line-strong: #c9d0df;
+
+    /* structural accent — used sparingly (eyebrow, rules, links) */
+    --accent: #3a49c9;
+    --accent-soft: #e9ebfb;
+
+    /* semantic status — the real color story of a review tool */
+    --good: #157f47;
+    --good-soft: #e2f2e8;
+    --warn: #9a5a10;
+    --warn-soft: #f6ecd9;
+    --crit: #bb352b;
+    --crit-soft: #f7e4e1;
+    --slate: #5c6577;
+    --slate-soft: #eceff4;
+
+    --shadow: 0 1px 2px rgba(20,22,29,.04), 0 8px 24px -12px rgba(20,22,29,.14);
+    --radius: 10px;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
+
+    --maxw: 60rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0c0e13;
+      --surface: #14171f;
+      --surface-2: #191d27;
+      --ink: #edf0f7;
+      --ink-2: #c1c8d6;
+      --muted: #838da2;
+      --line: #262b38;
+      --line-strong: #353c4c;
+      --accent: #8f99f4;
+      --accent-soft: #1c2140;
+      --good: #45cf8c;
+      --good-soft: #10241a;
+      --warn: #e2a750;
+      --warn-soft: #2a2110;
+      --crit: #f47a70;
+      --crit-soft: #2c1512;
+      --slate: #97a1b5;
+      --slate-soft: #1b2029;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #e9edf4; --surface: #ffffff; --surface-2: #f4f6fb;
+    --ink: #14161d; --ink-2: #3b4252; --muted: #697388; --line: #e0e4ee; --line-strong: #c9d0df;
+    --accent: #3a49c9; --accent-soft: #e9ebfb;
+    --good: #157f47; --good-soft: #e2f2e8; --warn: #9a5a10; --warn-soft: #f6ecd9;
+    --crit: #bb352b; --crit-soft: #f7e4e1; --slate: #5c6577; --slate-soft: #eceff4;
+    --shadow: 0 1px 2px rgba(20,22,29,.04), 0 8px 24px -12px rgba(20,22,29,.14);
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c0e13; --surface: #14171f; --surface-2: #191d27;
+    --ink: #edf0f7; --ink-2: #c1c8d6; --muted: #838da2; --line: #262b38; --line-strong: #353c4c;
+    --accent: #8f99f4; --accent-soft: #1c2140;
+    --good: #45cf8c; --good-soft: #10241a; --warn: #e2a750; --warn-soft: #2a2110;
+    --crit: #f47a70; --crit-soft: #2c1512; --slate: #97a1b5; --slate-soft: #1b2029;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  .page {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding: clamp(1.25rem, 4vw, 3.5rem) 1.25rem 4rem;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex; flex-wrap: wrap; gap: .5rem .9rem; align-items: center;
+  }
+  .eyebrow .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); display:inline-block; }
+
+  h1 {
+    font-size: clamp(2rem, 5.5vw, 3.35rem);
+    line-height: 1.04;
+    letter-spacing: -.02em;
+    font-weight: 800;
+    text-wrap: balance;
+    margin: 1.1rem 0 0;
+  }
+  .lead {
+    color: var(--ink-2);
+    font-size: clamp(1.02rem, 2vw, 1.2rem);
+    max-width: 42ch;
+    margin: 1.1rem 0 0;
+    text-wrap: pretty;
+  }
+
+  .headline-stats {
+    display: flex; flex-wrap: wrap; gap: .75rem;
+    margin-top: 1.9rem;
+  }
+  .hstat {
+    flex: 1 1 15rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.2rem;
+    box-shadow: var(--shadow);
+    display: flex; align-items: baseline; gap: .7rem;
+  }
+  .hstat .num {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 2.1rem;
+    letter-spacing: -.03em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .hstat.good .num { color: var(--good); }
+  .hstat.clean .num { color: var(--accent); }
+  .hstat .lbl { color: var(--muted); font-size: .92rem; line-height: 1.3; }
+
+  section { margin-top: clamp(2.5rem, 6vw, 4rem); }
+  .sec-head { display: flex; align-items: baseline; gap: .75rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--line); padding-bottom: .7rem; }
+  .sec-num { font-family: var(--font-mono); color: var(--accent); font-size: .8rem; font-weight: 600; }
+  h2 { font-size: clamp(1.3rem, 3vw, 1.7rem); letter-spacing: -.015em; font-weight: 750; margin: 0; text-wrap: balance; }
+  .sec-sub { color: var(--muted); font-size: .95rem; margin: .35rem 0 0; }
+
+  /* scoreboard */
+  .board { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 640px) { .board { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.4rem 1.5rem;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; }
+  .card.recall::before { background: var(--good); }
+  .card.precision::before { background: var(--accent); }
+  .card .q { font-family: var(--font-mono); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .card h3 { font-size: 1.22rem; margin: .3rem 0 .2rem; letter-spacing: -.01em; }
+  .card .big { font-family: var(--font-mono); font-weight: 700; font-size: 1.6rem; letter-spacing: -.02em; font-variant-numeric: tabular-nums; margin-top: .6rem; }
+  .card.recall .big { color: var(--good); }
+  .card.precision .big { color: var(--accent); }
+  .card p { color: var(--ink-2); font-size: .95rem; margin: .55rem 0 0; }
+
+  /* verdict pill + severity chip — mono, state encoded in form */
+  .pill {
+    font-family: var(--font-mono);
+    font-size: .74rem; font-weight: 600; letter-spacing: .02em;
+    padding: .2rem .5rem; border-radius: 5px; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: .38rem;
+    border: 1px solid transparent;
+  }
+  .pill::before { content:""; width: 7px; height: 7px; border-radius: 2px; }
+  .pill.good { color: var(--good); background: var(--good-soft); }
+  .pill.good::before { background: var(--good); }
+  .pill.warn { color: var(--warn); background: var(--warn-soft); }
+  .pill.warn::before { background: var(--warn); }
+  .pill.crit { color: var(--crit); background: var(--crit-soft); }
+  .pill.crit::before { background: var(--crit); }
+
+  .sev { font-family: var(--font-mono); font-size: .7rem; font-weight: 600; letter-spacing: .03em; padding: .12rem .4rem; border-radius: 4px; }
+  .sev.CRITICAL { color: var(--crit); background: var(--crit-soft); }
+  .sev.HIGH { color: var(--warn); background: var(--warn-soft); }
+  .sev.LOW { color: var(--slate); background: var(--slate-soft); }
+
+  .tag-conf { font-family: var(--font-mono); font-size: .7rem; color: var(--good); letter-spacing: .02em; }
+
+  /* tables */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+  table { border-collapse: collapse; width: 100%; min-width: 34rem; }
+  thead th {
+    font-family: var(--font-mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .1em;
+    color: var(--muted); text-align: left; font-weight: 600;
+    padding: .8rem 1rem; border-bottom: 1px solid var(--line-strong); background: var(--surface-2);
+    white-space: nowrap;
+  }
+  tbody td { padding: .85rem 1rem; border-bottom: 1px solid var(--line); vertical-align: top; font-size: .92rem; }
+  tbody tr:last-child td { border-bottom: none; }
+  .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .repo { color: var(--muted); font-size: .78rem; }
+  td .what { color: var(--ink-2); }
+  .type-tag { font-family: var(--font-mono); font-size: .7rem; letter-spacing: .04em; color: var(--muted); text-transform: uppercase; }
+
+  /* finding rows for recall detail */
+  .finding { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem 1.35rem; }
+  .finding + .finding { margin-top: .9rem; }
+  .finding .top { display: flex; flex-wrap: wrap; gap: .55rem; align-items: center; }
+  .finding .id { font-family: var(--font-mono); font-weight: 600; font-size: .9rem; }
+  .finding h4 { margin: .75rem 0 .1rem; font-size: 1.06rem; letter-spacing: -.01em; }
+  .finding p { color: var(--ink-2); font-size: .93rem; margin: .4rem 0 0; }
+  .finding .note { margin-top: .7rem; font-size: .86rem; color: var(--muted); border-left: 2px solid var(--line-strong); padding-left: .7rem; }
+  .finding .note b { color: var(--ink-2); font-weight: 600; }
+  code { font-family: var(--font-mono); font-size: .86em; background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: .05em .35em; }
+
+  /* method grid */
+  .method { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (max-width: 640px) { .method { grid-template-columns: 1fr; } }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.1rem 1.2rem; box-shadow: var(--shadow); }
+  .step .k { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .step h4 { margin: .35rem 0 .3rem; font-size: 1.02rem; }
+  .step p { margin: 0; color: var(--ink-2); font-size: .9rem; }
+
+  /* caveats — credibility panel, amber stripe */
+  .caveats { background: var(--warn-soft); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: var(--radius); padding: 1.4rem 1.5rem; }
+  .caveats h2 { font-size: 1.15rem; }
+  .caveats .hint { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--warn); }
+  .caveats ul { margin: .9rem 0 0; padding: 0; list-style: none; display: grid; gap: .6rem; }
+  .caveats li { position: relative; padding-left: 1.4rem; font-size: .93rem; color: var(--ink-2); }
+  .caveats li::before { content: "→"; position: absolute; left: 0; color: var(--warn); font-family: var(--font-mono); }
+  .caveats li b { color: var(--ink); font-weight: 650; }
+
+  /* pull quote for the post */
+  .claim { margin-top: clamp(2.5rem, 6vw, 4rem); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(1.5rem, 4vw, 2.4rem); box-shadow: var(--shadow); position: relative; }
+  .claim .k { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+  .claim blockquote { margin: .9rem 0 0; font-size: clamp(1.15rem, 2.6vw, 1.5rem); line-height: 1.4; letter-spacing: -.01em; color: var(--ink); text-wrap: pretty; }
+  .claim blockquote b { font-weight: 700; }
+
+  footer { margin-top: 3rem; padding-top: 1.3rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .82rem; display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center; }
+  footer .mono { font-family: var(--font-mono); }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible, .pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+  .fade { opacity: 0; transform: translateY(8px); animation: rise .6s cubic-bezier(.2,.7,.2,1) forwards; }
+  .fade.d1 { animation-delay: .06s; } .fade.d2 { animation-delay: .12s; } .fade.d3 { animation-delay: .18s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .fade { animation: none; opacity: 1; transform: none; } }
+</style>
+
+<div class="page">
+  <div class="wrap">
+
+    <header>
+      <div class="eyebrow fade">
+        <span><span class="dot"></span> java-review swarm</span>
+        <span>field test</span>
+        <span>2026-07-11</span>
+      </div>
+      <h1 class="fade d1">Does it catch real bugs&nbsp;— without crying wolf?</h1>
+      <p class="lead fade d1">Seven real Apache &amp; Halo pull requests the reviewer had never seen. Two with a maintainer-fixed bug reintroduced; five reviewed exactly as submitted. Every finding was attacked by an adversarial verifier before it was allowed to count.</p>
+
+      <div class="headline-stats">
+        <div class="hstat good fade d2">
+          <span class="num">2 / 2</span>
+          <span class="lbl">known bugs caught<br>both adversarially confirmed</span>
+        </div>
+        <div class="hstat clean fade d2">
+          <span class="num">0</span>
+          <span class="lbl">false positives across<br>5 already-reviewed PRs</span>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">01</span><h2>The two-sided result</h2></div>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">A useful reviewer has to do both jobs. Measured separately, on independent code.</p>
+      <div class="board">
+        <div class="card recall">
+          <div class="q">Question A · recall</div>
+          <h3>Catches real bugs</h3>
+          <div class="big">2 / 2 caught</div>
+          <p>Two bugs that Apache maintainers had found and fixed were reintroduced by reversing their fix. The swarm flagged both, and a skeptic agent confirmed each against the code — grading one <b>more severe</b> than the maintainers' own PR title had.</p>
+        </div>
+        <div class="card precision">
+          <div class="q">Question B · precision / false-positive rate</div>
+          <h3>Stays quiet on clean code</h3>
+          <div class="big">5 / 5 looks good</div>
+          <p>Five real PRs reviewed as submitted returned <span class="pill good">LOOKS GOOD</span> on all five, with zero false positives — surfacing only three minor, accurate, low-severity notes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">02</span><h2>Recall — the two reintroduced bugs</h2></div>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">Each finding survived an adversarial verifier told to refute it, before it counted.</p>
+
+      <div class="finding">
+        <div class="top">
+          <span class="id">dolphinscheduler #18331</span>
+          <span class="type-tag">concurrency</span>
+          <span class="pill warn">REQUEST CHANGES</span>
+          <span class="tag-conf">▸ refutation attempted → CONFIRMED</span>
+        </div>
+        <h4>A shared <code>static HashMap</code> reverted from <code>ConcurrentHashMap</code></h4>
+        <p>The map is mutated by <code>synchronized</code> login/logout but iterated lock-free by a Kerberos-renewal daemon. All <b>5 of 5</b> finders independently flagged the <code>ConcurrentModificationException</code> race; the verifier confirmed it <span class="sev HIGH">HIGH</span>. Notably it reasoned that the sibling map was <em>correctly</em> left a <code>HashMap</code> — so it understood the model, not just the pattern.</p>
+        <p class="note"><b>Tell-tale:</b> the finders rediscovered the exact regression test Apache added in the real fix — without ever being told this was a concurrency change.</p>
+      </div>
+
+      <div class="finding">
+        <div class="top">
+          <span class="id">dolphinscheduler #18300</span>
+          <span class="type-tag">security · IDOR</span>
+          <span class="pill crit">BLOCKED</span>
+          <span class="tag-conf">▸ refutation attempted → CONFIRMED ×2</span>
+        </div>
+        <h4>Dropped access-token owner check → account takeover</h4>
+        <p>The pre-fix code <em>looked</em> guarded. Two independent finders traced the guard to a dead end — <code>permissionCheck(...) { return true; }</code> — and followed the chain to a token→identity join, concluding any user could mint a token for an admin. Both verifiers confirmed <span class="sev CRITICAL">CRITICAL</span> by quoting that one-line method. Gated verdict: <span class="pill crit">BLOCKED</span>.</p>
+        <p class="note"><b>Deeper than the fix:</b> the maintainers' PR title was the terse "enforce access token owner checks" — the swarm surfaced it as a critical privilege-escalation chain, and its recommended fix matched what they shipped.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">03</span><h2>Precision — five PRs reviewed as submitted</h2></div>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">Already merged and human-reviewed. The right answer is mostly "looks good" — the test is whether it agrees, quietly.</p>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Pull request</th><th>Type</th><th>Verdict</th><th>Gating findings (verified)</th><th>Non-gating</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="mono">#18284</span><br><span class="repo">apache/dolphinscheduler</span></td>
+              <td><span class="type-tag">feature</span></td>
+              <td><span class="pill good">LOOKS GOOD</span></td>
+              <td class="what">1 <span class="sev LOW">LOW</span> — real N+1 in a loop.<br>1 pre-existing issue <b>correctly dropped</b>.</td>
+              <td class="repo">3 low/nit</td>
+            </tr>
+            <tr>
+              <td><span class="mono">#18296</span><br><span class="repo">apache/dolphinscheduler</span></td>
+              <td><span class="type-tag">fix</span></td>
+              <td><span class="pill good">LOOKS GOOD</span></td>
+              <td class="what">—</td>
+              <td class="repo">1 nit</td>
+            </tr>
+            <tr>
+              <td><span class="mono">#10091</span><br><span class="repo">halo-dev/halo</span></td>
+              <td><span class="type-tag">feature</span></td>
+              <td><span class="pill good">LOOKS GOOD</span></td>
+              <td class="what">1 <span class="sev LOW">LOW</span> — real plugin-lifecycle race.</td>
+              <td class="repo">2 low/nit</td>
+            </tr>
+            <tr>
+              <td><span class="mono">#16309</span><br><span class="repo">apache/dubbo</span></td>
+              <td><span class="type-tag">fix</span></td>
+              <td><span class="pill good">LOOKS GOOD</span></td>
+              <td class="what">1 <span class="sev LOW">LOW</span> — real uncaught-exception path.</td>
+              <td class="repo">3 low/nit</td>
+            </tr>
+            <tr>
+              <td><span class="mono">#39072</span><br><span class="repo">apache/shardingsphere</span></td>
+              <td><span class="type-tag">fix</span></td>
+              <td><span class="pill good">LOOKS GOOD</span></td>
+              <td class="what">—</td>
+              <td class="repo">2 low/nit</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sec-sub" style="margin-top:1rem;">Across all five, the gating reviewers raised only a handful of findings — <b>every one LOW, every one real, none refuted</b> — plus one pre-existing issue correctly attributed to history, not the diff. <b>Re-running the whole batch reproduced the result: 5&nbsp;/&nbsp;5 LOOKS GOOD and zero false positives again.</b> The exact minor notes shifted between runs — the finders are independent and stochastic — but the verdict did not. The non-gating notes are grounded consistency questions — sentinel <code>0</code> vs <code>-1</code>, a duplicated host:port heuristic, test-naming drift — not bug claims. <span class="repo">(Table shows a representative run.)</span></p>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">04</span><h2>How it was measured</h2></div>
+      <div class="method">
+        <div class="step">
+          <div class="k">recall setup</div>
+          <h4>Reverse-of-fix</h4>
+          <p>Took a bug maintainers had fixed and reverted their fix — the real buggy code, no engineered answer — then reviewed the resulting diff.</p>
+        </div>
+        <div class="step">
+          <div class="k">precision setup</div>
+          <h4>As submitted</h4>
+          <p>Reviewed five real merged PRs exactly as their authors opened them, full swarm, nothing planted.</p>
+        </div>
+        <div class="step">
+          <div class="k">the gate</div>
+          <h4>Adversarial verify</h4>
+          <p>Every gating finding went to a separate skeptic agent instructed to <em>refute</em> it against the code. Only survivors count.</p>
+        </div>
+        <div class="step">
+          <div class="k">scoring</div>
+          <h4>Hand-scored, conservative</h4>
+          <p>Each surviving finding judged real or false by hand; anything borderline counted as a false positive, so the number is a floor.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="caveats">
+        <div class="hint">read this before quoting the numbers</div>
+        <h2 style="margin-top:.35rem;">What this does &amp; doesn't prove</h2>
+        <ul>
+          <li><b>N is small</b> — seven PRs. This is an existence result, not a rate.</li>
+          <li><b>Thin precision denominator</b> — the "3 / 3" rests on three low-severity findings; it says the tool doesn't cry wolf, not that it's flawless.</li>
+          <li><b>The clean PRs test false positives, not recall</b> — being already-reviewed, they held no medium-or-worse bugs to catch. Recall evidence is the two reintroductions only.</li>
+          <li><b>Reverse-of-fix is the easier setting</b> — the bug is the whole diff. A bug buried in a 500-line feature PR is a harder, untested case.</li>
+          <li><b>Run-to-run variance</b> — re-running the whole batch reproduced the verdict (5&times; <span class="mono">LOOKS GOOD</span>, zero false positives), but the specific minor <span class="sev LOW">LOW</span>/nit notes shifted. The finders are stochastic: the headline is stable, the noise floor isn't.</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="claim">
+      <div class="k">the defensible claim</div>
+      <blockquote>Ran it on <b>7 real Apache/Halo PRs it had never seen.</b> On two where I reintroduced a bug maintainers had fixed, it caught both and adversarially confirmed them — flagging one as a critical account-takeover the PR had understated. On five as-merged PRs it said <b>"looks good" on all five, with zero false positives.</b></blockquote>
+    </div>
+
+    <footer>
+      <span class="mono">java-review swarm · 7 independent Java reviewers + adversarial verification</span>
+      <span class="mono">precision run: 35 agents · ~2M tokens · ~23 min</span>
+    </footer>
+
+  </div>
+</div>
+
+</body>
+</html>
