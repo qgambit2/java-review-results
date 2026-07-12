@@ -208,6 +208,7 @@
   .sev { font-family: var(--font-mono); font-size: .7rem; font-weight: 600; letter-spacing: .03em; padding: .12rem .4rem; border-radius: 4px; }
   .sev.CRITICAL { color: var(--crit); background: var(--crit-soft); }
   .sev.HIGH { color: var(--warn); background: var(--warn-soft); }
+  .sev.MEDIUM { color: var(--warn); background: var(--warn-soft); }
   .sev.LOW { color: var(--slate); background: var(--slate-soft); }
 
   .tag-conf { font-family: var(--font-mono); font-size: .7rem; color: var(--good); letter-spacing: .02em; }
@@ -280,7 +281,7 @@
       <div class="eyebrow fade">
         <span><span class="dot"></span> java-review swarm</span>
         <span>field test</span>
-        <span>2026-07-11</span>
+        <span>2026-07-11 · updated 07-12</span>
       </div>
       <h1 class="fade d1">Does it catch real bugs&nbsp;— without crying wolf?</h1>
       <p class="lead fade d1">Seven real Apache &amp; Halo pull requests the reviewer had never seen. Two with a maintainer-fixed bug reintroduced; five reviewed exactly as submitted. Every finding was attacked by an adversarial verifier before it was allowed to count.</p>
@@ -396,7 +397,36 @@
     </section>
 
     <section>
-      <div class="sec-head"><span class="sec-num">04</span><h2>How it was measured</h2></div>
+      <div class="sec-head"><span class="sec-num">04</span><h2>The harder setting — two large PRs, reviewed whole</h2></div>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">Beyond the seven above, and not reverse-of-fix: two big, already-merged PRs from top-tier Apache projects — <b>1,300 and 1,900 lines</b> — reviewed exactly as shipped, nothing planted. A new <b>performance</b> reviewer had joined the swarm (eight finders now). Both landed <span class="pill warn">APPROVE WITH CONCERNS</span> — real, verified issues the maintainers had merged, and the verifier refuted the weak ones.</p>
+
+      <div class="finding">
+        <div class="top">
+          <span class="id">kafka #22652</span>
+          <span class="type-tag">performance · concurrency</span>
+          <span class="pill warn">APPROVE WITH CONCERNS</span>
+          <span class="tag-conf">▸ 2 MEDIUM confirmed · 2 claims killed</span>
+        </div>
+        <h4>An interactive-query snapshot copies every key to return one</h4>
+        <p>Transactional in-memory window/session stores for Kafka Streams. The IQ snapshot deep-copy bounds only by timestamp, then copies the whole key cross-section — so a single-key <code>fetch(key)</code> materializes the entire store, under a lock that also stalls the writer. <b>Two independent reviewers</b> — performance and concurrency — hit the same code from different angles, each grading it <span class="sev MEDIUM">MEDIUM</span>. The tell: caught by comparing against Kafka's <em>own</em> sibling class, which already bounds the copy correctly.</p>
+        <p class="note"><b>Verification earned its keep:</b> two more claims were raised and <em>killed</em> — one <b>refuted</b> (the proposed fix wouldn't compile against the reused iterators) and one <b>dropped as pre-existing</b>, so the author isn't blamed for inherited behavior.</p>
+      </div>
+
+      <div class="finding">
+        <div class="top">
+          <span class="id">pulsar #26117</span>
+          <span class="type-tag">performance</span>
+          <span class="pill warn">APPROVE WITH CONCERNS</span>
+          <span class="tag-conf">▸ 1 MEDIUM confirmed · 2 CRITICALs chased &amp; refuted</span>
+        </div>
+        <h4>A hot-path allocation the old code had avoided</h4>
+        <p>A new bitmap abstraction migrating broker hot paths. On the message-delivery path, the new <code>drainTo</code> builds a full removal-set and <code>andNot</code>s it even when the bitmap is fully drained and immediately thrown away — where the pre-change code dropped it with zero allocation. The new performance reviewer caught it by diffing old against new behaviour; the verifier confirmed it <span class="sev MEDIUM">MEDIUM</span>.</p>
+        <p class="note"><b>No crying wolf:</b> the two tempting <span class="sev CRITICAL">CRITICAL</span> hypotheses — a 64-bit→32-bit data-loss on upgrade, and a lost-atomicity race across the migrated call sites — were both <b>investigated and refuted with evidence</b> (the persisted format is byte-identical; every migrated site kept its existing lock). One verifier even tried to escalate a LOW and honestly held it at LOW.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head"><span class="sec-num">05</span><h2>How it was measured</h2></div>
       <div class="method">
         <div class="step">
           <div class="k">recall setup</div>
@@ -429,7 +459,8 @@
           <li><b>N is small</b> — seven PRs. This is an existence result, not a rate.</li>
           <li><b>Thin precision denominator</b> — the "3 / 3" rests on three low-severity findings; it says the tool doesn't cry wolf, not that it's flawless.</li>
           <li><b>The clean PRs test false positives, not recall</b> — being already-reviewed, they held no medium-or-worse bugs to catch. Recall evidence is the two reintroductions only.</li>
-          <li><b>Reverse-of-fix is the easier setting</b> — the bug is the whole diff. A bug buried in a 500-line feature PR is a harder, untested case.</li>
+          <li><b>Reverse-of-fix is the easier setting</b> — the bug is the whole diff. The two large-PR runs (section 04) begin to probe the harder case — real issues in 1,300&ndash;1,900-line as-merged PRs — but they surfaced efficiency/correctness <span class="sev MEDIUM">MEDIUM</span>s, not planted criticals.</li>
+          <li><b>The large-PR verdicts are qualitative</b> — two PRs, hand-read against the diff. Strong that the findings are real and the weak ones were refuted; not a precision <em>rate</em>.</li>
           <li><b>Run-to-run variance</b> — re-running the whole batch reproduced the verdict (5&times; <span class="mono">LOOKS GOOD</span>, zero false positives), but the specific minor <span class="sev LOW">LOW</span>/nit notes shifted. The finders are stochastic: the headline is stable, the noise floor isn't.</li>
         </ul>
       </div>
@@ -437,11 +468,11 @@
 
     <div class="claim">
       <div class="k">the defensible claim</div>
-      <blockquote>Ran it on <b>7 real Apache/Halo PRs it had never seen.</b> On two where I reintroduced a bug maintainers had fixed, it caught both and adversarially confirmed them — flagging one as a critical account-takeover the PR had understated. On five as-merged PRs it said <b>"looks good" on all five, with zero false positives.</b></blockquote>
+      <blockquote>Ran it on <b>7 real Apache/Halo PRs it had never seen.</b> On two where I reintroduced a bug maintainers had fixed, it caught both and adversarially confirmed them — flagging one as a critical account-takeover the PR had understated. On five as-merged PRs it said <b>"looks good" on all five, with zero false positives.</b> Then on two <b>large</b> as-merged PRs from Kafka and Pulsar, a new performance reviewer surfaced real efficiency issues the maintainers had already merged — while the verifier refuted the weak claims.</blockquote>
     </div>
 
     <footer>
-      <span class="mono">java-review swarm · 7 independent Java reviewers + adversarial verification</span>
+      <span class="mono">java-review swarm · 8 independent Java reviewers (incl. performance) + adversarial verification</span>
       <span class="mono">precision run: 35 agents · ~2M tokens · ~23 min</span>
     </footer>
 
