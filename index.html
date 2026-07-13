@@ -397,8 +397,8 @@
     </section>
 
     <section>
-      <div class="sec-head"><span class="sec-num">04</span><h2>The harder setting — two large PRs, reviewed whole</h2></div>
-      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">Beyond the seven above, and not reverse-of-fix: two big, already-merged PRs from top-tier Apache projects — <b>1,300 and 1,900 lines</b> — reviewed exactly as shipped, nothing planted. A new <b>performance</b> reviewer had joined the swarm (eight finders now). Both landed <span class="pill warn">APPROVE WITH CONCERNS</span> — real, verified issues the maintainers had merged, and the verifier refuted the weak ones.</p>
+      <div class="sec-head"><span class="sec-num">04</span><h2>The harder setting — three large PRs, reviewed whole</h2></div>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">Beyond the seven above, and not reverse-of-fix: three big PRs from top-tier Apache projects — <b>1,300 to 1,900 lines</b> — reviewed exactly as shipped, nothing planted, by the full <b>eight-finder</b> swarm. Two surfaced real, verified issues the maintainers had merged, and the verifier refuted the weak ones. The third — the largest and highest-stakes of all — was scrutinized just as hard and came back <span class="pill good">LOOKS GOOD</span>: the anti-noise claim under its stiffest test.</p>
 
       <div class="finding">
         <div class="top">
@@ -422,6 +422,18 @@
         <h4>A hot-path allocation the old code had avoided</h4>
         <p>A new bitmap abstraction migrating broker hot paths. On the message-delivery path, the new <code>drainTo</code> builds a full removal-set and <code>andNot</code>s it even when the bitmap is fully drained and immediately thrown away — where the pre-change code dropped it with zero allocation. The new performance reviewer caught it by diffing old against new behaviour; the verifier confirmed it <span class="sev MEDIUM">MEDIUM</span>.</p>
         <p class="note"><b>No crying wolf:</b> the two tempting <span class="sev CRITICAL">CRITICAL</span> hypotheses — a 64-bit→32-bit data-loss on upgrade, and a lost-atomicity race across the migrated call sites — were both <b>investigated and refuted with evidence</b> (the persisted format is byte-identical; every migrated site kept its existing lock). One verifier even tried to escalate a LOW and honestly held it at LOW.</p>
+      </div>
+
+      <div class="finding">
+        <div class="top">
+          <span class="id">flink #28709</span>
+          <span class="type-tag">checkpoint serialization</span>
+          <span class="pill good">LOOKS GOOD</span>
+          <span class="tag-conf">▸ 0 gating findings · 2 design LOWs</span>
+        </div>
+        <h4>The largest, most dangerous diff — reviewed whole, and quiet</h4>
+        <p>A fix to Flink's checkpoint-metadata serializer, where getting the on-disk format wrong means <em>unrestorable state</em> — exactly the high-stakes change that tempts a reviewer to find <em>something</em>. At <b>1,800 lines</b> it cleared the partition guard, but its ~330 lines of production code are one tightly-coupled unit, so the swarm chose to review it <b>whole</b> rather than split the serialize/deserialize seam that mattered most. Between them the six gating reviewers attacked every failure mode a format change invites — wire-format compatibility (checked <em>byte-for-byte</em>), a path-equality misclassification, a deliberately-skipped channel-state path, the claimed-savepoint lifecycle — and each independently found it sound. No gating finding; two non-blocking design suggestions.</p>
+        <p class="note"><b>Quiet on clean — at scale:</b> the convergence is the signal. Four reviewers independently landed on the <em>same</em> soft spot — a safe default guarded by a doc-comment, not the type system — so it reads as a courteous <span class="sev LOW">LOW</span>, not a manufactured blocker. Three finders even hit transient infra failures mid-run and were resumed from their transcripts: degraded gracefully, nothing silently dropped.</p>
       </div>
     </section>
 
@@ -459,7 +471,7 @@
           <li><b>N is small</b> — seven PRs. This is an existence result, not a rate.</li>
           <li><b>Thin precision denominator</b> — the "3 / 3" rests on three low-severity findings; it says the tool doesn't cry wolf, not that it's flawless.</li>
           <li><b>The clean PRs test false positives, not recall</b> — being already-reviewed, they held no medium-or-worse bugs to catch. Recall evidence is the two reintroductions only.</li>
-          <li><b>Reverse-of-fix is the easier setting</b> — the bug is the whole diff. The two large-PR runs (section 04) begin to probe the harder case — real issues in 1,300&ndash;1,900-line as-merged PRs — but they surfaced efficiency/correctness <span class="sev MEDIUM">MEDIUM</span>s, not planted criticals.</li>
+          <li><b>Reverse-of-fix is the easier setting</b> — the bug is the whole diff. The three large-PR runs (section 04) begin to probe the harder case — 1,300&ndash;1,900-line as-shipped PRs — but two surfaced efficiency/correctness <span class="sev MEDIUM">MEDIUM</span>s and the third came back clean; none of the three faced a planted critical.</li>
           <li><b>The large-PR verdicts are qualitative</b> — two PRs, hand-read against the diff. Strong that the findings are real and the weak ones were refuted; not a precision <em>rate</em>.</li>
           <li><b>Run-to-run variance</b> — re-running the whole batch reproduced the verdict (5&times; <span class="mono">LOOKS GOOD</span>, zero false positives), but the specific minor <span class="sev LOW">LOW</span>/nit notes shifted. The finders are stochastic: the headline is stable, the noise floor isn't.</li>
         </ul>
