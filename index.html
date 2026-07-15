@@ -500,8 +500,18 @@
       <blockquote>Ran it on <b>7 real Apache/Halo PRs it had never seen.</b> On two where I reintroduced a bug maintainers had fixed, it caught both and adversarially confirmed them — flagging one as a critical account-takeover the PR had understated. On five as-merged PRs it said <b>"looks good" on all five, with zero false positives.</b> Then on four <b>large</b> PRs (1,300–5,700 lines) from Kafka, Pulsar, Flink and Druid, it surfaced real efficiency and correctness issues maintainers had already merged — the verifier refuting the weak ones — while a high-stakes checkpoint-serialization fix came back a clean <b>"looks good."</b> On the largest, a <b>5,700-line</b> Druid cache change, five of eight finders stayed quiet while one traced a real post-restart failure to a path the author's tests missed.</blockquote>
     </div>
 
+    <a href="https://qgambit2.github.io/jrs/" style="display:flex; align-items:center; gap:1rem; justify-content:space-between; margin-top:1rem; background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:var(--radius); box-shadow:var(--shadow); padding:1.3rem 1.5rem; text-decoration:none; color:inherit;">
+      <span>
+        <span style="font-family:var(--font-mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent);">the tool behind this test</span>
+        <span style="display:block; font-size:1.12rem; font-weight:700; letter-spacing:-.01em; margin-top:.35rem; color:var(--ink);">JRS — Java Review Swarm</span>
+        <span style="display:block; color:var(--ink-2); font-size:.93rem; margin-top:.25rem;">How it works, what it costs, and how to run it on your own pull requests.</span>
+      </span>
+      <span aria-hidden="true" style="font-family:var(--font-mono); font-size:1.4rem; color:var(--accent); flex:none;">&rarr;</span>
+    </a>
+
     <footer>
-      <span class="mono">java-review swarm · 8 independent Java reviewers (incl. performance) + adversarial verification</span>
+      <span class="mono"><a href="https://qgambit2.github.io/jrs/">JRS — Java Review Swarm</a></span>
+      <span class="mono">8 independent Java reviewers (incl. performance) + adversarial verification</span>
       <span class="mono">precision run: 35 agents · ~2M tokens · ~23 min</span>
     </footer>
 
