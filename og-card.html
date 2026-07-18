@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 2400px; height: 1260px; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
+    background:
+      radial-gradient(1600px 900px at 88% -10%, #16204a 0%, rgba(22,32,74,0) 55%),
+      radial-gradient(1400px 800px at -5% 110%, #101b33 0%, rgba(16,27,51,0) 60%),
+      #05070d;
+    color: #f4f6fb;
+    width: 2400px; height: 1260px;
+    padding: 110px 130px 100px;
+    display: flex; flex-direction: column;
+  }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  .eyebrow {
+    display: flex; align-items: center; gap: 26px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 40px; font-weight: 700; letter-spacing: .22em;
+    color: #aab6f2;
+  }
+  .eyebrow .dot { width: 26px; height: 26px; border-radius: 6px; background: #5b6cf0; }
+  .eyebrow .sep { color: #6d7796; letter-spacing: 0; }
+  h1 {
+    margin-top: 96px;
+    font-size: 148px; line-height: 1.08; font-weight: 800; letter-spacing: -.015em;
+  }
+  h1 .quiet { color: #4ade80; }
+  .stats { display: flex; gap: 44px; margin-top: 96px; }
+  .stat {
+    flex: 1;
+    background: rgba(148,163,208,.055);
+    border: 2px solid rgba(148,163,208,.16);
+    border-radius: 28px;
+    padding: 56px 60px 52px;
+  }
+  .stat .num {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 118px; font-weight: 700; letter-spacing: -.01em;
+    color: #4ade80;
+  }
+  .stat.white .num { color: #f4f6fb; }
+  .stat .lab {
+    margin-top: 34px;
+    font-size: 44px; line-height: 1.42; color: #c2cadd; font-weight: 400;
+  }
+  .foot {
+    margin-top: auto;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .foot .url {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 52px; font-weight: 700; color: #e8ecf7; letter-spacing: -.01em;
+  }
+  .foot .tag { font-size: 44px; color: #97a1ba; }
+</style>
+</head>
+<body>
+  <div class="eyebrow"><span class="dot"></span>JAVA-REVIEW SWARM <span class="sep">·</span> FIELD TEST</div>
+  <h1>Catches real bugs.<br>Stays <span class="quiet">quiet</span> on clean code.</h1>
+  <div class="stats">
+    <div class="stat">
+      <div class="num">2 / 2</div>
+      <div class="lab">known bugs caught<br>adversarially confirmed</div>
+    </div>
+    <div class="stat">
+      <div class="num">0</div>
+      <div class="lab">false positives<br>5 clean PRs, reproduced</div>
+    </div>
+    <div class="stat white">
+      <div class="num">4</div>
+      <div class="lab">large PRs reviewed whole<br>1,300&ndash;5,700 lines</div>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="url">qgambit2.github.io/java-review-results</span>
+    <span class="tag">8 specialists &middot; adversarial verification</span>
+  </div>
+</body>
+</html>
