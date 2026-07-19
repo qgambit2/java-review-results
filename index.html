@@ -113,7 +113,7 @@
     -webkit-font-smoothing: antialiased;
     padding: clamp(1.25rem, 4vw, 3.5rem) 1.25rem 4rem;
   }
-  .wrap { max-width: var(--maxw); margin: 0 auto; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; min-width: 0; }
 
   .eyebrow {
     font-family: var(--font-mono);
@@ -277,12 +277,82 @@
   .fade.d1 { animation-delay: .06s; } .fade.d2 { animation-delay: .12s; } .fade.d3 { animation-delay: .18s; }
   @keyframes rise { to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .fade { animation: none; opacity: 1; transform: none; } }
+
+  /* ---- sticky contents nav (extends the page's numbered-section motif) ---- */
+  .layout { display: grid; grid-template-columns: 13.5rem minmax(0, var(--maxw)); gap: clamp(1.5rem, 3vw, 3rem); justify-content: center; align-items: start; }
+  .sidenav { position: sticky; top: 1.25rem; align-self: start; font-family: var(--font-mono); max-height: calc(100vh - 2.5rem); overflow-y: auto; }
+  .navhead { display: flex; align-items: center; gap: .5rem; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding: .2rem .55rem .7rem; }
+  .navhead .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .navtoggle { display: none; }
+  .sidenav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .06rem; }
+  .sidenav .grp { font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); padding: .85rem .55rem .3rem; }
+  .sidenav a { display: flex; gap: .5rem; align-items: baseline; text-decoration: none; color: var(--ink-2); font-size: .795rem; padding: .32rem .55rem; border-radius: 6px; border-left: 2px solid transparent; }
+  .sidenav a .n { color: var(--muted); font-size: .68rem; min-width: 1.15rem; font-variant-numeric: tabular-nums; }
+  .sidenav a:hover { background: var(--surface-2); color: var(--ink); }
+  .sidenav a.active { color: var(--accent); background: var(--accent-soft); border-left-color: var(--accent); font-weight: 600; }
+  .sidenav a.active .n { color: var(--accent); }
+  @media (max-width: 940px) {
+    .layout { display: block; }
+    .sidenav { position: sticky; top: 0; z-index: 30; max-height: none; overflow: visible;
+      background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px);
+      margin: calc(-1 * clamp(1.25rem, 4vw, 3.5rem)) -1.25rem 1.5rem; padding: .55rem 1.25rem;
+      border-bottom: 1px solid var(--line); }
+    .navhead { padding: .35rem 0; justify-content: space-between; width: 100%; }
+    .navtoggle { display: inline-flex; align-items: center; gap: .4rem; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
+      background: none; border: 1px solid var(--line-strong); color: var(--ink-2); border-radius: 6px; padding: .25rem .55rem; cursor: pointer; }
+    .sidenav ul { display: none; padding-bottom: .4rem; }
+    .sidenav.open ul { display: flex; }
+    .sidenav .grp { padding-top: .55rem; }
+  }
+
+  /* ---- mined-pairs section ---- */
+  .sec-mark { color: var(--accent); font-family: var(--font-mono); font-weight: 700; font-size: 1rem; line-height: 1; }
+  .lanes { display: grid; gap: .5rem; margin: .3rem 0 0; max-width: 33rem; }
+  .lane { display: grid; grid-template-columns: 6.6rem 1fr 2.4rem; align-items: center; gap: .75rem; }
+  .lane-name { font-size: .85rem; color: var(--ink-2); }
+  .lane-track { height: 8px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+  .lane-fill { display: block; height: 100%; background: var(--good); }
+  .lane-frac { font-size: .8rem; color: var(--muted); text-align: right; }
+  .filters { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: 1.15rem 0 .8rem; }
+  .filters .flabel { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-right: .2rem; }
+  .filters button { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .02em; padding: .26rem .6rem; border-radius: 6px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2); cursor: pointer; }
+  .filters button:hover { border-color: var(--muted); }
+  .filters button.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); font-weight: 600; }
+  .prnums { color: var(--muted); margin-left: .45rem; font-size: .82em; }
+  td.grade { color: var(--muted); text-align: center; }
+  .nowrap { white-space: nowrap; }
+  .rnote { font-family: var(--font-mono); font-size: .64rem; color: var(--muted); }
+  tbody tr.hide { display: none; }
+  .rowcount { font-family: var(--font-mono); font-size: .72rem; color: var(--muted); margin-left: auto; }
 </style>
 
 <div class="page">
+ <div class="layout">
+
+  <nav class="sidenav" id="sidenav" aria-label="Contents">
+    <div class="navhead">
+      <span><span class="dot"></span> Contents</span>
+      <button class="navtoggle" aria-expanded="false" aria-controls="sidenav">Menu</button>
+    </div>
+    <ul>
+      <li><a href="#top"><span class="n">·</span> Overview</a></li>
+      <li class="grp">Mined pairs</li>
+      <li><a href="#pairs"><span class="n">◆</span> The 40 pairs</a></li>
+      <li><a href="#lanes"><span class="n">·</span> By specialty</a></li>
+      <li class="grp">Field test</li>
+      <li><a href="#s1"><span class="n">01</span> Two-sided result</a></li>
+      <li><a href="#s2"><span class="n">02</span> Recall</a></li>
+      <li><a href="#s3"><span class="n">03</span> Precision</a></li>
+      <li><a href="#s4"><span class="n">04</span> Large PRs</a></li>
+      <li><a href="#s5"><span class="n">05</span> Method</a></li>
+      <li class="grp">&nbsp;</li>
+      <li><a href="#caveats"><span class="n">·</span> Caveats</a></li>
+    </ul>
+  </nav>
+
   <div class="wrap">
 
-    <header>
+    <header id="top">
       <div class="eyebrow fade">
         <span><span class="dot"></span> java-review swarm</span>
         <span>field test</span>
@@ -303,7 +373,89 @@
       </div>
     </header>
 
-    <section>
+    <section id="pairs">
+      <div class="sec-head"><span class="sec-mark">&#9670;</span><h2>Mined regression pairs</h2></div>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.35rem;">Forty pull requests that <b>introduced</b> a bug a maintainer later fixed &mdash; replayed against the introducing PR, exactly as it stood. The world chose these bugs; the projects' own maintainers adjudicated them. Strictly out&#8209;of&#8209;distribution: real code, real defects, ground truth we didn't write.</p>
+
+      <div class="headline-stats">
+        <div class="hstat good">
+          <span class="num">26 / 40</span>
+          <span class="lbl">maintainer-fixed regressions caught<br>at the PR that introduced them</span>
+        </div>
+        <div class="hstat clean">
+          <span class="num">0</span>
+          <span class="lbl">fabricated findings<br>across all forty runs</span>
+        </div>
+      </div>
+
+      <h3 id="lanes" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Detection by specialty</h3>
+      <p class="sec-sub" style="margin-bottom:.9rem;">Recall isn't uniform, and that's the honest signal: on-surface, pointable regressions are caught reliably; the misses cluster where a bug is emergent or its wrongness lives in a file the diff never changed.</p>
+      <div class="lanes">
+<div class="lane"><span class="lane-name">correctness</span><span class="lane-track"><span class="lane-fill" style="width:73%"></span></span><span class="lane-frac mono">16/22</span></div>
+<div class="lane"><span class="lane-name">concurrency</span><span class="lane-track"><span class="lane-fill" style="width:71%"></span></span><span class="lane-frac mono">5/7</span></div>
+<div class="lane"><span class="lane-name">security</span><span class="lane-track"><span class="lane-fill" style="width:75%"></span></span><span class="lane-frac mono">3/4</span></div>
+<div class="lane"><span class="lane-name">data</span><span class="lane-track"><span class="lane-fill" style="width:20%"></span></span><span class="lane-frac mono">1/5</span></div>
+<div class="lane"><span class="lane-name">performance</span><span class="lane-track"><span class="lane-fill" style="width:50%"></span></span><span class="lane-frac mono">1/2</span></div>
+      </div>
+
+      <div class="filters">
+        <span class="flabel">Show</span>
+        <button type="button" data-f="all" class="on">All 40</button>
+        <button type="button" data-f="HIT">Hits</button>
+        <button type="button" data-f="MISS">Misses</button>
+        <span class="rowcount" id="rowcount"></span>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Pair &nbsp;<span style="font-weight:400;text-transform:none;letter-spacing:0;">introduced &rarr; fixed</span></th><th>Specialty</th><th>Grade</th><th>Result</th><th>What the bug was</th></tr></thead>
+          <tbody id="pairbody">
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#24784→#26045</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">under-rated LOW</span></td><td class="what">PulsarClientImpl.shutdown() closes addressResolver + dnsResolverGroupLocalInstance UNGUARDED; a throw…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#21798→#24512</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">PersistentTopicsBase.internalGetDelayedDeliveryPolicies (introducing tree line 908) builds a…</td></tr>
+<tr data-result="HIT" data-lane="security"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#24533→#24593</span></td><td><span class="type-tag">security</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">under-rated LOW</span></td><td class="what">In ServerCnx.isTopicOperationAllowed (introducing tree lines 480-482), #24533 replaced a two-part proxy…</td></tr>
+<tr data-result="MISS" data-lane="concurrency"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#25352→#25460</span></td><td><span class="type-tag">concurrency</span></td><td class="mono grade">C</td><td class="nowrap"><span class="pill warn">MISS</span> </td><td class="what">The async-ification in #25352 DELAYS the producer-creation callbacks. When a client-side createProducer…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">netty/</span>netty<span class="prnums">#12709→#12762</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">C</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">#12709 removed the generic post-encode release that MessageToMessageEncoder.write() provided.…</td></tr>
+<tr data-result="HIT" data-lane="concurrency"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#22908→#22966</span></td><td><span class="type-tag">concurrency</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">ConcurrentRoaringBitSet&#x27;s read methods (get, nextSetBit, ...) use rwLock.tryOptimisticRead() and call…</td></tr>
+<tr data-result="MISS" data-lane="data"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#25984→#26080</span></td><td><span class="type-tag">data</span></td><td class="mono grade">C</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">off-target (found deeper)</span></td><td class="what">THE RECALL TARGET (what #26080 fixed): nextDeliveryTime() falls through to…</td></tr>
+<tr data-result="HIT" data-lane="concurrency"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#25087→#25110</span></td><td><span class="type-tag">concurrency</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev MEDIUM">MEDIUM</span></td><td class="what">#25087 replaced an in-memory-only cursor-tracking reset with a real…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">netty/</span>netty<span class="prnums">#15165→#15391</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev CRITICAL">CRITICAL</span></td><td class="what">The added AdaptiveByteBuf.setCharSequence override guards with checkIndex(index, sequence.length()) — a…</td></tr>
+<tr data-result="MISS" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#20990→#23796</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">target miss; defect-level hit #21126</span></td><td class="what">#20990&#x27;s added conditional runs removePendingAcks (whose unblock check reads the unacked count) BEFORE…</td></tr>
+<tr data-result="MISS" data-lane="concurrency"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#22411→#25434</span></td><td><span class="type-tag">concurrency</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill warn">MISS</span> </td><td class="what">#22411 MOVED the optimistic-concurrency version snapshot &#x27;final Stat lastCursorLedgerStat =…</td></tr>
+<tr data-result="MISS" data-lane="correctness"><td class="mono nowrap"><span class="repo">netty/</span>netty<span class="prnums">#8939→#10247</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill warn">MISS</span> </td><td class="what">addFlattenedComponents does &#x27;final CompositeByteBuf from = (CompositeByteBuf) buffer;&#x27; and reads from&#x27;s…</td></tr>
+<tr data-result="MISS" data-lane="performance"><td class="mono nowrap"><span class="repo">netty/</span>netty<span class="prnums">#17007→#17074</span></td><td><span class="type-tag">performance</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">weak target</span></td><td class="what">#17007&#x27;s cached(String) does TWO passes over the input: (1) new AsciiString(string) internally converts…</td></tr>
+<tr data-result="MISS" data-lane="correctness"><td class="mono nowrap"><span class="repo">elastic/</span>elasticsearch<span class="prnums">#105718→#136649</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill warn">MISS</span> </td><td class="what">With allow_duplicates:false, appending a value that is already present (a no-op de-dup) still UPCASTS…</td></tr>
+<tr data-result="MISS" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#16234→#18816</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">C</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">near</span></td><td class="what">convertFrom() drops configuration data: it builds a NEW empty Properties from unknown DECLARED FIELDS…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#22521→#22576</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">under-rated LOW</span></td><td class="what">The hand-rolled Deflater loop + gzip framing in GzipByteBufferWriter mishandles buffer-full / finish…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#22789→#23903</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">getValue() guards the get() path with a REFERENCE comparison `if (valueWrapper.getKey() != key) return…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#20158→#20170</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">#20158&#x27;s parse paths call ledgerEntry.getEntryBuffer() (returns the pooled direct ByteBuf, transfers no…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">elastic/</span>elasticsearch<span class="prnums">#152748→#153584</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev MEDIUM">MEDIUM</span></td><td class="what">Math.clamp(value, min, max) requires min &lt;= max; here min=4096, max=n, so when the vector count n &lt;…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">netty/</span>netty<span class="prnums">#15533→#15630</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">Reflecting BC SSLEngine ALPN methods against engine.getClass() (BouncyCastle&#x27;s package-private impl,…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>druid<span class="prnums">#17170→#19484</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">SinkQuerySegmentWalker.java line ~538: switch(metricName) over three cases has NO break statements =&gt;…</td></tr>
+<tr data-result="HIT" data-lane="security"><td class="mono nowrap"><span class="repo">apache/</span>pulsar<span class="prnums">#13157→#13463</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">The added validateNamespacePolicyOperation(...) is NOT equivalent to validateSuperUserAccess(): under…</td></tr>
+<tr data-result="HIT" data-lane="concurrency"><td class="mono nowrap"><span class="repo">elastic/</span>elasticsearch<span class="prnums">#138489→#139510</span></td><td><span class="type-tag">concurrency</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">The live IndexService MapperService and the cluster-state IndexMetadata are updated NON-ATOMICALLY as…</td></tr>
+<tr data-result="HIT" data-lane="security"><td class="mono nowrap"><span class="repo">quarkusio/</span>quarkus<span class="prnums">#48153→#48393</span></td><td><span class="type-tag">security</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">DefaultTokenStateManager.java:84 appends the raw space-delimited access-token scope into the session…</td></tr>
+<tr data-result="HIT" data-lane="concurrency"><td class="mono nowrap"><span class="repo">micronaut-projects/</span>micronaut-core<span class="prnums">#7635→#8156</span></td><td><span class="type-tag">concurrency</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">ConversionService.SHARED is a static final JVM-global shared by every bean context. reset()…</td></tr>
+<tr data-result="HIT" data-lane="data"><td class="mono nowrap"><span class="repo">apache/</span>iceberg<span class="prnums">#15297→#15726</span></td><td><span class="type-tag">data</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">getProjectedIds() omits list/map CONTAINER field IDs (only element/key/value IDs are added), whereas…</td></tr>
+<tr data-result="HIT" data-lane="concurrency"><td class="mono nowrap"><span class="repo">apache/</span>druid<span class="prnums">#17394→#17403</span></td><td><span class="type-tag">concurrency</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev CRITICAL">CRITICAL</span></td><td class="what">workerExec is reused as the RPC connectExec. ServiceClientImpl completes response/service-location…</td></tr>
+<tr data-result="MISS" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>hbase<span class="prnums">#3230→#3775</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill warn">MISS</span> </td><td class="what">HbckChore.java:226 -- relying on the in-memory RegionState alone. RegionState.isSplit() == (state ==…</td></tr>
+<tr data-result="MISS" data-lane="data"><td class="mono nowrap"><span class="repo">apache/</span>ozone<span class="prnums">#9322→#9384</span></td><td><span class="type-tag">data</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill warn">MISS</span> </td><td class="what">RDBStore.close() calls flushDB() unconditionally, but the store can be opened READ-ONLY; flushing a…</td></tr>
+<tr data-result="MISS" data-lane="data"><td class="mono nowrap"><span class="repo">hibernate/</span>hibernate-orm<span class="prnums">#3590→#5261</span></td><td><span class="type-tag">data</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill warn">MISS</span> </td><td class="what">The new OneToOneType.isDirty is correct for simple ids but throws IllegalArgumentException for a…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>kafka<span class="prnums">#20334→#22269</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">connect/runtime/.../rest/util/SSLUtils.java configureSslContextFactoryAlgorithms: the removed `if…</td></tr>
+<tr data-result="MISS" data-lane="security"><td class="mono nowrap"><span class="repo">apache/</span>camel<span class="prnums">#22490→#22801</span></td><td><span class="type-tag">security</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">shipped v0.38.4 slice</span></td><td class="what">NettyConverter.java + the DEFAULT_DESERIALIZATION_FILTER constant =…</td></tr>
+<tr data-result="MISS" data-lane="data"><td class="mono nowrap"><span class="repo">apache/</span>iceberg<span class="prnums">#15150→#16521</span></td><td><span class="type-tag">data</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill warn">MISS</span> </td><td class="what">SerializableTable.java new sortOrders(): `sortOrderAsJsonMap.forEach((id, json) -&gt; sortOrders.put(id,…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>flink<span class="prnums">#27861→#28605</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">LocalInputChannel.checkpointStarted() was changed from startPersisting(id, Collections.emptyList()) to…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>hadoop<span class="prnums">#6748→#6772</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">PendingDataNodeMessages.removeQueuedBlock() (line ~111-133) obtains its queue via getBlockQueue(block)…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>lucene<span class="prnums">#15722→#16156</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev MEDIUM">MEDIUM</span></td><td class="what">OffHeapFloatVectorValues.prefetch (line ~100): loops for(i=0; i&lt;numOrds; i++) reading…</td></tr>
+<tr data-result="HIT" data-lane="performance"><td class="mono nowrap"><span class="repo">apache/</span>iceberg<span class="prnums">#13507→#16695</span></td><td><span class="type-tag">performance</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">Tasks.run() with a non-null service takes runParallel: it submits the single task and then blocks the…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">eclipse/</span>jetty.project<span class="prnums">#14400→#14524</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">ImmutableHttpFields/MutableHttpFields newQuotedCSV/newQuotedQualityCSV overrides call…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">opensearch-project/</span>OpenSearch<span class="prnums">#20921→#21830</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">NonClosingReaderWrapper (FilterDirectoryReader) overrides only doClose() (no-op for the delegate) but…</td></tr>
+<tr data-result="MISS" data-lane="correctness"><td class="mono nowrap"><span class="repo">opensearch-project/</span>OpenSearch<span class="prnums">#21305→#21456</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">C</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">cross-file</span></td><td class="what">The added `listener.onResponse(null)` completes the replica listener with SUCCESS on the closed-primary…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sec-sub" style="margin-top:.75rem;font-size:.82rem;">Grade &mdash; how directly the defect sits on the introducing diff: <b>A</b> a pointable wrong line, <b>B</b> in the added code but subtler, <b>C</b> the wrongness lives in a file the diff doesn't touch. Two candidates were dropped before scoring as mis-attributed by the fix PR (verified byte-identical to their parent) and aren't counted. <a href="mined-pairs.json">Raw data (JSON) &rarr;</a></p>
+    </section>
+
+    <section id="s1">
       <div class="sec-head"><span class="sec-num">01</span><h2>The two-sided result</h2></div>
       <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">A useful reviewer has to do both jobs. Measured separately, on independent code.</p>
       <div class="board">
@@ -322,7 +474,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="s2">
       <div class="sec-head"><span class="sec-num">02</span><h2>Recall — the two reintroduced bugs</h2></div>
       <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">Each finding survived an adversarial verifier told to refute it, before it counted.</p>
 
@@ -351,7 +503,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="s3">
       <div class="sec-head"><span class="sec-num">03</span><h2>Precision — five PRs reviewed as submitted</h2></div>
       <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">Already merged and human-reviewed. The right answer is mostly "looks good" — the test is whether it agrees, quietly.</p>
       <div class="table-scroll">
@@ -401,7 +553,7 @@
       <p class="sec-sub" style="margin-top:1rem;">Across all five, the gating reviewers raised only a handful of findings — <b>every one LOW, every one real, none refuted</b> — plus one pre-existing issue correctly attributed to history, not the diff. <b>Re-running the whole batch reproduced the result: 5&nbsp;/&nbsp;5 LOOKS GOOD and zero false positives again.</b> The exact minor notes shifted between runs — the finders are independent and stochastic — but the verdict did not. The non-gating notes are grounded consistency questions — sentinel <code>0</code> vs <code>-1</code>, a duplicated host:port heuristic, test-naming drift — not bug claims. <span class="repo">(Table shows a representative run.)</span></p>
     </section>
 
-    <section>
+    <section id="s4">
       <div class="sec-head"><span class="sec-num">04</span><h2>The harder setting — four large PRs, reviewed whole</h2></div>
       <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">Beyond the seven above, and not reverse-of-fix: four big PRs from top-tier Apache projects — <b>1,300 to 5,700 lines</b> — reviewed exactly as shipped, nothing planted, by the full <b>eight-finder</b> swarm. Two surfaced real, verified issues the maintainers had merged, with the verifier refuting the weak ones; one high-stakes serializer came back <span class="pill good">LOOKS GOOD</span>; and the largest — <b>5,700 lines</b>, three times the rest — still isolated a single precise, verified concern amid five clean finders. The anti-noise claim under its stiffest test.</p>
 
@@ -454,7 +606,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="s5">
       <div class="sec-head"><span class="sec-num">05</span><h2>How it was measured</h2></div>
       <div class="method">
         <div class="step">
@@ -480,7 +632,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="caveats">
       <div class="caveats">
         <div class="hint">read this before quoting the numbers</div>
         <h2 style="margin-top:.35rem;">What this does &amp; doesn't prove</h2>
@@ -516,7 +668,44 @@
     </footer>
 
   </div>
+ </div>
 </div>
+
+<script>
+(function(){
+  var nav=document.getElementById('sidenav');
+  if(!nav) return;
+  var tog=nav.querySelector('.navtoggle');
+  var links=[].slice.call(nav.querySelectorAll('a[href^="#"]'));
+  var mq=window.matchMedia('(max-width:940px)');
+  if(tog){ tog.addEventListener('click',function(){
+    var open=nav.classList.toggle('open');
+    tog.setAttribute('aria-expanded',open?'true':'false');
+  }); }
+  links.forEach(function(a){ a.addEventListener('click',function(){
+    if(mq.matches){ nav.classList.remove('open'); tog&&tog.setAttribute('aria-expanded','false'); }
+  }); });
+  // scroll-spy: the last section whose top has passed the reading line is current
+  var targets=links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
+  function setActive(id){ links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href')==='#'+id); }); }
+  var raf=0;
+  function spy(){ raf=0; var cur=targets[0]&&targets[0].id;
+    targets.forEach(function(t){ if(t.getBoundingClientRect().top<=140) cur=t.id; });
+    if(cur) setActive(cur); }
+  window.addEventListener('scroll',function(){ if(!raf) raf=requestAnimationFrame(spy); },{passive:true});
+  window.addEventListener('resize',function(){ if(!raf) raf=requestAnimationFrame(spy); });
+  spy();
+  // pairs filter (progressive: without JS all 40 rows show)
+  var body=document.getElementById('pairbody'), count=document.getElementById('rowcount');
+  var fbtns=[].slice.call(document.querySelectorAll('.filters button[data-f]'));
+  function applyFilter(f){ var rows=body?[].slice.call(body.querySelectorAll('tr')):[], shown=0;
+    rows.forEach(function(tr){ var ok=(f==='all'||tr.getAttribute('data-result')===f); tr.classList.toggle('hide',!ok); if(ok)shown++; });
+    if(count) count.textContent=shown+' shown';
+    fbtns.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-f')===f); }); }
+  fbtns.forEach(function(b){ b.addEventListener('click',function(){ applyFilter(b.getAttribute('data-f')); }); });
+  if(fbtns.length) applyFilter('all');
+})();
+</script>
 
 </body>
 </html>
