@@ -680,7 +680,7 @@
       "lane": "performance",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "dismissed as geometric; test-masked",
+      "severity_or_note": "shipped v0.38.5 slice",
       "defect": "ensureCapacity sizes the backing array to EXACTLY `capacity` (the immediate logical need) with no growth headroom on the array itself; the 1.5x term is on the logical length, so for chunked/large appends every append reallocates and re-copi"
     },
     {
@@ -706,7 +706,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "eager-ctor framed as optimization",
+      "severity_or_note": "shipped v0.38.5 slice",
       "defect": "The PointTree is materialized eagerly in the NumericLeafComparator constructor for every comparator x segment x sort field, even when dynamic pruning never activates and the tree is never used \u2014 moving a lazily-paid cost to an unconditional"
     },
     {
