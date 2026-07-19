@@ -914,7 +914,7 @@
       "lane": "security",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "authz check on wrong resource; CVE-2026-9099",
+      "severity_or_note": "shipped v0.38.6 slice",
       "defect": "addChild authorizes requireManage on the PARENT (destination) but performs no manage check on the CHILD being moved. An admin who manages one low-privilege parent group can reparent a highly-privileged group (e.g. realm-admin) under it, inh"
     }
   ],
