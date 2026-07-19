@@ -351,7 +351,7 @@
     <ul>
       <li><a href="#top"><span class="n">·</span> Overview</a></li>
       <li class="grp">Mined pairs</li>
-      <li><a href="#pairs"><span class="n">◆</span> The 40 pairs</a></li>
+      <li><a href="#pairs"><span class="n">◆</span> The 50 pairs</a></li>
       <li><a href="#lanes"><span class="n">·</span> By specialty</a></li>
       <li><a href="#improves"><span class="n">&#9670;</span> How it improves</a></li>
       <li class="grp">Field test</li>
@@ -391,32 +391,32 @@
 
     <section id="pairs">
       <div class="sec-head"><span class="sec-mark">&#9670;</span><h2>Mined regression pairs</h2></div>
-      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.35rem;">Forty pull requests that <b>introduced</b> a bug a maintainer later fixed &mdash; replayed against the introducing PR, exactly as it stood. The world chose these bugs; the projects' own maintainers adjudicated them. Strictly out&#8209;of&#8209;distribution: real code, real defects, ground truth we didn't write.</p>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.35rem;">Fifty pull requests that <b>introduced</b> a bug a maintainer later fixed &mdash; replayed against the introducing PR, exactly as it stood. The world chose these bugs; the projects' own maintainers adjudicated them. Strictly out&#8209;of&#8209;distribution: real code, real defects, ground truth we didn't write.</p>
 
       <div class="headline-stats">
         <div class="hstat good">
-          <span class="num">26 / 40</span>
+          <span class="num">34 / 50</span>
           <span class="lbl">maintainer-fixed regressions caught<br>at the PR that introduced them</span>
         </div>
         <div class="hstat clean">
           <span class="num">0</span>
-          <span class="lbl">fabricated findings<br>across all forty runs</span>
+          <span class="lbl">fabricated findings<br>across all fifty runs</span>
         </div>
       </div>
 
       <h3 id="lanes" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Detection by specialty</h3>
       <p class="sec-sub" style="margin-bottom:.9rem;">Recall isn't uniform, and that's the honest signal: on-surface, pointable regressions are caught reliably; the misses cluster where a bug is emergent or its wrongness lives in a file the diff never changed.</p>
       <div class="lanes">
-<div class="lane"><span class="lane-name">correctness</span><span class="lane-track"><span class="lane-fill" style="width:73%"></span></span><span class="lane-frac mono">16/22</span></div>
-<div class="lane"><span class="lane-name">concurrency</span><span class="lane-track"><span class="lane-fill" style="width:71%"></span></span><span class="lane-frac mono">5/7</span></div>
+<div class="lane"><span class="lane-name">correctness</span><span class="lane-track"><span class="lane-fill" style="width:76%"></span></span><span class="lane-frac mono">19/25</span></div>
+<div class="lane"><span class="lane-name">concurrency</span><span class="lane-track"><span class="lane-fill" style="width:67%"></span></span><span class="lane-frac mono">6/9</span></div>
 <div class="lane"><span class="lane-name">security</span><span class="lane-track"><span class="lane-fill" style="width:75%"></span></span><span class="lane-frac mono">3/4</span></div>
-<div class="lane"><span class="lane-name">data</span><span class="lane-track"><span class="lane-fill" style="width:20%"></span></span><span class="lane-frac mono">1/5</span></div>
-<div class="lane"><span class="lane-name">performance</span><span class="lane-track"><span class="lane-fill" style="width:50%"></span></span><span class="lane-frac mono">1/2</span></div>
+<div class="lane"><span class="lane-name">data</span><span class="lane-track"><span class="lane-fill" style="width:50%"></span></span><span class="lane-frac mono">4/8</span></div>
+<div class="lane"><span class="lane-name">performance</span><span class="lane-track"><span class="lane-fill" style="width:50%"></span></span><span class="lane-frac mono">2/4</span></div>
       </div>
 
       <div class="filters">
         <span class="flabel">Show</span>
-        <button type="button" data-f="all" class="on">All 40</button>
+        <button type="button" data-f="all" class="on">All 50</button>
         <button type="button" data-f="HIT">Hits</button>
         <button type="button" data-f="MISS">Misses</button>
         <span class="rowcount" id="rowcount"></span>
@@ -465,6 +465,16 @@
 <tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">eclipse/</span>jetty.project<span class="prnums">#14400→#14524</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">ImmutableHttpFields/MutableHttpFields newQuotedCSV/newQuotedQualityCSV overrides call…</td></tr>
 <tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">opensearch-project/</span>OpenSearch<span class="prnums">#20921→#21830</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">NonClosingReaderWrapper (FilterDirectoryReader) overrides only doClose() (no-op for the delegate) but…</td></tr>
 <tr data-result="MISS" data-lane="correctness"><td class="mono nowrap"><span class="repo">opensearch-project/</span>OpenSearch<span class="prnums">#21305→#21456</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">C</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">cross-file</span></td><td class="what">The added `listener.onResponse(null)` completes the replica listener with SUCCESS on the closed-primary…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">apache/</span>bookkeeper<span class="prnums">#2701→#4196</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev MEDIUM">MEDIUM</span></td><td class="what">DigestManager.computeDigestAndPackageForSending and ByteBufList.add/prepend compute `final ByteBuf…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">FasterXML/</span>jackson-databind<span class="prnums">#5012→#5099</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">ObjectNode.with(String) create path was rewritten from `_children.put(exprOrProperty, result); return…</td></tr>
+<tr data-result="HIT" data-lane="correctness"><td class="mono nowrap"><span class="repo">FasterXML/</span>jackson-databind<span class="prnums">#4008→#4230</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">The three LIST-returning finders (findValues, findValuesAsText, findParents) were rewritten to…</td></tr>
+<tr data-result="HIT" data-lane="performance"><td class="mono nowrap"><span class="repo">apache/</span>cassandra<span class="prnums">#3641→#4096</span></td><td><span class="type-tag">performance</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">under-rated LOW</span></td><td class="what">parseAndPrepare unconditionally runs `res.pstmntSize = measurePstmnt(res)` (QueryProcessor.java:475),…</td></tr>
+<tr data-result="MISS" data-lane="performance"><td class="mono nowrap"><span class="repo">apache/</span>calcite<span class="prnums">#688→#747</span></td><td><span class="type-tag">performance</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill warn">MISS</span> </td><td class="what">simplifyAndTerms/simplifyOrTerms (RexSimplify.java) loop over every term and for each perform…</td></tr>
+<tr data-result="MISS" data-lane="concurrency"><td class="mono nowrap"><span class="repo">apache/</span>solr<span class="prnums">#3851→#4176</span></td><td><span class="type-tag">concurrency</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill warn">MISS</span> </td><td class="what">triggerCollectionRefresh dedups via collectionRefreshes.computeIfAbsent(key, ...). There is a race…</td></tr>
+<tr data-result="HIT" data-lane="concurrency"><td class="mono nowrap"><span class="repo">apache/</span>solr<span class="prnums">#1501→#3477</span></td><td><span class="type-tag">concurrency</span></td><td class="mono grade">B</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">perSegmentFingerprintCache is a shared field on SolrCore read/written by getIndexFingerprint…</td></tr>
+<tr data-result="HIT" data-lane="data"><td class="mono nowrap"><span class="repo">apache/</span>paimon<span class="prnums">#7175→#8623</span></td><td><span class="type-tag">data</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev HIGH">HIGH</span></td><td class="what">For DecimalType precision &gt; 18, ParquetFilters builds the predicate literal via…</td></tr>
+<tr data-result="HIT" data-lane="data"><td class="mono nowrap"><span class="repo">apache/</span>paimon<span class="prnums">#2572→#7906</span></td><td><span class="type-tag">data</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">under-rated MEDIUM</span></td><td class="what">FieldProductAgg.agg() computes the running product with unchecked arithmetic for…</td></tr>
+<tr data-result="HIT" data-lane="data"><td class="mono nowrap"><span class="repo">debezium/</span>debezium<span class="prnums">#7065→#7606</span></td><td><span class="type-tag">data</span></td><td class="mono grade">A</td><td class="nowrap"><span class="pill good">HIT</span> <span class="sev CRITICAL">CRITICAL</span></td><td class="what">RowIdCodec.encode() loops over all 18 base-64 ROWID chars doing `result = (result &lt;&lt; 6) | value` = 18*6…</td></tr>
           </tbody>
         </table>
       </div>
@@ -744,7 +754,7 @@
   window.addEventListener('scroll',function(){ if(!raf) raf=requestAnimationFrame(spy); },{passive:true});
   window.addEventListener('resize',function(){ if(!raf) raf=requestAnimationFrame(spy); });
   spy();
-  // pairs filter (progressive: without JS all 40 rows show)
+  // pairs filter (progressive: without JS all 50 rows show)
   var body=document.getElementById('pairbody'), count=document.getElementById('rowcount');
   var fbtns=[].slice.call(document.querySelectorAll('.filters button[data-f]'));
   function applyFilter(f){ var rows=body?[].slice.call(body.querySelectorAll('tr')):[], shown=0;
