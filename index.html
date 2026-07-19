@@ -353,6 +353,7 @@
       <li class="grp">Mined pairs</li>
       <li><a href="#pairs"><span class="n">◆</span> The 70 pairs</a></li>
       <li><a href="#lanes"><span class="n">·</span> By specialty</a></li>
+      <li><a href="#surface"><span class="n">·</span> By surface-directness</a></li>
       <li><a href="#improves"><span class="n">&#9670;</span> How it improves</a></li>
       <li class="grp">Field test</li>
       <li><a href="#s1"><span class="n">01</span> Two-sided result</a></li>
@@ -413,6 +414,15 @@
 <div class="lane"><span class="lane-name">data</span><span class="lane-track"><span class="lane-fill" style="width:60%"></span></span><span class="lane-frac mono">6/10</span></div>
 <div class="lane"><span class="lane-name">performance</span><span class="lane-track"><span class="lane-fill" style="width:31%"></span></span><span class="lane-frac mono">4/13</span></div>
       </div>
+
+      <h3 id="surface" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Recall by surface-directness</h3>
+      <p class="sec-sub" style="margin-bottom:.9rem;">Grade is how pointable the introduced bug is on the diff: <b>A</b> a single wrong line, <b>B</b> visible after reading one helper, <b>C</b> cross&#8209;file or subtle. Recall tracks it &mdash; the honest read on the headline: the aggregate drifts down as we deliberately mine <em>harder, subtler</em> pairs, not because detection got worse. The residual hard case is a grade&#8209;A bug whose <em>cost</em> is real but emergent &mdash; a fold, a downstream fast&#8209;path, an uncached branch &mdash; visible only when you model the caller.</p>
+      <div class="lanes">
+<div class="lane"><span class="lane-name">A · pointable line</span><span class="lane-track"><span class="lane-fill" style="width:72%"></span></span><span class="lane-frac mono">23/32</span></div>
+<div class="lane"><span class="lane-name">B · read one helper</span><span class="lane-track"><span class="lane-fill" style="width:59%"></span></span><span class="lane-frac mono">19/32</span></div>
+<div class="lane"><span class="lane-name">C · cross-file / subtle</span><span class="lane-track"><span class="lane-fill" style="width:33%"></span></span><span class="lane-frac mono">2/6</span></div>
+      </div>
+
 
       <div class="filters">
         <span class="flabel">Show</span>
