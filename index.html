@@ -325,6 +325,14 @@
   .rnote { font-family: var(--font-mono); font-size: .64rem; color: var(--muted); }
   tbody tr.hide { display: none; }
   .rowcount { font-family: var(--font-mono); font-size: .72rem; color: var(--muted); margin-left: auto; }
+  .pager { display: flex; flex-wrap: wrap; gap: .45rem; align-items: center; margin: .85rem 0 0; font-family: var(--font-mono); font-size: .72rem; color: var(--muted); }
+  .pager .pg-info { margin-right: .35rem; }
+  .pager button { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .02em; padding: .28rem .65rem; border-radius: 6px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2); cursor: pointer; }
+  .pager button:hover:not(:disabled) { border-color: var(--muted); }
+  .pager button:disabled { opacity: .4; cursor: not-allowed; }
+  .pager button.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); font-weight: 600; }
+  .pager .pg-size { margin-left: .5rem; display: inline-flex; align-items: center; gap: .35rem; }
+  .pager select { font-family: var(--font-mono); font-size: .72rem; padding: .22rem .4rem; border-radius: 6px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2); }
 
   /* ---- capability log: misses that became fixes ---- */
   .uplog { display: grid; gap: .85rem; margin-top: .3rem; }
@@ -811,6 +819,19 @@
 </tbody>
         </table>
       </div>
+      <div class="pager" id="pair-pager" aria-label="Pairs table pagination">
+        <span class="pg-info" id="pg-info"></span>
+        <button type="button" id="pg-prev" aria-label="Previous page">Prev</button>
+        <span id="pg-nums" style="display:inline-flex;flex-wrap:wrap;gap:.3rem;"></span>
+        <button type="button" id="pg-next" aria-label="Next page">Next</button>
+        <label class="pg-size">Per page
+          <select id="pg-size" aria-label="Rows per page">
+            <option value="25" selected>25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </label>
+      </div>
       <p class="sec-sub" style="margin-top:.75rem;font-size:.82rem;">Grade &mdash; how directly the defect sits on the introducing diff: <b>A</b> a pointable wrong line, <b>B</b> in the added code but subtler, <b>C</b> the wrongness lives in a file the diff doesn't touch. Two candidates were dropped before scoring as mis-attributed by the fix PR (verified byte-identical to their parent) and aren't counted. <a href="mined-pairs.json">Raw data (JSON) &rarr;</a></p>
     </section>
 
@@ -1107,15 +1128,68 @@
   window.addEventListener('scroll',function(){ if(!raf) raf=requestAnimationFrame(spy); },{passive:true});
   window.addEventListener('resize',function(){ if(!raf) raf=requestAnimationFrame(spy); });
   spy();
-  // pairs filter (progressive: without JS all 100 rows show)
+  // pairs filter + pagination (without JS all rows still in DOM for progressive enhancement)
   var body=document.getElementById('pairbody'), count=document.getElementById('rowcount');
   var fbtns=[].slice.call(document.querySelectorAll('.filters button[data-f]'));
-  function applyFilter(f){ var rows=body?[].slice.call(body.querySelectorAll('tr')):[], shown=0;
-    rows.forEach(function(tr){ var ok=(f==='all'||tr.getAttribute('data-result')===f); tr.classList.toggle('hide',!ok); if(ok)shown++; });
-    if(count) count.textContent=shown+' shown';
-    fbtns.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-f')===f); }); }
-  fbtns.forEach(function(b){ b.addEventListener('click',function(){ applyFilter(b.getAttribute('data-f')); }); });
-  if(fbtns.length) applyFilter('all');
+  var pgPrev=document.getElementById('pg-prev'), pgNext=document.getElementById('pg-next');
+  var pgInfo=document.getElementById('pg-info'), pgNums=document.getElementById('pg-nums');
+  var pgSizeSel=document.getElementById('pg-size');
+  var state={ filter:'all', page:1, pageSize:25 };
+  function allRows(){ return body?[].slice.call(body.querySelectorAll('tr')):[]; }
+  function matchingRows(){
+    return allRows().filter(function(tr){
+      return state.filter==='all' || tr.getAttribute('data-result')===state.filter;
+    });
+  }
+  function render(){
+    var rows=allRows(), match=matchingRows(), total=match.length;
+    var pages=Math.max(1, Math.ceil(total/state.pageSize));
+    if(state.page>pages) state.page=pages;
+    if(state.page<1) state.page=1;
+    var start=(state.page-1)*state.pageSize, end=start+state.pageSize;
+    var matchSet={};
+    match.forEach(function(tr,i){ matchSet[i]=tr; });
+    // hide non-matching; show only current page of matches
+    var mi=0;
+    rows.forEach(function(tr){
+      var isMatch=(state.filter==='all'||tr.getAttribute('data-result')===state.filter);
+      if(!isMatch){ tr.classList.add('hide'); return; }
+      var onPage=(mi>=start && mi<end);
+      tr.classList.toggle('hide', !onPage);
+      mi++;
+    });
+    var from=total? start+1 : 0, to=Math.min(end, total);
+    if(count) count.textContent=total+' match'+(total===1?'':'es')+' · showing '+from+'\u2013'+to;
+    if(pgInfo) pgInfo.textContent='Page '+state.page+' / '+pages;
+    if(pgPrev) pgPrev.disabled=(state.page<=1);
+    if(pgNext) pgNext.disabled=(state.page>=pages);
+    if(pgNums){
+      pgNums.innerHTML='';
+      // windowed page buttons
+      var win=7, lo=Math.max(1, state.page-Math.floor(win/2)), hi=Math.min(pages, lo+win-1);
+      lo=Math.max(1, hi-win+1);
+      function addBtn(p, label){
+        var b=document.createElement('button');
+        b.type='button'; b.textContent=label||String(p);
+        if(p===state.page) b.className='on';
+        b.addEventListener('click', function(){ state.page=p; render(); });
+        pgNums.appendChild(b);
+      }
+      if(lo>1){ addBtn(1); if(lo>2){ var d=document.createElement('span'); d.textContent='\u2026'; d.style.padding='0 .2rem'; pgNums.appendChild(d);} }
+      for(var p=lo;p<=hi;p++) addBtn(p);
+      if(hi<pages){ if(hi<pages-1){ var d2=document.createElement('span'); d2.textContent='\u2026'; d2.style.padding='0 .2rem'; pgNums.appendChild(d2);} addBtn(pages); }
+    }
+    fbtns.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-f')===state.filter); });
+  }
+  fbtns.forEach(function(b){ b.addEventListener('click',function(){
+    state.filter=b.getAttribute('data-f'); state.page=1; render();
+  }); });
+  if(pgPrev) pgPrev.addEventListener('click', function(){ if(state.page>1){ state.page--; render(); } });
+  if(pgNext) pgNext.addEventListener('click', function(){ state.page++; render(); });
+  if(pgSizeSel) pgSizeSel.addEventListener('change', function(){
+    state.pageSize=parseInt(pgSizeSel.value,10)||25; state.page=1; render();
+  });
+  if(body) render();
 })();
 </script>
 
