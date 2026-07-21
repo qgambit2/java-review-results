@@ -1347,7 +1347,7 @@
       "lane": "concurrency",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "found stuck-INITIALIZING; CLEARED complete-under-lock",
+      "severity_or_note": "shipped v0.38.7 slice",
       "defect": "SharePartition completes CompletableFuture while holding writeLock in whenComplete (deadlock risk)",
       "finder_model": "Grok 4.5"
     },
