@@ -1,11 +1,11 @@
 {
   "campaign": "JRS mined regression-pair recall",
-  "updated_utc": "2026-07-19",
-  "headline": "44/70 maintainer-adjudicated regressions detected at the introducing PR",
-  "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs.",
-  "total": 70,
-  "hits": 44,
-  "misses": 26,
+  "updated_utc": "2026-07-20",
+  "headline": "52/80 maintainer-adjudicated regressions detected at the introducing PR",
+  "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs. Finder model is per-pair (see finder_model field) \u2014 batches 1\u20137 Opus 4.8, batch 8 Grok 4.5 (Grok 4.5 n=10, Opus 4.8 n=70).",
+  "total": 80,
+  "hits": 52,
+  "misses": 28,
   "pairs": [
     {
       "n": 1,
@@ -18,7 +18,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "under-rated LOW",
-      "defect": "PulsarClientImpl.shutdown() closes addressResolver + dnsResolverGroupLocalInstance UNGUARDED; a throw from either (the fix's test simulates AddressResolver.close() throwing 'channel not registered to an event loop', a real Netty shutdown ra"
+      "defect": "PulsarClientImpl.shutdown() closes addressResolver + dnsResolverGroupLocalInstance UNGUARDED; a throw from either (the fix's test simulates AddressResolver.close() throwing 'channel not registered to an event loop', a real Netty shutdown ra",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 2,
@@ -31,7 +32,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "PersistentTopicsBase.internalGetDelayedDeliveryPolicies (introducing tree line 908) builds a DelayedDeliveryPolicies from a persisted TopicPolicies: it calls .maxDeliveryDelayInMillis(policies.getDelayedDeliveryMaxDelayInMillis()) where Top"
+      "defect": "PersistentTopicsBase.internalGetDelayedDeliveryPolicies (introducing tree line 908) builds a DelayedDeliveryPolicies from a persisted TopicPolicies: it calls .maxDeliveryDelayInMillis(policies.getDelayedDeliveryMaxDelayInMillis()) where Top",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 3,
@@ -44,7 +46,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "under-rated LOW",
-      "defect": "In ServerCnx.isTopicOperationAllowed (introducing tree lines 480-482), #24533 replaced a two-part proxy authorization (isProxyAuthorizedFuture on the original principal .thenCombine isAuthorizedFuture on the proxy authRole+authDataSource, r"
+      "defect": "In ServerCnx.isTopicOperationAllowed (introducing tree lines 480-482), #24533 replaced a two-part proxy authorization (isProxyAuthorizedFuture on the original principal .thenCombine isAuthorizedFuture on the proxy authRole+authDataSource, r",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 4,
@@ -57,7 +60,8 @@
       "review_grade": "C",
       "result": "MISS",
       "severity_or_note": "",
-      "defect": "The async-ification in #25352 DELAYS the producer-creation callbacks. When a client-side createProducer times out, the client sends CloseProducer then a RETRY createProducer with the SAME producerId. The fix PR's own race table: 'The delaye"
+      "defect": "The async-ification in #25352 DELAYS the producer-creation callbacks. When a client-side createProducer times out, the client sends CloseProducer then a RETRY createProducer with the SAME producerId. The fix PR's own race table: 'The delaye",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 5,
@@ -70,7 +74,8 @@
       "review_grade": "C",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "#12709 removed the generic post-encode release that MessageToMessageEncoder.write() provided. HttpClientCodec.Encoder.encode (UNCHANGED file, HttpClientCodec.java:194) still does out.add(ReferenceCountUtil.retain(msg)); return; in its `upgr"
+      "defect": "#12709 removed the generic post-encode release that MessageToMessageEncoder.write() provided. HttpClientCodec.Encoder.encode (UNCHANGED file, HttpClientCodec.java:194) still does out.add(ReferenceCountUtil.retain(msg)); return; in its `upgr",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 6,
@@ -83,7 +88,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "ConcurrentRoaringBitSet's read methods (get, nextSetBit, ...) use rwLock.tryOptimisticRead() and call super.<read>() on the RoaringBitmap with NO lock held, concurrently with a writer holding writeLock. This optimistic-read pattern is safe "
+      "defect": "ConcurrentRoaringBitSet's read methods (get, nextSetBit, ...) use rwLock.tryOptimisticRead() and call super.<read>() on the RoaringBitmap with NO lock held, concurrently with a writer holding writeLock. This optimistic-read pattern is safe ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 7,
@@ -96,7 +102,8 @@
       "review_grade": "C",
       "result": "MISS",
       "severity_or_note": "off-target (found deeper)",
-      "defect": "THE RECALL TARGET (what #26080 fixed): nextDeliveryTime() falls through to lastMutableBucket.nextDeliveryTime()/sharedBucketPriorityQueue.peekN1() when both queues are empty (which #25984's trimming can produce while numberDelayedMessages>0"
+      "defect": "THE RECALL TARGET (what #26080 fixed): nextDeliveryTime() falls through to lastMutableBucket.nextDeliveryTime()/sharedBucketPriorityQueue.peekN1() when both queues are empty (which #25984's trimming can produce while numberDelayedMessages>0",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 8,
@@ -109,7 +116,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "MEDIUM",
-      "defect": "#25087 replaced an in-memory-only cursor-tracking reset with a real cursor.asyncMarkDelete(lastAckedPosition, cursor.getProperties(), ...) \u2014 but lastAckedPosition is derived from getPersistentMarkDeletedPosition() (which routinely LAGS the "
+      "defect": "#25087 replaced an in-memory-only cursor-tracking reset with a real cursor.asyncMarkDelete(lastAckedPosition, cursor.getProperties(), ...) \u2014 but lastAckedPosition is derived from getPersistentMarkDeletedPosition() (which routinely LAGS the ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 9,
@@ -122,7 +130,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "CRITICAL",
-      "defect": "The added AdaptiveByteBuf.setCharSequence override guards with checkIndex(index, sequence.length()) \u2014 a CHAR count \u2014 then delegates the write to rootParent().setCharSequence(idx(index), ...), where the byte-length bounds check runs against "
+      "defect": "The added AdaptiveByteBuf.setCharSequence override guards with checkIndex(index, sequence.length()) \u2014 a CHAR count \u2014 then delegates the write to rootParent().setCharSequence(idx(index), ...), where the byte-length bounds check runs against ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 10,
@@ -135,7 +144,8 @@
       "review_grade": "A",
       "result": "MISS",
       "severity_or_note": "target miss; defect-level hit #21126",
-      "defect": "#20990's added conditional runs removePendingAcks (whose unblock check reads the unacked count) BEFORE addAndGetUnAckedMsgs decrements it, and gates the decrement on its return; with maxUnackedMessagesPerConsumer=1 the consumer stays blocke"
+      "defect": "#20990's added conditional runs removePendingAcks (whose unblock check reads the unacked count) BEFORE addAndGetUnAckedMsgs decrements it, and gates the decrement on its return; with maxUnackedMessagesPerConsumer=1 the consumer stays blocke",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 11,
@@ -148,7 +158,8 @@
       "review_grade": "A",
       "result": "MISS",
       "severity_or_note": "",
-      "defect": "#22411 MOVED the optimistic-concurrency version snapshot 'final Stat lastCursorLedgerStat = this.cursorLedgerStat' from BEFORE updateFunction.apply(cursorProperties) to AFTER building the update copy (just before asyncUpdateCursorInfo). In "
+      "defect": "#22411 MOVED the optimistic-concurrency version snapshot 'final Stat lastCursorLedgerStat = this.cursorLedgerStat' from BEFORE updateFunction.apply(cursorProperties) to AFTER building the update copy (just before asyncUpdateCursorInfo). In ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 12,
@@ -161,7 +172,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "",
-      "defect": "addFlattenedComponents does 'final CompositeByteBuf from = (CompositeByteBuf) buffer;' and reads from's internal components. A WrappedCompositeByteBuf IS-A CompositeByteBuf (cast succeeds) but is a delegating wrapper whose own component arr"
+      "defect": "addFlattenedComponents does 'final CompositeByteBuf from = (CompositeByteBuf) buffer;' and reads from's internal components. A WrappedCompositeByteBuf IS-A CompositeByteBuf (cast succeeds) but is a delegating wrapper whose own component arr",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 13,
@@ -174,7 +186,8 @@
       "review_grade": "A",
       "result": "MISS",
       "severity_or_note": "weak target",
-      "defect": "#17007's cached(String) does TWO passes over the input: (1) new AsciiString(string) internally converts every char to a byte (a full scan), then (2) an added explicit for-loop scans the whole string again to detect any char > MAX_CHAR_VALUE"
+      "defect": "#17007's cached(String) does TWO passes over the input: (1) new AsciiString(string) internally converts every char to a byte (a full scan), then (2) an added explicit for-loop scans the whole string again to detect any char > MAX_CHAR_VALUE",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 14,
@@ -187,7 +200,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "",
-      "defect": "With allow_duplicates:false, appending a value that is already present (a no-op de-dup) still UPCASTS the existing scalar field into a single-element list, even though nothing changed. Correct behavior: leave the field as a scalar when the "
+      "defect": "With allow_duplicates:false, appending a value that is already present (a no-op de-dup) still UPCASTS the existing scalar field into a single-element list, even though nothing changed. Correct behavior: leave the field as a scalar when the ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 15,
@@ -200,7 +214,8 @@
       "review_grade": "C",
       "result": "MISS",
       "severity_or_note": "near",
-      "defect": "convertFrom() drops configuration data: it builds a NEW empty Properties from unknown DECLARED FIELDS only and never copies the source config's own getProperties() bag (properties loaded from the .conf file / set at runtime that are not dec"
+      "defect": "convertFrom() drops configuration data: it builds a NEW empty Properties from unknown DECLARED FIELDS only and never copies the source config's own getProperties() bag (properties loaded from the .conf file / set at runtime that are not dec",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 16,
@@ -213,7 +228,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "under-rated LOW",
-      "defect": "The hand-rolled Deflater loop + gzip framing in GzipByteBufferWriter mishandles buffer-full / finish boundaries: BufferOverflowException (the compressed output / 8-byte footer overruns the current buffer when the deflate output spans buffer"
+      "defect": "The hand-rolled Deflater loop + gzip framing in GzipByteBufferWriter mishandles buffer-full / finish boundaries: BufferOverflowException (the compressed output / 8-byte footer overruns the current buffer when the deflate output spans buffer",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 17,
@@ -226,7 +242,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "getValue() guards the get() path with a REFERENCE comparison `if (valueWrapper.getKey() != key) return null;` (line 214). Correct for the getRange/removeEntry callers (they pass the map's own stored key reference) but WRONG for get(Key), wh"
+      "defect": "getValue() guards the get() path with a REFERENCE comparison `if (valueWrapper.getKey() != key) return null;` (line 214). Correct for the getRange/removeEntry callers (they pass the map's own stored key reference) but WRONG for get(Key), wh",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 18,
@@ -239,7 +256,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "#20158's parse paths call ledgerEntry.getEntryBuffer() (returns the pooled direct ByteBuf, transfers no ownership) but never release() it, unlike the prior getEntry() which copied+released. A pooled direct-memory ByteBuf leaks on every snap"
+      "defect": "#20158's parse paths call ledgerEntry.getEntryBuffer() (returns the pooled direct ByteBuf, transfers no ownership) but never release() it, unlike the prior getEntry() which copied+released. A pooled direct-memory ByteBuf leaks on every snap",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 19,
@@ -252,7 +270,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "MEDIUM",
-      "defect": "Math.clamp(value, min, max) requires min <= max; here min=4096, max=n, so when the vector count n < 4096 it throws IllegalArgumentException. The old Math.min(n, Math.max(...)) returned n in that case (capping the sample at corpus size). Rea"
+      "defect": "Math.clamp(value, min, max) requires min <= max; here min=4096, max=n, so when the vector count n < 4096 it throws IllegalArgumentException. The old Math.min(n, Math.max(...)) returned n in that case (capping the sample at corpus size). Rea",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 20,
@@ -265,7 +284,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "Reflecting BC SSLEngine ALPN methods against engine.getClass() (BouncyCastle's package-private impl, e.g. ProvSSLEngine) instead of the public BCSSLEngine interface: Method.invoke on a public method whose declaring class is non-public throw"
+      "defect": "Reflecting BC SSLEngine ALPN methods against engine.getClass() (BouncyCastle's package-private impl, e.g. ProvSSLEngine) instead of the public BCSSLEngine interface: Method.invoke on a public method whose declaring class is non-public throw",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 21,
@@ -278,7 +298,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "SinkQuerySegmentWalker.java line ~538: switch(metricName) over three cases has NO break statements => fall-through. The outer loop binds reportMetric.getValue() to one consumer per metricName; each consumer does metrics.put(name, value) (la"
+      "defect": "SinkQuerySegmentWalker.java line ~538: switch(metricName) over three cases has NO break statements => fall-through. The outer loop binds reportMetric.getValue() to one consumer per metricName; each consumer does metrics.put(name, value) (la",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 22,
@@ -291,7 +312,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "The added validateNamespacePolicyOperation(...) is NOT equivalent to validateSuperUserAccess(): under the shipped default PulsarAuthorizationProvider it resolves to validateTenantAdminAccess(tenant), so any authenticated tenant admin now pa"
+      "defect": "The added validateNamespacePolicyOperation(...) is NOT equivalent to validateSuperUserAccess(): under the shipped default PulsarAuthorizationProvider it resolves to validateTenantAdminAccess(tenant), so any authenticated tenant admin now pa",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 23,
@@ -304,7 +326,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "The live IndexService MapperService and the cluster-state IndexMetadata are updated NON-ATOMICALLY as cluster state is applied. The validation thread reads the live DocumentMapper while validating a (possibly different-version) IndexMetadat"
+      "defect": "The live IndexService MapperService and the cluster-state IndexMetadata are updated NON-ATOMICALLY as cluster state is applied. The validation thread reads the live DocumentMapper while validating a (possibly different-version) IndexMetadat",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 24,
@@ -317,7 +340,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "DefaultTokenStateManager.java:84 appends the raw space-delimited access-token scope into the session cookie value, but the read path decodes it (base64UrlDecode), so under the supported token-state-manager.encryption-required=false a scope "
+      "defect": "DefaultTokenStateManager.java:84 appends the raw space-delimited access-token scope into the session cookie value, but the read path decodes it (base64UrlDecode), so under the supported token-state-manager.encryption-required=false a scope ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 25,
@@ -330,7 +354,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "ConversionService.SHARED is a static final JVM-global shared by every bean context. reset() clears+rebuilds it on every context start/stop; in a multi-context JVM one context's shutdown wipes converters (incl. @PostConstruct-registered Nett"
+      "defect": "ConversionService.SHARED is a static final JVM-global shared by every bean context. reset() clears+rebuilds it on every context start/stop; in a multi-context JVM one context's shutdown wipes converters (incl. @PostConstruct-registered Nett",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 26,
@@ -343,7 +368,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "getProjectedIds() omits list/map CONTAINER field IDs (only element/key/value IDs are added), whereas indexById() records every field ID. So allUsedFieldIds() under-reports used IDs; reassignConflictingIds walks candidate IDs from 1 and can "
+      "defect": "getProjectedIds() omits list/map CONTAINER field IDs (only element/key/value IDs are added), whereas indexById() records every field ID. So allUsedFieldIds() under-reports used IDs; reassignConflictingIds walks candidate IDs from 1 and can ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 27,
@@ -356,7 +382,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "CRITICAL",
-      "defect": "workerExec is reused as the RPC connectExec. ServiceClientImpl completes response/service-location futures on connectExec, while verifyAndMergeCheckpoints submits per-task-group work to workerExec and then blocks that worker thread in coale"
+      "defect": "workerExec is reused as the RPC connectExec. ServiceClientImpl completes response/service-location futures on connectExec, while verifyAndMergeCheckpoints submits per-task-group work to workerExec and then blocks that worker thread in coale",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 28,
@@ -369,7 +396,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "",
-      "defect": "HbckChore.java:226 -- relying on the in-memory RegionState alone. RegionState.isSplit() == (state == State.SPLIT); after a master restart/failover the in-memory assignment state resets (split parents load as CLOSED, not SPLIT), so isSplit()"
+      "defect": "HbckChore.java:226 -- relying on the in-memory RegionState alone. RegionState.isSplit() == (state == State.SPLIT); after a master restart/failover the in-memory assignment state resets (split parents load as CLOSED, not SPLIT), so isSplit()",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 29,
@@ -382,7 +410,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "",
-      "defect": "RDBStore.close() calls flushDB() unconditionally, but the store can be opened READ-ONLY; flushing a read-only RocksDB handle is illegal and throws (caught+logged as WARN, so the observable effect is a spurious error on every read-only store"
+      "defect": "RDBStore.close() calls flushDB() unconditionally, but the store can be opened READ-ONLY; flushing a read-only RocksDB handle is illegal and throws (caught+logged as WARN, so the observable effect is a spurious error on every read-only store",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 30,
@@ -395,7 +424,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "",
-      "defect": "The new OneToOneType.isDirty is correct for simple ids but throws IllegalArgumentException for a one-to-one whose target uses an @EmbeddedId (composite id): the identifier-type comparison on the embedded component with a null/other old valu"
+      "defect": "The new OneToOneType.isDirty is correct for simple ids but throws IllegalArgumentException for a one-to-one whose target uses an @EmbeddedId (composite id): the identifier-type comparison on the embedded component with a null/other old valu",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 31,
@@ -408,7 +438,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "connect/runtime/.../rest/util/SSLUtils.java configureSslContextFactoryAlgorithms: the removed `if (sslCipherSuites != null)` guard (now `if (!sslCipherSuites.isEmpty())`) dereferences sslConfigValues.get(SSL_CIPHER_SUITES_CONFIG), which is "
+      "defect": "connect/runtime/.../rest/util/SSLUtils.java configureSslContextFactoryAlgorithms: the removed `if (sslCipherSuites != null)` guard (now `if (!sslCipherSuites.isEmpty())`) dereferences sslConfigValues.get(SSL_CIPHER_SUITES_CONFIG), which is ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 32,
@@ -421,7 +452,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "shipped v0.38.4 slice",
-      "defect": "NettyConverter.java + the DEFAULT_DESERIALIZATION_FILTER constant = \"java.**;javax.**;org.apache.camel.**;!*\". The recursive java.** allow admits java.net.URL / java.net.InetAddress (and other network-I/O types) as deserialization gadgets w"
+      "defect": "NettyConverter.java + the DEFAULT_DESERIALIZATION_FILTER constant = \"java.**;javax.**;org.apache.camel.**;!*\". The recursive java.** allow admits java.net.URL / java.net.InetAddress (and other network-I/O types) as deserialization gadgets w",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 33,
@@ -434,7 +466,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "",
-      "defect": "SerializableTable.java new sortOrders(): `sortOrderAsJsonMap.forEach((id, json) -> sortOrders.put(id, SortOrderParser.fromJson(schema(), json)))`. fromJson(schema, json) does fromJson(json).bind(schema); binding a HISTORICAL sort order that"
+      "defect": "SerializableTable.java new sortOrders(): `sortOrderAsJsonMap.forEach((id, json) -> sortOrders.put(id, SortOrderParser.fromJson(schema(), json)))`. fromJson(schema, json) does fromJson(json).bind(schema); binding a HISTORICAL sort order that",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 34,
@@ -447,7 +480,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "LocalInputChannel.checkpointStarted() was changed from startPersisting(id, Collections.emptyList()) to eagerly persisting all recovered toBeConsumedBuffers. Because local channels ALSO persist on consumption (getBufferAndAvailability -> may"
+      "defect": "LocalInputChannel.checkpointStarted() was changed from startPersisting(id, Collections.emptyList()) to eagerly persisting all recovered toBeConsumedBuffers. Because local channels ALSO persist on consumption (getBufferAndAvailability -> may",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 35,
@@ -460,7 +494,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "PendingDataNodeMessages.removeQueuedBlock() (line ~111-133) obtains its queue via getBlockQueue(block) (lines 120/122), and getBlockQueue lazily allocates + inserts an empty LinkedList into the persistent queueByBlockId for any absent block"
+      "defect": "PendingDataNodeMessages.removeQueuedBlock() (line ~111-133) obtains its queue via getBlockQueue(block) (lines 120/122), and getBlockQueue lazily allocates + inserts an empty LinkedList into the persistent queueByBlockId for any absent block",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 36,
@@ -473,7 +508,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "MEDIUM",
-      "defect": "OffHeapFloatVectorValues.prefetch (line ~100): loops for(i=0; i<numOrds; i++) reading ordsToPrefetch[i], using the unbounded numOrds instead of the computed clamp finalNumOrds=Math.min(numOrds, ordsToPrefetch.length) -> AIOOBE when numOrds "
+      "defect": "OffHeapFloatVectorValues.prefetch (line ~100): loops for(i=0; i<numOrds; i++) reading ordsToPrefetch[i], using the unbounded numOrds instead of the computed clamp finalNumOrds=Math.min(numOrds, ordsToPrefetch.length) -> AIOOBE when numOrds ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 37,
@@ -486,7 +522,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "Tasks.run() with a non-null service takes runParallel: it submits the single task and then blocks the caller in waitFor(futures), which busy-polls Thread.sleep(10) until completion. So report() still blocks the caller for the full HTTP POST"
+      "defect": "Tasks.run() with a non-null service takes runParallel: it submits the single task and then blocks the caller in waitFor(futures), which busy-polls Thread.sleep(10) until completion. So report() still blocks the caller for the full HTTP POST",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 38,
@@ -499,7 +536,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "ImmutableHttpFields/MutableHttpFields newQuotedCSV/newQuotedQualityCSV overrides call _listenerSupplier.get() with no null guard. _listenerSupplier is null for instances from the public HttpFields.from(HttpField...) factory (2-arg ctor dele"
+      "defect": "ImmutableHttpFields/MutableHttpFields newQuotedCSV/newQuotedQualityCSV overrides call _listenerSupplier.get() with no null guard. _listenerSupplier is null for instances from the public HttpFields.from(HttpField...) factory (2-arg ctor dele",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 39,
@@ -512,7 +550,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "NonClosingReaderWrapper (FilterDirectoryReader) overrides only doClose() (no-op for the delegate) but not close(), so the base close() still sets closed=true. Caching + sharing one instance across searchers means that once one wrapped searc"
+      "defect": "NonClosingReaderWrapper (FilterDirectoryReader) overrides only doClose() (no-op for the delegate) but not close(), so the base close() still sets closed=true. Caching + sharing one instance across searchers means that once one wrapped searc",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 40,
@@ -525,7 +564,8 @@
       "review_grade": "C",
       "result": "MISS",
       "severity_or_note": "cross-file",
-      "defect": "The added `listener.onResponse(null)` completes the replica listener with SUCCESS on the closed-primary path. ReplicationOperation counts that as successful=1, failures=[], so the overall write is acknowledged to the client -- but the stale"
+      "defect": "The added `listener.onResponse(null)` completes the replica listener with SUCCESS on the closed-primary path. ReplicationOperation counts that as successful=1, failures=[], so the overall write is acknowledged to the client -- but the stale",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 41,
@@ -538,7 +578,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "MEDIUM",
-      "defect": "DigestManager.computeDigestAndPackageForSending and ByteBufList.add/prepend compute `final ByteBuf unwrapped = data.unwrap() != null && data.unwrap() instanceof CompositeByteBuf ? data.unwrap() : data;` then digest/store the unwrapped buffe"
+      "defect": "DigestManager.computeDigestAndPackageForSending and ByteBufList.add/prepend compute `final ByteBuf unwrapped = data.unwrap() != null && data.unwrap() instanceof CompositeByteBuf ? data.unwrap() : data;` then digest/store the unwrapped buffe",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 42,
@@ -551,7 +592,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "ObjectNode.with(String) create path was rewritten from `_children.put(exprOrProperty, result); return result;` to `return _put(exprOrProperty, result);`. But _put returns `this` (the parent ObjectNode), not the value it stored. So on the pr"
+      "defect": "ObjectNode.with(String) create path was rewritten from `_children.put(exprOrProperty, result); return result;` to `return _put(exprOrProperty, result);`. But _put returns `this` (the parent ObjectNode), not the value it stored. So on the pr",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 43,
@@ -564,7 +606,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "The three LIST-returning finders (findValues, findValuesAsText, findParents) were rewritten to `_children.get(propertyName)` and, on a direct hit, add the match and `return foundSoFar;` immediately -- never recursing into the node's OTHER c"
+      "defect": "The three LIST-returning finders (findValues, findValuesAsText, findParents) were rewritten to `_children.get(propertyName)` and, on a direct hit, add the match and `return foundSoFar;` immediately -- never recursing into the node's OTHER c",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 44,
@@ -577,7 +620,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "under-rated LOW",
-      "defect": "parseAndPrepare unconditionally runs `res.pstmntSize = measurePstmnt(res)` (QueryProcessor.java:475), where measurePstmnt is ObjectSizes.measureDeep -- an expensive deep object-graph walk. Unprepared batches route through parseAndPrepare on"
+      "defect": "parseAndPrepare unconditionally runs `res.pstmntSize = measurePstmnt(res)` (QueryProcessor.java:475), where measurePstmnt is ObjectSizes.measureDeep -- an expensive deep object-graph walk. Unprepared batches route through parseAndPrepare on",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 45,
@@ -590,7 +634,8 @@
       "review_grade": "A",
       "result": "MISS",
       "severity_or_note": "",
-      "defect": "simplifyAndTerms/simplifyOrTerms (RexSimplify.java) loop over every term and for each perform simplify.predicates.union(...) + withPredicates(...) -- repeated predicate-list unions/rebuilds per term, ~O(n^2) in term count, which drives RelM"
+      "defect": "simplifyAndTerms/simplifyOrTerms (RexSimplify.java) loop over every term and for each perform simplify.predicates.union(...) + withPredicates(...) -- repeated predicate-list unions/rebuilds per term, ~O(n^2) in term count, which drives RelM",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 46,
@@ -603,7 +648,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "",
-      "defect": "triggerCollectionRefresh dedups via collectionRefreshes.computeIfAbsent(key, ...). There is a race window between a refresh future COMPLETING and its whenCompleteAsync callback REMOVING it from the map. A second triggerCollectionRefresh in "
+      "defect": "triggerCollectionRefresh dedups via collectionRefreshes.computeIfAbsent(key, ...). There is a race window between a refresh future COMPLETING and its whenCompleteAsync callback REMOVING it from the map. A second triggerCollectionRefresh in ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 47,
@@ -616,7 +662,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "perSegmentFingerprintCache is a shared field on SolrCore read/written by getIndexFingerprint (get/put/size) on concurrent distributed-search/peersync threads. Guava's MapMaker().makeMap() is a thread-safe ConcurrentMap; the replacement plai"
+      "defect": "perSegmentFingerprintCache is a shared field on SolrCore read/written by getIndexFingerprint (get/put/size) on concurrent distributed-search/peersync threads. Guava's MapMaker().makeMap() is a thread-safe ConcurrentMap; the replacement plai",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 48,
@@ -629,7 +676,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "For DecimalType precision > 18, ParquetFilters builds the predicate literal via Binary.fromConstantByteArray(decimal.toUnscaledBytes()) -- the MINIMAL-length two's-complement bytes -- but the writer (ParquetRowDataWriter.UnscaledBytesWriter"
+      "defect": "For DecimalType precision > 18, ParquetFilters builds the predicate literal via Binary.fromConstantByteArray(decimal.toUnscaledBytes()) -- the MINIMAL-length two's-complement bytes -- but the writer (ParquetRowDataWriter.UnscaledBytesWriter",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 49,
@@ -642,7 +690,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "under-rated MEDIUM",
-      "defect": "FieldProductAgg.agg() computes the running product with unchecked arithmetic for TINYINT/SMALLINT/INTEGER/BIGINT (e.g. `(int) accumulator * (int) inputField`). A product accumulated across rows overflows the type range and silently WRAPS to"
+      "defect": "FieldProductAgg.agg() computes the running product with unchecked arithmetic for TINYINT/SMALLINT/INTEGER/BIGINT (e.g. `(int) accumulator * (int) inputField`). A product accumulated across rows overflows the type range and silently WRAPS to",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 50,
@@ -655,7 +704,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "CRITICAL",
-      "defect": "RowIdCodec.encode() loops over all 18 base-64 ROWID chars doing `result = (result << 6) | value` = 18*6 = 108 bits into a 64-bit long, so the high 44 bits (the object#/file# portion of an extended ROWID) are silently dropped; decode() refil"
+      "defect": "RowIdCodec.encode() loops over all 18 base-64 ROWID chars doing `result = (result << 6) | value` = 18*6 = 108 bits into a 64-bit long, so the high 44 bits (the object#/file# portion of an extended ROWID) are silently dropped; decode() refil",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 51,
@@ -668,7 +718,8 @@
       "review_grade": "A",
       "result": "MISS",
       "severity_or_note": "evidence-bar suppressed as constant-factor",
-      "defect": "tierNodesPresent replaced an explicit `for (DiscoveryNode n : nodes) if (allocationAllowed(...)) return true;` loop with `return nodes.stream().anyMatch(...)`, allocating a Spliterator/Stream pipeline + lambda per call on a per-shard alloca"
+      "defect": "tierNodesPresent replaced an explicit `for (DiscoveryNode n : nodes) if (allocationAllowed(...)) return true;` loop with `return nodes.stream().anyMatch(...)`, allocating a Spliterator/Stream pipeline + lambda per call on a per-shard alloca",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 52,
@@ -681,7 +732,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "shipped v0.38.5 slice",
-      "defect": "ensureCapacity sizes the backing array to EXACTLY `capacity` (the immediate logical need) with no growth headroom on the array itself; the 1.5x term is on the logical length, so for chunked/large appends every append reallocates and re-copi"
+      "defect": "ensureCapacity sizes the backing array to EXACTLY `capacity` (the immediate logical need) with no growth headroom on the array itself; the 1.5x term is on the logical length, so for chunked/large appends every append reallocates and re-copi",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 53,
@@ -694,7 +746,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH (data+corr caught; perf lane missed WAL drop)",
-      "defect": "DirectDBAccessor.put/delete/deleteRange use the WriteOptions-less RocksDB overloads, so RocksDB's default WriteOptions (WAL ENABLED) applies to every single-record state-store write; Kafka Streams deliberately disables the WAL (durability v"
+      "defect": "DirectDBAccessor.put/delete/deleteRange use the WriteOptions-less RocksDB overloads, so RocksDB's default WriteOptions (WAL ENABLED) applies to every single-record state-store write; Kafka Streams deliberately disables the WAL (durability v",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 54,
@@ -707,7 +760,8 @@
       "review_grade": "A",
       "result": "MISS",
       "severity_or_note": "shipped v0.38.5 slice",
-      "defect": "The PointTree is materialized eagerly in the NumericLeafComparator constructor for every comparator x segment x sort field, even when dynamic pruning never activates and the tree is never used \u2014 moving a lazily-paid cost to an unconditional"
+      "defect": "The PointTree is materialized eagerly in the NumericLeafComparator constructor for every comparator x segment x sort field, even when dynamic pruning never activates and the tree is never used \u2014 moving a lazily-paid cost to an unconditional",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 55,
@@ -720,7 +774,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "SSLEngine.getSSLParameters() returns a defensive COPY; mutating it and discarding it is a no-op, so for SslProvider.JDK the newly-defaulted hostname (endpoint) verification is never applied and clients stay open to certificate MITM despite "
+      "defect": "SSLEngine.getSSLParameters() returns a defensive COPY; mutating it and discarding it is a no-op, so for SslProvider.JDK the newly-defaulted hostname (endpoint) verification is never applied and clients stay open to certificate MITM despite ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 56,
@@ -733,7 +788,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "Dropping scheme from the same-authority check means an https->http downgrade to the same host and coinciding effective port is treated as same-origin, so the redirect header-strip is skipped and Authorization/Cookie are forwarded over clear"
+      "defect": "Dropping scheme from the same-authority check means an https->http downgrade to the same host and coinciding effective port is treated as same-origin, so the redirect header-strip is skipped and Authorization/Cookie are forwarded over clear",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 57,
@@ -746,7 +802,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "CRITICAL",
-      "defect": "handleCommandScalableTopicSubscribe registers a consumer and handleCommandScalableTopicLookup resolves DAG/broker topology with NO authorization check (only connection-level auth), while handleLookup/handleSubscribe/handleProducer all gate "
+      "defect": "handleCommandScalableTopicSubscribe registers a consumer and handleCommandScalableTopicLookup resolves DAG/broker topology with NO authorization check (only connection-level auth), while handleLookup/handleSubscribe/handleProducer all gate ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 58,
@@ -759,7 +816,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "CRITICAL",
-      "defect": "Arrays.compare(byte[]...) compares elements SIGNED (Byte.compare), but the old code and the Avro spec require UNSIGNED (0..255) lexicographic order. Any byte >= 0x80 (all non-ASCII UTF-8, most binary payloads) now sorts BEFORE 0x00-0x7F \u2014 i"
+      "defect": "Arrays.compare(byte[]...) compares elements SIGNED (Byte.compare), but the old code and the Avro spec require UNSIGNED (0..255) lexicographic order. Any byte >= 0x80 (all non-ASCII UTF-8, most binary payloads) now sorts BEFORE 0x00-0x7F \u2014 i",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 59,
@@ -772,7 +830,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "HIGH",
-      "defect": "parseName treats '.' as a nested-field separator and interprets backtick-quoting, but the writer stores names verbatim -> read/write asymmetry. A stored column named 'col.dot' is silently truncated to 'col' (wrong schema, unfindable column "
+      "defect": "parseName treats '.' as a nested-field separator and interprets backtick-quoting, but the writer stores names verbatim -> read/write asymmetry. A stored column named 'col.dot' is silently truncated to 'col' (wrong schema, unfindable column ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 60,
@@ -785,7 +844,8 @@
       "review_grade": "C",
       "result": "HIT",
       "severity_or_note": "MEDIUM (grade-C on-family)",
-      "defect": "The reader-close (AlreadyClosedException) branch in readMorePoliciesAsync stayed on the namespace-keyed cleanup (not identity-guarded), so a superseded reader R1's late async close (on the pulsar-client executor, not the per-namespace order"
+      "defect": "The reader-close (AlreadyClosedException) branch in readMorePoliciesAsync stayed on the namespace-keyed cleanup (not identity-guarded), so a superseded reader R1's late async close (on the pulsar-client executor, not the per-namespace order",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 61,
@@ -798,7 +858,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "leadCost overwrite buried in a 27-file refactor",
-      "defect": "For a conjunction, leadCost must be the min cost() over ALL required clauses (MUST+FILTER) since iteration is led by the cheapest DISI. The intro overwrites the MUST-min with the FILTER-min whenever any FILTER clause exists, discarding a sm"
+      "defect": "For a conjunction, leadCost must be the min cost() over ALL required clauses (MUST+FILTER) since iteration is led by the cheapest DISI. The intro overwrites the MUST-min with the FILTER-min whenever any FILTER clause exists, discarding a sm",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 62,
@@ -811,7 +872,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "HIGH (O(n^2) LinkedList.contains hot loop)",
-      "defect": "scheduleRequestIfNecessary() runs on hot paths (pollPage() per page consumed, requestComplete() per HTTP response). The added filter does queuedClients.contains(client) on a LinkedList (O(Q)) for each of N allClients entries -> O(N*Q) ~ O(N"
+      "defect": "scheduleRequestIfNecessary() runs on hot paths (pollPage() per page consumed, requestComplete() per HTTP response). The added filter does queuedClients.contains(client) on a LinkedList (O(Q)) for each of N allClients entries -> O(N*Q) ~ O(N",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 63,
@@ -824,7 +886,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "second-order: reorder defeats ConciseSet.add fast-path",
-      "defect": "ConciseSet.add() has a fast append path taken only when the added element is greater than the current last. OR-ing the null-rows bitmap in FIRST pushes last to the maximum row id, so every subsequent bitset.add(row) misses the append fast-p"
+      "defect": "ConciseSet.add() has a fast append path taken only when the added element is greater than the current last. OR-ing the null-rows bitmap in FIRST pushes last to the maximum row id, so every subsequent bitset.add(row) misses the append fast-p",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 64,
@@ -837,7 +900,8 @@
       "review_grade": "A",
       "result": "MISS",
       "severity_or_note": "fold-quadratic immutable rebuild; perf near-miss (adjacent MEDIUM)",
-      "defect": "FilterStatsCalculator folds a large IN (...) list via reduce(), one addDisjunction per element. Because the histogram is immutable, each addDisjunction rebuilds the internal TreeRangeSet from scratch over the growing range set (1,2,...,N) -"
+      "defect": "FilterStatsCalculator folds a large IN (...) list via reduce(), one addDisjunction per element. Because the histogram is immutable, each addDisjunction rebuilds the internal TreeRangeSet from scratch over the growing range set (1,2,...,N) -",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 65,
@@ -850,7 +914,8 @@
       "review_grade": "A",
       "result": "MISS",
       "severity_or_note": "assumed-cache: missed uncached 3.0/3.11 isSuper disk read",
-      "defect": "On 3.0/3.11 (no role-metadata cache), user.isSuper() reads from disk. The new guard evaluates isSuper() on EVERY DataResource authorization check (unconditional hot path), so every authz call now hits disk. The permissions_validity cache co"
+      "defect": "On 3.0/3.11 (no role-metadata cache), user.isSuper() reads from disk. The new guard evaluates isSuper() on EVERY DataResource authorization check (unconditional hot path), so every authz call now hits disk. The permissions_validity cache co",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 66,
@@ -863,7 +928,8 @@
       "review_grade": "A",
       "result": "MISS",
       "severity_or_note": "BORDERLINE: cleared the cross-thread clobber; 2/3 convergent adjacent",
-      "defect": "Cross-thread clobber: an exiting/rescheduling thread's unconditional `executingThread = null` store can land AFTER a concurrent run() on another pool thread has already published itself into executingThread, clobbering it back to null -> in"
+      "defect": "Cross-thread clobber: an exiting/rescheduling thread's unconditional `executingThread = null` store can land AFTER a concurrent run() on another pool thread has already published itself into executingThread, clobbering it back to null -> in",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 67,
@@ -876,7 +942,8 @@
       "review_grade": "A",
       "result": "HIT",
       "severity_or_note": "CRITICAL 2/3 blind-convergent (lock-inversion deadlock)",
-      "defect": "flush()/close() are synchronized(this) and call internalFlush(), which blocks on CompletableFuture.allOf(toWait).join() while HOLDING the this monitor. The listeners (FutureUtils.addListener/whenComplete) fire on RPC/netty completion thread"
+      "defect": "flush()/close() are synchronized(this) and call internalFlush(), which blocks on CompletableFuture.allOf(toWait).join() while HOLDING the this monitor. The listeners (FutureUtils.addListener/whenComplete) fire on RPC/netty completion thread",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 68,
@@ -889,7 +956,8 @@
       "review_grade": "B",
       "result": "HIT",
       "severity_or_note": "MEDIUM (wire-format charset; data lane perceived+deferred)",
-      "defect": "The Variant spec mandates UTF-8; the write path uses StandardCharsets.UTF_8, but the read path decodes with the JVM platform default. On a non-UTF-8-default JVM (JDK<=17, or file.encoding overridden, or LC_ALL=C) multi-byte UTF-8 in previou"
+      "defect": "The Variant spec mandates UTF-8; the write path uses StandardCharsets.UTF_8, but the read path decodes with the JVM platform default. On a non-UTF-8-default JVM (JDK<=17, or file.encoding overridden, or LC_ALL=C) multi-byte UTF-8 in previou",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 69,
@@ -902,7 +970,8 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "test-trust masking; convergent adjacent appendFloat overrun",
-      "defect": "Duplicate-key resolution keeps the LAST-written value (greater offset), whose size can differ from the first occurrence. Because dataSize is accumulated from first-occurrence sizes before/while dedup, when a key is written twice with differ"
+      "defect": "Duplicate-key resolution keeps the LAST-written value (greater offset), whose size can differ from the first occurrence. Because dataSize is accumulated from first-occurrence sizes before/while dedup, when a key is written twice with differ",
+      "finder_model": "Opus 4.8"
     },
     {
       "n": 70,
@@ -915,8 +984,149 @@
       "review_grade": "B",
       "result": "MISS",
       "severity_or_note": "shipped v0.38.6 slice",
-      "defect": "addChild authorizes requireManage on the PARENT (destination) but performs no manage check on the CHILD being moved. An admin who manages one low-privilege parent group can reparent a highly-privileged group (e.g. realm-admin) under it, inh"
+      "defect": "addChild authorizes requireManage on the PARENT (destination) but performs no manage check on the CHILD being moved. An admin who manages one low-privilege parent group can reparent a highly-privileged group (e.g. realm-admin) under it, inh",
+      "finder_model": "Opus 4.8"
+    },
+    {
+      "n": 71,
+      "batch": "n=71-80 (2026-07-20)",
+      "repo": "apache/kafka",
+      "key": "kafka-20097",
+      "introducing_pr": 20097,
+      "fixing_pr": 21058,
+      "lane": "performance",
+      "review_grade": "A",
+      "result": "HIT",
+      "severity_or_note": "MEDIUM (design; perf+corr CLEARED modernization)",
+      "defect": "MemberAssignmentImpl unmodifiableMap forces assignor deep-clone on every mutation",
+      "finder_model": "Grok 4.5"
+    },
+    {
+      "n": 72,
+      "batch": "n=71-80 (2026-07-20)",
+      "repo": "apache/pinot",
+      "key": "pinot-9667",
+      "introducing_pr": 9667,
+      "fixing_pr": 9688,
+      "lane": "performance",
+      "review_grade": "A",
+      "result": "HIT",
+      "severity_or_note": "MEDIUM",
+      "defect": "ArrayDeque\u2192LinkedList BFS queue on star-tree hot path",
+      "finder_model": "Grok 4.5"
+    },
+    {
+      "n": 73,
+      "batch": "n=71-80 (2026-07-20)",
+      "repo": "apache/pulsar",
+      "key": "pulsar-23611",
+      "introducing_pr": 23611,
+      "fixing_pr": 24430,
+      "lane": "performance",
+      "review_grade": "A",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
+      "defect": "getNumberOfDelayedMessages full stream walk on hot path",
+      "finder_model": "Grok 4.5"
+    },
+    {
+      "n": 74,
+      "batch": "n=71-80 (2026-07-20)",
+      "repo": "quarkusio/quarkus",
+      "key": "quarkus-53885",
+      "introducing_pr": 53885,
+      "fixing_pr": 55176,
+      "lane": "performance",
+      "review_grade": "A",
+      "result": "MISS",
+      "severity_or_note": "eager getResource declined as cold-path cost",
+      "defect": "eager Class.getResource always evaluated as resolveJarPath arg",
+      "finder_model": "Grok 4.5"
+    },
+    {
+      "n": 75,
+      "batch": "n=71-80 (2026-07-20)",
+      "repo": "apache/pulsar",
+      "key": "pulsar-25565",
+      "introducing_pr": 25565,
+      "fixing_pr": 25618,
+      "lane": "security",
+      "review_grade": "A",
+      "result": "HIT",
+      "severity_or_note": "CRITICAL",
+      "defect": "ScalableTopics/Segments admin REST missing authz",
+      "finder_model": "Grok 4.5"
+    },
+    {
+      "n": 76,
+      "batch": "n=71-80 (2026-07-20)",
+      "repo": "apache/camel",
+      "key": "camel-24180",
+      "introducing_pr": 24180,
+      "fixing_pr": 24377,
+      "lane": "security",
+      "review_grade": "A",
+      "result": "HIT",
+      "severity_or_note": "HIGH 3/3",
+      "defect": "jail startsWith without path-segment boundary",
+      "finder_model": "Grok 4.5"
+    },
+    {
+      "n": 77,
+      "batch": "n=71-80 (2026-07-20)",
+      "repo": "hazelcast/hazelcast",
+      "key": "hazelcast-25509",
+      "introducing_pr": 25509,
+      "fixing_pr": 25529,
+      "lane": "security",
+      "review_grade": "A",
+      "result": "MISS",
+      "severity_or_note": "adjacent CacheLoadAll underpermission; missed wrong-type targets",
+      "defect": "Wrong permission types ConfigPermission / SemaphorePermission ACTION_READ",
+      "finder_model": "Grok 4.5"
+    },
+    {
+      "n": 78,
+      "batch": "n=71-80 (2026-07-20)",
+      "repo": "apache/kafka",
+      "key": "kafka-16914",
+      "introducing_pr": 16914,
+      "fixing_pr": 17078,
+      "lane": "concurrency",
+      "review_grade": "A",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
+      "defect": "CountDownLatch released before setState(RUNNING)",
+      "finder_model": "Grok 4.5"
+    },
+    {
+      "n": 79,
+      "batch": "n=71-80 (2026-07-20)",
+      "repo": "apache/paimon",
+      "key": "paimon-7295",
+      "introducing_pr": 7295,
+      "fixing_pr": 7920,
+      "lane": "data",
+      "review_grade": "A",
+      "result": "HIT",
+      "severity_or_note": "CRITICAL",
+      "defect": "empty listFileDirs promotes partitions into recursive orphan delete",
+      "finder_model": "Grok 4.5"
+    },
+    {
+      "n": 80,
+      "batch": "n=71-80 (2026-07-20)",
+      "repo": "apache/iceberg",
+      "key": "iceberg-6570",
+      "introducing_pr": 6570,
+      "fixing_pr": 10069,
+      "lane": "data",
+      "review_grade": "A",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
+      "defect": "e.getMessage().contains NPE skips checkCommitStatus",
+      "finder_model": "Grok 4.5"
     }
   ],
-  "notes": "review_grade A/B = defect on the introducing diff's surface, C = cross-file, per evals/mined-pairs-candidates.md. 'deeper-than-fix' unadjudicated findings are deliberately NOT in these headline fields. Mis-graded candidates dropped pre-scoring are not counted."
+  "notes": "review_grade A/B = defect on the introducing diff's surface, C = cross-file, per evals/mined-pairs-candidates.md. 'deeper-than-fix' unadjudicated findings are deliberately NOT in these headline fields. Mis-graded candidates dropped pre-scoring are not counted. finder_model is the model that ran the finders for that banked HIT/MISS \u2014 do not mix models when quoting a single recall rate without disclosing the split."
 }
