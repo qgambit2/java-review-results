@@ -1,11 +1,11 @@
 {
   "campaign": "JRS mined regression-pair recall",
   "updated_utc": "2026-07-21",
-  "headline": "301/370 maintainer-adjudicated regressions detected at the introducing PR",
+  "headline": "285/370 maintainer-adjudicated regressions detected at the introducing PR",
   "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs. Finder model is per-pair (see finder_model field) \u2014 batches 1\u20137 Opus 4.8, batches 8\u201322 Grok 4.5 (Grok 4.5 n=300, Opus 4.8 n=70).",
   "total": 370,
-  "hits": 301,
-  "misses": 69,
+  "hits": 285,
+  "misses": 85,
   "pairs": [
     {
       "n": 1,
@@ -3096,7 +3096,7 @@
       "fixing_pr": 151914,
       "lane": "performance",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "MEDIUM",
       "defect": "ArrayOrderInlineNull always constructed before maxValue\u22641 check; skipped OptionalColumnAtATimeReader bulk fast path",
       "finder_model": "Grok 4.5"
@@ -3110,7 +3110,7 @@
       "fixing_pr": 87407,
       "lane": "performance",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "Removed Netty4WriteThrottlingHandler from HTTP pipeline; lost lower-level write throttling (sold-as-faster)",
       "finder_model": "Grok 4.5"
@@ -3138,7 +3138,7 @@
       "fixing_pr": 25887,
       "lane": "performance",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "ConsumedSubpartitionContext.build O(n) iterates all partitions on scheduler hot path",
       "finder_model": "Grok 4.5"
@@ -3222,7 +3222,7 @@
       "fixing_pr": 36293,
       "lane": "performance",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "MEDIUM",
       "defect": "ConcurrentReferenceHashMap.compute* always locks even for present read-only keys",
       "finder_model": "Grok 4.5"
@@ -3250,7 +3250,7 @@
       "fixing_pr": 12072,
       "lane": "performance",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "rewriteNoScoring re-enters ConstantScoreQuery.rewrite \u2192 exponential nested Boolean rewrite (sold-as-faster)",
       "finder_model": "Grok 4.5"
@@ -3292,7 +3292,7 @@
       "fixing_pr": 8545,
       "lane": "performance",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "MEDIUM",
       "defect": "ClosingFuture logging/close made closingFutureToString() eager instead of lazy",
       "finder_model": "Grok 4.5"
@@ -3320,7 +3320,7 @@
       "fixing_pr": 19518,
       "lane": "performance",
       "review_grade": "B",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "Per-hydrant SpecificSegmentQueryRunner multiplies Thread.setName cost 50\u2013200\u00d7",
       "finder_model": "Grok 4.5"
@@ -3488,7 +3488,7 @@
       "fixing_pr": 10753,
       "lane": "security",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "Lifecycle set/delete used ACLType.ALL; wrong under Ranger",
       "finder_model": "Grok 4.5"
@@ -3502,7 +3502,7 @@
       "fixing_pr": 21917,
       "lane": "security",
       "review_grade": "B",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "analytics executeWithProfile bypasses SecurityFilter/index permission path",
       "finder_model": "Grok 4.5"
@@ -3516,7 +3516,7 @@
       "fixing_pr": 2303,
       "lane": "security",
       "review_grade": "B",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "ssl.clientHostnameVerification ignored when ssl.authProvider set (hardcoded false)",
       "finder_model": "Grok 4.5"
@@ -3558,7 +3558,7 @@
       "fixing_pr": 23853,
       "lane": "concurrency",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "Early closeAndClearPendingMessages races reconnect/resend of recycled messages",
       "finder_model": "Grok 4.5"
@@ -3572,7 +3572,7 @@
       "fixing_pr": 15366,
       "lane": "concurrency",
       "review_grade": "B",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "Proxy close during outbound connect leaks connections (port exhaustion)",
       "finder_model": "Grok 4.5"
@@ -3586,7 +3586,7 @@
       "fixing_pr": 26053,
       "lane": "concurrency",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "ForSt close joins shared background threads used by other instances",
       "finder_model": "Grok 4.5"
@@ -3698,7 +3698,7 @@
       "fixing_pr": 16501,
       "lane": "data",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "NestedField.from copies defaults onto FIXED physical type \u2192 castDefault fails for decimals",
       "finder_model": "Grok 4.5"
@@ -3754,7 +3754,7 @@
       "fixing_pr": 11621,
       "lane": "data",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "MEDIUM",
       "defect": "TableMetadataParser double-closes stream in try-with-resources",
       "finder_model": "Grok 4.5"
@@ -4006,7 +4006,7 @@
       "fixing_pr": 24859,
       "lane": "correctness",
       "review_grade": "A",
-      "result": "HIT",
+      "result": "MISS",
       "severity_or_note": "HIGH",
       "defect": "multipart stream state.index=1 reset + maxRead not reset \u2192 orphaned parts / silent body truncation",
       "finder_model": "Grok 4.5"
