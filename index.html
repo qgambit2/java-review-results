@@ -1128,12 +1128,13 @@
   window.addEventListener('scroll',function(){ if(!raf) raf=requestAnimationFrame(spy); },{passive:true});
   window.addEventListener('resize',function(){ if(!raf) raf=requestAnimationFrame(spy); });
   spy();
-  // pairs filter + pagination (without JS all rows still in DOM for progressive enhancement)
+  // pairs filter + pagination (preserve scroll so Prev/Next don't jump the page)
   var body=document.getElementById('pairbody'), count=document.getElementById('rowcount');
   var fbtns=[].slice.call(document.querySelectorAll('.filters button[data-f]'));
   var pgPrev=document.getElementById('pg-prev'), pgNext=document.getElementById('pg-next');
   var pgInfo=document.getElementById('pg-info'), pgNums=document.getElementById('pg-nums');
   var pgSizeSel=document.getElementById('pg-size');
+  var filterBar=document.querySelector('#pairs .filters') || document.querySelector('.filters');
   var state={ filter:'all', page:1, pageSize:25 };
   function allRows(){ return body?[].slice.call(body.querySelectorAll('tr')):[]; }
   function matchingRows(){
@@ -1141,55 +1142,104 @@
       return state.filter==='all' || tr.getAttribute('data-result')===state.filter;
     });
   }
-  function render(){
+  function goPage(p){
+    state.page=p;
+    render({stick:true});
+  }
+  function render(opts){
+    opts=opts||{};
+    var anchor=filterBar || (body && body.closest && body.closest('.table-scroll')) || body;
+    var anchorTopBefore=anchor ? anchor.getBoundingClientRect().top : 0;
+    var yBefore=window.scrollY||window.pageYOffset||0;
+
     var rows=allRows(), match=matchingRows(), total=match.length;
-    var pages=Math.max(1, Math.ceil(total/state.pageSize));
+    var pages=Math.max(1, Math.ceil(total/state.pageSize)||1);
     if(state.page>pages) state.page=pages;
     if(state.page<1) state.page=1;
     var start=(state.page-1)*state.pageSize, end=start+state.pageSize;
-    var matchSet={};
-    match.forEach(function(tr,i){ matchSet[i]=tr; });
-    // hide non-matching; show only current page of matches
     var mi=0;
     rows.forEach(function(tr){
       var isMatch=(state.filter==='all'||tr.getAttribute('data-result')===state.filter);
       if(!isMatch){ tr.classList.add('hide'); return; }
-      var onPage=(mi>=start && mi<end);
-      tr.classList.toggle('hide', !onPage);
+      tr.classList.toggle('hide', !(mi>=start && mi<end));
       mi++;
     });
     var from=total? start+1 : 0, to=Math.min(end, total);
     if(count) count.textContent=total+' match'+(total===1?'':'es')+' · showing '+from+'\u2013'+to;
     if(pgInfo) pgInfo.textContent='Page '+state.page+' / '+pages;
-    if(pgPrev) pgPrev.disabled=(state.page<=1);
-    if(pgNext) pgNext.disabled=(state.page>=pages);
+    if(pgPrev){ pgPrev.disabled=state.page<=1; }
+    if(pgNext){ pgNext.disabled=state.page>=pages; }
     if(pgNums){
-      pgNums.innerHTML='';
-      // windowed page buttons
+      var frag=document.createDocumentFragment();
       var win=7, lo=Math.max(1, state.page-Math.floor(win/2)), hi=Math.min(pages, lo+win-1);
       lo=Math.max(1, hi-win+1);
-      function addBtn(p, label){
+      function addBtn(pnum){
         var b=document.createElement('button');
-        b.type='button'; b.textContent=label||String(p);
-        if(p===state.page) b.className='on';
-        b.addEventListener('click', function(){ state.page=p; render(); });
-        pgNums.appendChild(b);
+        b.type='button';
+        b.textContent=String(pnum);
+        b.setAttribute('data-page', String(pnum));
+        b.setAttribute('aria-label', 'Go to page '+pnum);
+        if(pnum===state.page){ b.className='on'; b.setAttribute('aria-current','page'); }
+        frag.appendChild(b);
       }
-      if(lo>1){ addBtn(1); if(lo>2){ var d=document.createElement('span'); d.textContent='\u2026'; d.style.padding='0 .2rem'; pgNums.appendChild(d);} }
-      for(var p=lo;p<=hi;p++) addBtn(p);
-      if(hi<pages){ if(hi<pages-1){ var d2=document.createElement('span'); d2.textContent='\u2026'; d2.style.padding='0 .2rem'; pgNums.appendChild(d2);} addBtn(pages); }
+      function addEllipsis(){
+        var d=document.createElement('span');
+        d.textContent='\u2026';
+        d.style.padding='0 .2rem';
+        d.setAttribute('aria-hidden','true');
+        frag.appendChild(d);
+      }
+      if(lo>1){ addBtn(1); if(lo>2) addEllipsis(); }
+      for(var pnum=lo;pnum<=hi;pnum++) addBtn(pnum);
+      if(hi<pages){ if(hi<pages-1) addEllipsis(); addBtn(pages); }
+      pgNums.innerHTML='';
+      pgNums.appendChild(frag);
     }
     fbtns.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-f')===state.filter); });
+
+    // Keep the pairs section glued in place after DOM height collapses
+    if(opts.stick && anchor){
+      var delta=anchor.getBoundingClientRect().top - anchorTopBefore;
+      if(delta) window.scrollBy(0, delta);
+      var r=anchor.getBoundingClientRect();
+      // If we still drifted off-screen, pin filters ~100px from top
+      if(r.top < 72 || r.top > window.innerHeight * 0.6){
+        window.scrollTo(0, Math.max(0, (window.scrollY||0) + r.top - 100));
+      }
+    } else {
+      window.scrollTo(0, yBefore);
+    }
   }
-  fbtns.forEach(function(b){ b.addEventListener('click',function(){
-    state.filter=b.getAttribute('data-f'); state.page=1; render();
+  fbtns.forEach(function(b){ b.addEventListener('click', function(e){
+    e.preventDefault();
+    state.filter=b.getAttribute('data-f');
+    state.page=1;
+    render({stick:true});
   }); });
-  if(pgPrev) pgPrev.addEventListener('click', function(){ if(state.page>1){ state.page--; render(); } });
-  if(pgNext) pgNext.addEventListener('click', function(){ state.page++; render(); });
-  if(pgSizeSel) pgSizeSel.addEventListener('change', function(){
-    state.pageSize=parseInt(pgSizeSel.value,10)||25; state.page=1; render();
+  if(pgPrev) pgPrev.addEventListener('click', function(e){
+    e.preventDefault();
+    if(state.page>1) goPage(state.page-1);
   });
-  if(body) render();
+  if(pgNext) pgNext.addEventListener('click', function(e){
+    e.preventDefault();
+    var pages=Math.max(1, Math.ceil(matchingRows().length/state.pageSize)||1);
+    if(state.page<pages) goPage(state.page+1);
+  });
+  // Delegate page-number clicks (buttons are recreated; avoid focus scroll)
+  if(pgNums) pgNums.addEventListener('click', function(e){
+    var b=e.target && e.target.closest && e.target.closest('button[data-page]');
+    if(!b) return;
+    e.preventDefault();
+    e.stopPropagation();
+    goPage(parseInt(b.getAttribute('data-page'),10)||1);
+  });
+  if(pgSizeSel) pgSizeSel.addEventListener('change', function(){
+    state.pageSize=parseInt(pgSizeSel.value,10)||25;
+    state.page=1;
+    render({stick:true});
+  });
+  // Initial: first page only, do not scroll the user
+  if(body) render({stick:false});
 })();
 </script>
 
