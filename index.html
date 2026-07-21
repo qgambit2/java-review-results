@@ -24,8 +24,6 @@
   body { background: #e9edf4; min-height: 100vh; }
   @media (prefers-color-scheme: dark) { body { background: #0c0e13; } }
   img { max-width: 100%; height: auto; }
-  .lane.total { margin-top: .55rem; padding-top: .45rem; border-top: 1px solid var(--line); }
-  .lane.total .lane-name { font-weight: 700; }
   .lane.total .lane-frac { font-weight: 700; }
 </style>
 </head>
@@ -310,12 +308,12 @@
 
   /* ---- mined-pairs section ---- */
   .sec-mark { color: var(--accent); font-family: var(--font-mono); font-weight: 700; font-size: 1rem; line-height: 1; }
-  .lanes { display: grid; gap: .5rem; margin: .3rem 0 0; max-width: 33rem; }
-  .lane { display: grid; grid-template-columns: 6.6rem 1fr 2.4rem; align-items: center; gap: .75rem; }
-  .lane-name { font-size: .85rem; color: var(--ink-2); }
-  .lane-track { height: 8px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+  .lanes { display: grid; grid-template-columns: 1fr; gap: .55rem; margin: .3rem 0 0; max-width: 36rem; }
+  .lane { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr) 3.2rem; align-items: center; gap: .75rem; min-width: 0; }
+  .lane-name { font-size: .85rem; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lane-track { height: 8px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; overflow: hidden; min-width: 0; }
   .lane-fill { display: block; height: 100%; background: var(--good); }
-  .lane-frac { font-size: .8rem; color: var(--muted); text-align: right; }
+  .lane-frac { font-size: .8rem; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .filters { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: 1.15rem 0 .8rem; }
   .filters .flabel { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-right: .2rem; }
   .filters button { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .02em; padding: .26rem .6rem; border-radius: 6px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2); cursor: pointer; }
@@ -411,23 +409,24 @@
 
       <h3 id="lanes" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Detection by specialty</h3>
       <p class="sec-sub" style="margin-bottom:.9rem;">Recall isn't uniform, and that's the honest signal: security, correctness and (recovered) data regressions are caught reliably; the weak lane is performance, where a genuinely super&#8209;linear or wasteful&#8209;work regression is usually right there on the diff but gets waved through as a &ldquo;constant factor.&rdquo; That calibration gap &mdash; not emergent or cross&#8209;file difficulty &mdash; is where the next capability slice is aimed.</p>
-      <div class="lanes">
+      <div class="lanes" aria-label="Recall by specialty">
 <div class="lane"><span class="lane-name">correctness</span><span class="lane-track"><span class="lane-fill" style="width:74%"></span></span><span class="lane-frac mono">20/27</span></div>
 <div class="lane"><span class="lane-name">concurrency</span><span class="lane-track"><span class="lane-fill" style="width:69%"></span></span><span class="lane-frac mono">9/13</span></div>
 <div class="lane"><span class="lane-name">security</span><span class="lane-track"><span class="lane-fill" style="width:73%"></span></span><span class="lane-frac mono">8/11</span></div>
 <div class="lane"><span class="lane-name">data</span><span class="lane-track"><span class="lane-fill" style="width:67%"></span></span><span class="lane-frac mono">8/12</span></div>
 <div class="lane"><span class="lane-name">performance</span><span class="lane-track"><span class="lane-fill" style="width:41%"></span></span><span class="lane-frac mono">7/17</span></div>
 <div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:65%"></span></span><span class="lane-frac mono"><b>52/80</b></span></div>
-</div>
+      </div>
 
       <h3 id="surface" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Recall by surface-directness</h3>
       <p class="sec-sub" style="margin-bottom:.9rem;">Grade is how pointable the introduced bug is on the diff: <b>A</b> a single wrong line, <b>B</b> visible after reading one helper, <b>C</b> cross&#8209;file or subtle. Recall tracks it &mdash; the honest read on the headline: the aggregate drifts down as we deliberately mine <em>harder, subtler</em> pairs, not because detection got worse. The residual hard case is a grade&#8209;A bug whose <em>cost</em> is real but emergent &mdash; a fold, a downstream fast&#8209;path, an uncached branch &mdash; visible only when you model the caller.</p>
-      <div class="lanes">
-<div class="lane"><span class="lane-name">A · pointable line</span><span class="lane-track"><span class="lane-fill" style="width:74%"></span></span><span class="lane-frac mono">31/42</span></div>
-<div class="lane"><span class="lane-name">B · read one helper</span><span class="lane-track"><span class="lane-fill" style="width:59%"></span></span><span class="lane-frac mono">19/32</span></div>
-<div class="lane"><span class="lane-name">C · cross-file / subtle</span><span class="lane-track"><span class="lane-fill" style="width:33%"></span></span><span class="lane-frac mono">2/6</span></div>
+      <div class="lanes" aria-label="Recall by surface-directness">
+<div class="lane"><span class="lane-name">A · pointable</span><span class="lane-track"><span class="lane-fill" style="width:74%"></span></span><span class="lane-frac mono">31/42</span></div>
+<div class="lane"><span class="lane-name">B · one helper</span><span class="lane-track"><span class="lane-fill" style="width:59%"></span></span><span class="lane-frac mono">19/32</span></div>
+<div class="lane"><span class="lane-name">C · subtle</span><span class="lane-track"><span class="lane-fill" style="width:33%"></span></span><span class="lane-frac mono">2/6</span></div>
 <div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:65%"></span></span><span class="lane-frac mono"><b>52/80</b></span></div>
-</div>
+      </div>
+
 
 
       <div class="filters">
