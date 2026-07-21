@@ -1445,7 +1445,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "evidence-bar: advanceToDoc CLEARED as linear/constant-factor",
+      "severity_or_note": "shipped v0.38.8 slice",
       "defect": "SourceLoader synthetic write calls advanceToDoc on every storedFieldLoader even when empty O(fields) per synthesize",
       "finder_model": "Grok 4.5"
     },
