@@ -374,7 +374,7 @@
       <div class="eyebrow fade">
         <span><span class="dot"></span> java-review swarm</span>
         <span>field test</span>
-        <span>2026-07-11 · updated 07-13</span>
+        <span>2026-07-11 · updated 07-21</span>
       </div>
       <h1 class="fade d1">Does it catch real bugs&nbsp;— without crying wolf?</h1>
       <p class="lead fade d1">Seven real Apache &amp; Halo pull requests the reviewer had never seen. Two with a maintainer-fixed bug reintroduced; five reviewed exactly as submitted. Every finding was attacked by an adversarial verifier before it was allowed to count.</p>
@@ -393,19 +393,19 @@
 
     <section id="pairs">
       <div class="sec-head"><span class="sec-mark">&#9670;</span><h2>Mined regression pairs</h2></div>
-      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.35rem;">Two hundred twenty pull requests that <b>introduced</b> a bug a maintainer later fixed &mdash; replayed against the introducing PR, exactly as it stood. The world chose these bugs; the projects' own maintainers adjudicated them. Strictly out&#8209;of&#8209;distribution: real code, real defects, ground truth we didn't write.</p>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.35rem;">Three hundred seventy pull requests that <b>introduced</b> a bug a maintainer later fixed &mdash; replayed against the introducing PR, exactly as it stood. The world chose these bugs; the projects' own maintainers adjudicated them. Strictly out&#8209;of&#8209;distribution: real code, real defects, ground truth we didn't write.</p>
 
       <div class="headline-stats">
         <div class="hstat good">
-          <span class="num">301 / 370</span>
+          <span class="num">285 / 370</span>
           <span class="lbl">maintainer-fixed regressions caught<br>at the PR that introduced them</span>
         </div>
         <div class="hstat clean">
           <span class="num">0</span>
-          <span class="lbl">fabricated findings<br>across all two hundred twenty runs</span>
+          <span class="lbl">fabricated findings<br>across all three hundred seventy runs</span>
         </div>
       </div>
-<p class="sec-sub" style="margin:.6rem 0 0;font-size:.9rem;">Finder model is disclosed per row: batches 1&ndash;7 ran <b>Opus 4.8</b> (n=70); batches 8&ndash;28 (n=71&ndash;290) ran <b>Grok 4.5</b> (n=220). Grok-only recall: <b>192/220 (87%)</b>. Treat mixed-model aggregates carefully.</p>
+<p class="sec-sub" style="margin:.6rem 0 0;font-size:.9rem;">Finder model is disclosed per row: batches 1&ndash;7 <b>Opus 4.8</b> n=1&ndash;70: <b>44/70 (63%)</b>; batches 8&ndash;36 <b>Grok 4.5</b> n=71&ndash;370: <b>241/300 (80%)</b>. Campaign total <b>285/370 (77%)</b>. Treat mixed-model aggregates carefully.</p>
 
       <h3 id="lanes" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Detection by specialty</h3>
       <p class="sec-sub" style="margin-bottom:.9rem;">Recall isn't uniform, and that's the honest signal. Campaign headline <b>285/370 (77%)</b> after +80 pairs (batches 29–36) and a blind re-score of n=221–290 (false 70/70 streak → 54/70). Lanes: correctness 57/69, concurrency 50/64, security 66/79, data 52/66, performance 60/92. Residual open lever still evidence&#8209;bar / sold&#8209;as&#8209;faster.</p>
