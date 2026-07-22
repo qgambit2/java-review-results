@@ -1,11 +1,11 @@
 {
   "campaign": "JRS mined regression-pair recall",
   "updated_utc": "2026-07-21",
-  "headline": "450/630 maintainer-adjudicated regressions detected at the introducing PR",
+  "headline": "454/630 maintainer-adjudicated regressions detected at the introducing PR",
   "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs. Finder model is per-pair (see finder_model field) \u2014 batches 1\u20137 Opus 4.8 (n=1\u201370), batches 8+ Grok 4.5 (n=71+); see finder_model per pair (Grok 4.5 n=560, Opus 4.8 n=70).",
   "total": 630,
-  "hits": 450,
-  "misses": 180,
+  "hits": 454,
+  "misses": 176,
   "pairs": [
     {
       "n": 1,
@@ -7730,8 +7730,8 @@
       "fixing_pr": 15927,
       "lane": "concurrency",
       "review_grade": "A",
-      "result": "MISS",
-      "severity_or_note": "Empty findings",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
       "defect": "NonStickyEventExecutorGroup.NonStickyOrderedEventExecutor, when hitting maxTaskExecutePerRun, clears executingThread (CAS to null) then calls executor.execute(this) to reschedule. If execute throws, the catch only sets state back to RUNNING",
       "finder_model": "Grok 4.5"
     },
@@ -7884,8 +7884,8 @@
       "fixing_pr": 50567,
       "lane": "security",
       "review_grade": "A",
-      "result": "MISS",
-      "severity_or_note": "Findings are empty-array response shape, unbounded evaluations list Do",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
       "defect": "PR #47838 adds the AuthZEN **Evaluations** (batch) endpoint and authenticates with `Tokens.getAccessToken(session)` only \u2014 any valid bearer including end-user tokens can query the PDP. Same fail-open auth as the single Evaluation API (#4763",
       "finder_model": "Grok 4.5"
     },
@@ -8416,8 +8416,8 @@
       "fixing_pr": 21350,
       "lane": "performance",
       "review_grade": "A",
-      "result": "MISS",
-      "severity_or_note": "trim/pinning correctness and fileTransferTracker loop cost only",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
       "defect": "#15579 extracts `RemoteFsTimestampAwareTranslog` and implements remote-purge cleanup with `metadataFilesNotToBeDeleted.removeAll(metadataFilesToBeDeleted)` (and sibling `removeAll` sites) where both sides are `ArrayList`. `ArrayList.removeA",
       "finder_model": "Grok 4.5"
     },
@@ -8486,8 +8486,8 @@
       "fixing_pr": 108179,
       "lane": "performance",
       "review_grade": "A",
-      "result": "MISS",
-      "severity_or_note": "encode/decode length and BytesRef offset bugs plus dynamic-limit encod",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
       "defect": "#107567 adds synthetic-source ignored-value tracking (`IgnoredSourceFieldMapper`) and `ObjectMapper.SyntheticFieldLoader.setIgnoredValues`, which walks every field loader on every doc while always allocating a non-null `objectsWithIgnoredFi",
       "finder_model": "Grok 4.5"
     },
