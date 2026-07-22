@@ -360,7 +360,7 @@
     <ul>
       <li><a href="#top"><span class="n">·</span> Overview</a></li>
       <li class="grp">Mined pairs</li>
-      <li><a href="#pairs"><span class="n">◆</span> The 470 pairs</a></li>
+      <li><a href="#pairs"><span class="n">◆</span> The 474 pairs</a></li>
       <li><a href="#lanes"><span class="n">·</span> By specialty</a></li>
       <li><a href="#surface"><span class="n">·</span> By surface-directness</a></li>
       <li><a href="#improves"><span class="n">&#9670;</span> How it improves</a></li>
@@ -405,7 +405,7 @@
 
       <div class="headline-stats">
         <div class="hstat good">
-          <span class="num">348 / 470</span>
+          <span class="num">351 / 474</span>
           <span class="lbl">maintainer-fixed regressions caught<br>at the PR that introduced them</span>
         </div>
         <div class="hstat clean">
@@ -413,31 +413,31 @@
           <span class="lbl">fabricated findings<br>across all three hundred seventy runs</span>
         </div>
       </div>
-<p class="sec-sub" style="margin:.6rem 0 0;font-size:.9rem;">Finder model is disclosed per row: batches 1&ndash;7 <b>Opus 4.8</b> n=1&ndash;70: <b>44/70 (63%)</b>; batches 8&ndash;46 <b>Grok 4.5</b> n=71&ndash;470: <b>304/400 (76%)</b>. Campaign total <b>348/470 (74%)</b>. Treat mixed-model aggregates carefully.</p>
+<p class="sec-sub" style="margin:.6rem 0 0;font-size:.9rem;">Finder model is disclosed per row: batches 1&ndash;7 <b>Opus 4.8</b> n=1&ndash;70: <b>44/70 (63%)</b>; batches 8&ndash;47 <b>Grok 4.5</b> n=71&ndash;474: <b>307/404 (76%)</b>. Campaign total <b>351/474 (74%)</b>. Treat mixed-model aggregates carefully.</p>
 
       <h3 id="lanes" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Detection by specialty</h3>
-      <p class="sec-sub" style="margin-bottom:.9rem;">Recall isn't uniform, and that's the honest signal. Campaign headline <b>348/470 (74%)</b> after +50 pairs (batches 42–46) on top of n=420. Lanes: correctness 68/87, concurrency 72/96, security 73/93, data 70/88, performance 65/106. Residual open lever still evidence&#8209;bar / sold&#8209;as&#8209;faster.</p>
+      <p class="sec-sub" style="margin-bottom:.9rem;">Recall isn't uniform, and that's the honest signal. Campaign headline <b>351/474 (74%)</b> after batches 42–47 (incl. incomplete-wiring validation) on top of n=420. Lanes: correctness 68/87, concurrency 72/96, security 76/97, data 70/88, performance 65/106. Residual open lever still evidence&#8209;bar / sold&#8209;as&#8209;faster.</p>
       <div class="lanes" aria-label="Recall by specialty">
 <div class="lane"><span class="lane-name">correctness</span><span class="lane-track"><span class="lane-fill" style="width:78%"></span></span><span class="lane-frac mono">68/87</span></div>
 <div class="lane"><span class="lane-name">concurrency</span><span class="lane-track"><span class="lane-fill" style="width:75%"></span></span><span class="lane-frac mono">72/96</span></div>
-<div class="lane"><span class="lane-name">security</span><span class="lane-track"><span class="lane-fill" style="width:78%"></span></span><span class="lane-frac mono">73/93</span></div>
+<div class="lane"><span class="lane-name">security</span><span class="lane-track"><span class="lane-fill" style="width:78%"></span></span><span class="lane-frac mono">76/97</span></div>
 <div class="lane"><span class="lane-name">data</span><span class="lane-track"><span class="lane-fill" style="width:80%"></span></span><span class="lane-frac mono">70/88</span></div>
 <div class="lane"><span class="lane-name">performance</span><span class="lane-track"><span class="lane-fill" style="width:61%"></span></span><span class="lane-frac mono">65/106</span></div>
-<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:74%"></span></span><span class="lane-frac mono"><b>348/470</b></span></div>
+<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:74%"></span></span><span class="lane-frac mono"><b>351/474</b></span></div>
 </div>
 
       <h3 id="surface" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Recall by surface-directness</h3>
       <p class="sec-sub" style="margin-bottom:.9rem;">Grade is how pointable the introduced bug is on the diff: <b>A</b> a single wrong line, <b>B</b> visible after reading one helper, <b>C</b> cross&#8209;file or subtle. Recall tracks it &mdash; the honest read on the headline: the aggregate drifts down as we deliberately mine <em>harder, subtler</em> pairs, not because detection got worse. The residual hard case is a grade&#8209;A bug whose <em>cost</em> is real but emergent &mdash; a fold, a downstream fast&#8209;path, an uncached branch &mdash; visible only when you model the caller.</p>
       <div class="lanes" aria-label="Recall by surface-directness">
-<div class="lane"><span class="lane-name">A · pointable</span><span class="lane-track"><span class="lane-fill" style="width:76%"></span></span><span class="lane-frac mono">278/368</span></div>
+<div class="lane"><span class="lane-name">A · pointable</span><span class="lane-track"><span class="lane-fill" style="width:76%"></span></span><span class="lane-frac mono">281/372</span></div>
 <div class="lane"><span class="lane-name">B · one helper</span><span class="lane-track"><span class="lane-fill" style="width:71%"></span></span><span class="lane-frac mono">68/96</span></div>
 <div class="lane"><span class="lane-name">C · subtle</span><span class="lane-track"><span class="lane-fill" style="width:33%"></span></span><span class="lane-frac mono">2/6</span></div>
-<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:74%"></span></span><span class="lane-frac mono"><b>348/470</b></span></div>
+<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:74%"></span></span><span class="lane-frac mono"><b>351/474</b></span></div>
 </div>
 
       <div class="filters">
         <span class="flabel">Show</span>
-        <button type="button" data-f="all" class="on">All 470</button>
+        <button type="button" data-f="all" class="on">All 474</button>
         <button type="button" data-f="HIT">Hits</button>
         <button type="button" data-f="MISS">Misses</button>
         <span class="rowcount" id="rowcount"></span>
@@ -916,6 +916,10 @@
 <tr data-result="MISS" data-lane="performance" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">elastic/</span>elasticsearch<span class="prnums">#60196→#60276</span></td><td><span class="type-tag">performance</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">empty findings</span></td><td class="what">changeCollector gated on supportsIncrementalBucketUpdate so date-histogram-only pivots full-rescan each…</td></tr>
 <tr data-result="HIT" data-lane="performance" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">elastic/</span>elasticsearch<span class="prnums">#57241→#57438</span></td><td><span class="type-tag">performance</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">target recall via performance: No-filter path always wraps FilteredOrdinals; los</span></td><td class="what">global-ords terms rewrite drops single-valued-ords + no-filter specializations → multi-valued path…</td></tr>
 <tr data-result="HIT" data-lane="performance" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">elastic/</span>elasticsearch<span class="prnums">#101538→#112558</span></td><td><span class="type-tag">performance</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">target recall via design: Identical health-support gate repeated in three servic</span></td><td class="what">expensive clusterHasFeature(SUPPORTS_HEALTH) ahead of cheap local-master checks on…</td></tr>
+<tr data-result="HIT" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">AsyncHttpClient/</span>async-http-client<span class="prnums">#2104→#2243</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">incomplete-wiring fresh-pair HIT (endpoint ID JSSE arm)</span></td><td class="what">#2104 removes shared setEndpointIdentificationAlgorithm from SslEngineFactoryBase and restores it only…</td></tr>
+<tr data-result="HIT" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">apache/</span>ozone<span class="prnums">#10111→#10165</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">incomplete-wiring fresh-pair HIT (DEFAULT protocol gate)</span></td><td class="what">setEnabledProtocols only applies setIncludeProtocols when value != SSL_ENABLED_PROTOCOLS_DEFAULT;…</td></tr>
+<tr data-result="HIT" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">apache/</span>camel<span class="prnums">#20912→#24690</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">incomplete-wiring fresh-pair HIT (MSK callback omitted)</span></td><td class="what">saslAuthType convenience never sets OAuth/MSK callback handlers on the default path (AWS_MSK_IAM omits…</td></tr>
+<tr data-result="MISS" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">redis/</span>jedis<span class="prnums">#4263→#4424</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">incomplete-wiring fresh-pair MISS (fromURI credential wipe)</span></td><td class="what">StandaloneClientBuilder.fromURI overwrites clientConfig, wiping credentials so default builder never…</td></tr>
 </tbody>
         </table>
       </div>
