@@ -360,7 +360,7 @@
     <ul>
       <li><a href="#top"><span class="n">·</span> Overview</a></li>
       <li class="grp">Mined pairs</li>
-      <li><a href="#pairs"><span class="n">◆</span> The 474 pairs</a></li>
+      <li><a href="#pairs"><span class="n">◆</span> The 480 pairs</a></li>
       <li><a href="#lanes"><span class="n">·</span> By specialty</a></li>
       <li><a href="#surface"><span class="n">·</span> By surface-directness</a></li>
       <li><a href="#improves"><span class="n">&#9670;</span> How it improves</a></li>
@@ -405,7 +405,7 @@
 
       <div class="headline-stats">
         <div class="hstat good">
-          <span class="num">351 / 474</span>
+          <span class="num">354 / 480</span>
           <span class="lbl">maintainer-fixed regressions caught<br>at the PR that introduced them</span>
         </div>
         <div class="hstat clean">
@@ -413,31 +413,31 @@
           <span class="lbl">fabricated findings<br>across all three hundred seventy runs</span>
         </div>
       </div>
-<p class="sec-sub" style="margin:.6rem 0 0;font-size:.9rem;">Finder model is disclosed per row: batches 1&ndash;7 <b>Opus 4.8</b> n=1&ndash;70: <b>44/70 (63%)</b>; batches 8&ndash;47 <b>Grok 4.5</b> n=71&ndash;474: <b>307/404 (76%)</b>. Campaign total <b>351/474 (74%)</b>. Treat mixed-model aggregates carefully.</p>
+<p class="sec-sub" style="margin:.6rem 0 0;font-size:.9rem;">Finder model is disclosed per row: batches 1&ndash;7 <b>Opus 4.8</b> n=1&ndash;70: <b>44/70 (63%)</b>; batches 8&ndash;48 <b>Grok 4.5</b> n=71&ndash;480: <b>310/410 (76%)</b>. Campaign total <b>354/480 (74%)</b>. Treat mixed-model aggregates carefully.</p>
 
       <h3 id="lanes" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Detection by specialty</h3>
-      <p class="sec-sub" style="margin-bottom:.9rem;">Recall isn't uniform, and that's the honest signal. Campaign headline <b>351/474 (74%)</b> after batches 42–47 (incl. incomplete-wiring validation) on top of n=420. Lanes: correctness 68/87, concurrency 72/96, security 76/97, data 70/88, performance 65/106. Residual open lever still evidence&#8209;bar / sold&#8209;as&#8209;faster.</p>
+      <p class="sec-sub" style="margin-bottom:.9rem;">Recall isn't uniform, and that's the honest signal. Campaign headline <b>354/480 (74%)</b> after batches 42–47 (incl. incomplete-wiring validation) on top of n=420. Lanes: correctness 68/87, concurrency 72/96, security 79/103, data 70/88, performance 65/106. Residual open lever still evidence&#8209;bar / sold&#8209;as&#8209;faster.</p>
       <div class="lanes" aria-label="Recall by specialty">
 <div class="lane"><span class="lane-name">correctness</span><span class="lane-track"><span class="lane-fill" style="width:78%"></span></span><span class="lane-frac mono">68/87</span></div>
 <div class="lane"><span class="lane-name">concurrency</span><span class="lane-track"><span class="lane-fill" style="width:75%"></span></span><span class="lane-frac mono">72/96</span></div>
-<div class="lane"><span class="lane-name">security</span><span class="lane-track"><span class="lane-fill" style="width:78%"></span></span><span class="lane-frac mono">76/97</span></div>
+<div class="lane"><span class="lane-name">security</span><span class="lane-track"><span class="lane-fill" style="width:77%"></span></span><span class="lane-frac mono">79/103</span></div>
 <div class="lane"><span class="lane-name">data</span><span class="lane-track"><span class="lane-fill" style="width:80%"></span></span><span class="lane-frac mono">70/88</span></div>
 <div class="lane"><span class="lane-name">performance</span><span class="lane-track"><span class="lane-fill" style="width:61%"></span></span><span class="lane-frac mono">65/106</span></div>
-<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:74%"></span></span><span class="lane-frac mono"><b>351/474</b></span></div>
+<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:74%"></span></span><span class="lane-frac mono"><b>354/480</b></span></div>
 </div>
 
       <h3 id="surface" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Recall by surface-directness</h3>
       <p class="sec-sub" style="margin-bottom:.9rem;">Grade is how pointable the introduced bug is on the diff: <b>A</b> a single wrong line, <b>B</b> visible after reading one helper, <b>C</b> cross&#8209;file or subtle. Recall tracks it &mdash; the honest read on the headline: the aggregate drifts down as we deliberately mine <em>harder, subtler</em> pairs, not because detection got worse. The residual hard case is a grade&#8209;A bug whose <em>cost</em> is real but emergent &mdash; a fold, a downstream fast&#8209;path, an uncached branch &mdash; visible only when you model the caller.</p>
       <div class="lanes" aria-label="Recall by surface-directness">
-<div class="lane"><span class="lane-name">A · pointable</span><span class="lane-track"><span class="lane-fill" style="width:76%"></span></span><span class="lane-frac mono">281/372</span></div>
-<div class="lane"><span class="lane-name">B · one helper</span><span class="lane-track"><span class="lane-fill" style="width:71%"></span></span><span class="lane-frac mono">68/96</span></div>
+<div class="lane"><span class="lane-name">A · pointable</span><span class="lane-track"><span class="lane-fill" style="width:75%"></span></span><span class="lane-frac mono">284/377</span></div>
+<div class="lane"><span class="lane-name">B · one helper</span><span class="lane-track"><span class="lane-fill" style="width:70%"></span></span><span class="lane-frac mono">68/97</span></div>
 <div class="lane"><span class="lane-name">C · subtle</span><span class="lane-track"><span class="lane-fill" style="width:33%"></span></span><span class="lane-frac mono">2/6</span></div>
-<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:74%"></span></span><span class="lane-frac mono"><b>351/474</b></span></div>
+<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:74%"></span></span><span class="lane-frac mono"><b>354/480</b></span></div>
 </div>
 
       <div class="filters">
         <span class="flabel">Show</span>
-        <button type="button" data-f="all" class="on">All 474</button>
+        <button type="button" data-f="all" class="on">All 480</button>
         <button type="button" data-f="HIT">Hits</button>
         <button type="button" data-f="MISS">Misses</button>
         <span class="rowcount" id="rowcount"></span>
@@ -920,6 +920,12 @@
 <tr data-result="HIT" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">apache/</span>ozone<span class="prnums">#10111→#10165</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">incomplete-wiring fresh-pair HIT (DEFAULT protocol gate)</span></td><td class="what">setEnabledProtocols only applies setIncludeProtocols when value != SSL_ENABLED_PROTOCOLS_DEFAULT;…</td></tr>
 <tr data-result="HIT" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">apache/</span>camel<span class="prnums">#20912→#24690</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">incomplete-wiring fresh-pair HIT (MSK callback omitted)</span></td><td class="what">saslAuthType convenience never sets OAuth/MSK callback handlers on the default path (AWS_MSK_IAM omits…</td></tr>
 <tr data-result="MISS" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">redis/</span>jedis<span class="prnums">#4263→#4424</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">incomplete-wiring fresh-pair MISS (fromURI credential wipe)</span></td><td class="what">StandaloneClientBuilder.fromURI overwrites clientConfig, wiping credentials so default builder never…</td></tr>
+<tr data-result="HIT" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">netty/</span>netty<span class="prnums">#10296→#10401</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">OPENSSL tickets only on REFCNT not default OPENSSL</span></td><td class="what">#10296 wires session-ticket enablement via setTicketKeys only on OPENSSL_REFCNT constructors;…</td></tr>
+<tr data-result="HIT" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">apache/</span>pinot<span class="prnums">#8207→#17760</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">server GrpcSslContexts.configure wipes sslProvider</span></td><td class="what">Server sets .sslProvider then GrpcSslContexts.configure(builder) without provider — silently forces…</td></tr>
+<tr data-result="HIT" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">apache/</span>ratis<span class="prnums">#1462→#1511</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">TlsConf provider/ciphers ignored on Netty DataStream</span></td><td class="what">#1462 adds TlsConf SslProvider/protocols/ciphers applied only via GrpcUtil; DataStream NettyUtils never…</td></tr>
+<tr data-result="MISS" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">apache/</span>zookeeper<span class="prnums">#2009→#2270</span></td><td><span class="type-tag">security</span></td><td class="mono grade">B</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">adjacent SSL; not OCSP un-gated on JDK</span></td><td class="what">#2009 multi-provider OpenSSL support calls enableOcsp unconditionally; JDK default + ocsp=true throws.…</td></tr>
+<tr data-result="MISS" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">fabric8io/</span>kubernetes-client<span class="prnums">#7875→#7908</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">empty findings</span></td><td class="what">Vert.x 5.1 WebSocket TLS arm drops trust/key material; HTTP path still applies TLS</td></tr>
+<tr data-result="MISS" data-lane="security" data-model="Grok 4.5"><td class="mono nowrap"><span class="repo">streamthoughts/</span>jikkou<span class="prnums">#427→#761</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Grok 4.5</td><td class="nowrap"><span class="pill warn">MISS</span> <span class="rnote">adjacent SSL password NPE; not authMethod trust gate</span></td><td class="what">SSLConfig applied only when authMethod=SSL; basicAuth/none leaves sslTrustStoreLocation configured but…</td></tr>
 </tbody>
         </table>
       </div>
