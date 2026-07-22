@@ -1,11 +1,11 @@
 {
   "campaign": "JRS mined regression-pair recall",
   "updated_utc": "2026-07-21",
-  "headline": "443/630 maintainer-adjudicated regressions detected at the introducing PR",
+  "headline": "448/630 maintainer-adjudicated regressions detected at the introducing PR",
   "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs. Finder model is per-pair (see finder_model field) \u2014 batches 1\u20137 Opus 4.8 (n=1\u201370), batches 8+ Grok 4.5 (n=71+); see finder_model per pair (Grok 4.5 n=560, Opus 4.8 n=70).",
   "total": 630,
-  "hits": 443,
-  "misses": 187,
+  "hits": 448,
+  "misses": 182,
   "pairs": [
     {
       "n": 1,
@@ -8137,7 +8137,7 @@
       "lane": "data",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "findings cite FileUtil",
+      "severity_or_note": "v2 still cites FileUtil",
       "defect": "HoodieSnapshotExporter was changed from `SaveMode.Overwrite` to `SaveMode.ErrorIfExists` while improving exporter listing/copy perf. On Spark task failure/retry, the partial target path from the failed task already exists, so retried tasks ",
       "finder_model": "Grok 4.5"
     },
@@ -8151,7 +8151,7 @@
       "lane": "data",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "Only notes exclusive CF path left unoptimized",
+      "severity_or_note": "empty findings",
       "defect": "#5621 made `ColumnFamilySkippingIterator.seek` call `range.bound(minCF, maxCF)` to narrow seeks. When the seek range and selected column families are disjoint, public `Range.bound()` throws `IllegalArgumentException`, so server-side iterato",
       "finder_model": "Grok 4.5"
     },
@@ -8165,7 +8165,7 @@
       "lane": "data",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "Flags skipper intoBitSet advance-guard drift, not the no-skipper path ",
+      "severity_or_note": "Only flags skipper intoBitSet missing iterDoc>=upTo early return vs no",
       "defect": "Incomplete fix of TSDB doc-values range `intoBitSet`: #150027 fixed position-contract issues on some intoBitSet paths but left the no-skipper range TwoPhaseIterator uncapped. Bulk scoring windows with `upTo > maxDoc` read past encoded block",
       "finder_model": "Grok 4.5"
     },
@@ -8206,8 +8206,8 @@
       "fixing_pr": 25066,
       "lane": "concurrency",
       "review_grade": "B",
-      "result": "MISS",
-      "severity_or_note": "Findings cover lookupSemaphore leak on thenAccept and equal-size updat",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
       "defect": "PIP-442 (#24833) adds AsyncSemaphoreImpl with update(permit, newPermits) that can race: if a permit is released before the updated permit is acquired, available permits inflate over time and memory limits for topic-list ops become ineffecti",
       "finder_model": "Grok 4.5"
     },
@@ -8221,7 +8221,7 @@
       "lane": "data",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "Discusses missing-index acceptedExpressions / alias name sets",
+      "severity_or_note": "empty findings",
       "defect": "Explicit index resolution API regressed empty index expressions from IndexNotFoundException to StringIndexOutOfBoundsException after #18523.",
       "finder_model": "Grok 4.5"
     },
@@ -8235,7 +8235,7 @@
       "lane": "data",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "Only UUID BytesRef offset/format issues",
+      "severity_or_note": "Only a design note that selective reading is blocked / RowRanges parti",
       "defect": "PageColumnReader (page-level Parquet batch reader) skip path: when a page is fully excluded, `loadNextPage` can jump the physical cursor past the `skipRows` target; surplus was discarded so subsequent skips over-advanced into survivor pages",
       "finder_model": "Grok 4.5"
     },
@@ -8249,7 +8249,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "HIT",
-      "severity_or_note": "LOW",
+      "severity_or_note": "MEDIUM",
       "defect": "#14135 implements `intoBitSet` on `RoaringDocIdSet` / `IntArrayDocIdSet`. Once iteration reaches `NO_MORE_DOCS`, the multi-block iterator clears the underlying sub-iterator; the new `intoBitSet` still entered the sub-block loop without a `d",
       "finder_model": "Grok 4.5"
     },
@@ -8263,7 +8263,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "Flags RuntimeException catch, mutation API split, singleResultOptional",
+      "severity_or_note": "Flags singleResultOptional, count() cast, RuntimeException rewrite, ge",
       "defect": "#41547 migrates Panache to `SelectionQuery`/`MutationQuery`. The entityClass overload of `executeUpdate` builds the update via `createMutationQuery` but opens the session with `getSession(DEFAULT_PERSISTENCE_UNIT_NAME)` instead of `getSessi",
       "finder_model": "Grok 4.5"
     },
@@ -8291,7 +8291,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "Finalize/abort double-count and threshold-zero issues only",
+      "severity_or_note": "Flags finalizePreviousRange with counter==0 / compare() advancing acti",
       "defect": "#17447 adds filter-rewrite sub-aggregation support (`SubAggRangeCollector` + `PointTreeTraversal.multiRangesTraverse`). After BKD traversal, `multiRangesTraverse` **always** called `collector.finalizePreviousRange()` even when traversal end",
       "finder_model": "Grok 4.5"
     },
@@ -8304,8 +8304,8 @@
       "fixing_pr": 22491,
       "lane": "correctness",
       "review_grade": "A",
-      "result": "MISS",
-      "severity_or_note": "Focuses on empty-map commit wipe contract",
+      "result": "HIT",
+      "severity_or_note": "MEDIUM",
       "defect": "#21795 (KAFKA-17411 offset-management fixes) **adds** `AbstractSegments.committedOffset(TopicPartition)` iterating `segments.values()` in ascending TreeMap order and returning the first non-null offset. Inactive older segments hold stale SS",
       "finder_model": "Grok 4.5"
     },
@@ -8319,7 +8319,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "Builder nullIsLess miswire and equals NPE only",
+      "severity_or_note": "Builder nullIsLess/ignoreCase miswire and equals(String) NPE only",
       "defect": "Direct commit \"Add Strings and refactor StringUtils\" (2024-09-21, no PR) adds `org.apache.commons.lang3.Strings` and implements case-insensitive `replace` by **pre-lowercasing** `searchString` (`if (ignoreCase) searchString = searchString.t",
       "finder_model": "Grok 4.5"
     },
@@ -8347,7 +8347,7 @@
       "lane": "correctness",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "Group-by-all plan rewrite issues only",
+      "severity_or_note": "Group-by-all plan rewrite, _timeseries encoding, Values(tsAgg) shape, ",
       "defect": "#137367 ships ESQL `GROUP BY ALL` / bare time-series aggs. `TranslateTimeSeriesAggregate` still throws `IllegalStateException: unexpected inline filter in time-series aggregation` when an `_over_time` agg carries a filter but there is no ou",
       "finder_model": "Grok 4.5"
     },
@@ -8361,7 +8361,7 @@
       "lane": "correctness",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "Notes dual Accumulator vs MergingDigest representation",
+      "severity_or_note": "Pending buffer alias, weight validation, Accumulator dual surface (asB",
       "defect": "#18996 optimizes TDigest aggregation with `PercentileTDigestAccumulator` (capacity-preserving serialize for oversized compact digests). It wires capacity-preserving `serialize()` on the accumulator\u2019s own path, but **misses** generic `TDIGES",
       "finder_model": "Grok 4.5"
     },
@@ -8375,7 +8375,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "empty findings",
+      "severity_or_note": "Notes removal of postInitializeCompetitiveIterator early-empty prune a",
       "defect": "#142493 implements `setScorer()` on the skipper competitive-iterator builder and removes `PointsCompetitiveDISIBuilder.postInitializeCompetitiveIterator()`. The shared `updateCompetitiveIterator()` still early-returns when `hitsThresholdRea",
       "finder_model": "Grok 4.5"
     },
@@ -8389,7 +8389,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "limit=0 semantics and 'null' sentinel only",
+      "severity_or_note": "limit+negative index semantics and argument-order footguns only",
       "defect": "#12437 adds the 4-arg `splitPart(input, delimiter, limit, index)` scalar used on high-QPS transform/query paths; implementation materializes a full `String[]` via `StringUtils.splitByWholeSeparator(\u2026, limit)` on every call even when only on",
       "finder_model": "Grok 4.5"
     },
@@ -8403,7 +8403,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "HIT",
-      "severity_or_note": "MEDIUM",
+      "severity_or_note": "HIGH",
       "defect": "#89047 removes ES\u2019s internal `shortcutTotalHitCount` optimization, relying on Lucene `Weight#count` / `TotalHitCountCollector`. For size>0 searches whose query *can* short-circuit total hits (term, match_all, field_exists), Lucene\u2019s top-sco",
       "finder_model": "Grok 4.5"
     },
@@ -8417,7 +8417,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "Flags generation materialization cost and exception swallows",
+      "severity_or_note": "trim/pinning correctness and fileTransferTracker loop cost only",
       "defect": "#15579 extracts `RemoteFsTimestampAwareTranslog` and implements remote-purge cleanup with `metadataFilesNotToBeDeleted.removeAll(metadataFilesToBeDeleted)` (and sibling `removeAll` sites) where both sides are `ArrayList`. `ArrayList.removeA",
       "finder_model": "Grok 4.5"
     },
@@ -8430,8 +8430,8 @@
       "fixing_pr": 151815,
       "lane": "performance",
       "review_grade": "A",
-      "result": "HIT",
-      "severity_or_note": "LOW",
+      "result": "MISS",
+      "severity_or_note": "Correctness notes nested FlatteningXContentParser wrappers for prefix ",
       "defect": "#97972 implements `subobjects:false` flattening via `FlatteningXContentParser` and `DocumentParserContext.createFlattenContext`, allocating a flattening wrapper (and related parser switch) **per intermediate JSON object** on the ingest path",
       "finder_model": "Grok 4.5"
     },
@@ -8445,7 +8445,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "HIT",
-      "severity_or_note": "LOW",
+      "severity_or_note": "MEDIUM",
       "defect": "#19357 batches small SpillingGrouper spill runs by **always** writing each spill to a temp file, then checking size and reading small ones back into memory (to avoid thousands of tiny files for HLL/groupBy). On high-cardinality groupBy with",
       "finder_model": "Grok 4.5"
     },
@@ -8487,7 +8487,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "encode/decode length and ignored-value copy costs only",
+      "severity_or_note": "encode/decode length and BytesRef offset bugs plus dynamic-limit encod",
       "defect": "#107567 adds synthetic-source ignored-value tracking (`IgnoredSourceFieldMapper`) and `ObjectMapper.SyntheticFieldLoader.setIgnoredValues`, which walks every field loader on every doc while always allocating a non-null `objectsWithIgnoredFi",
       "finder_model": "Grok 4.5"
     },
@@ -8514,8 +8514,8 @@
       "fixing_pr": 50847,
       "lane": "security",
       "review_grade": "A",
-      "result": "MISS",
-      "severity_or_note": "Findings are SPI hasPermission removal and non-final QUERY constant",
+      "result": "HIT",
+      "severity_or_note": "MEDIUM",
       "defect": "PR #47073 enforces SCIM admin roles/permissions and implements `getAll` as `getModels(...).map(m -> get(m.getId()))` with per-resource `VIEW` inside `get()`. A client with only `query-users`/`query-groups` passes the entry `canQuery()` chec",
       "finder_model": "Grok 4.5"
     },
@@ -8529,7 +8529,7 @@
       "lane": "security",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "Findings discuss intentional default blocklist and LIKE/null semantics",
+      "severity_or_note": "empty findings",
       "defect": "#22075 changes `analytics.delegation.<backend>.blocked_predicates` defaults from empty to non-empty for lucene (`IS_NULL`, `IS_NOT_NULL`, `LIKE`) so sensitive predicates stay off secondary backends. Seeding still uses `AffixSetting.getAsMap",
       "finder_model": "Grok 4.5"
     },
@@ -8543,7 +8543,7 @@
       "lane": "security",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "Findings cover trustedDomains/SSRF/scheme on CIMD fetch path, not miss",
+      "severity_or_note": "Findings cover CIMD executor soft-fail when feature off, scheme/SSRF/r",
       "defect": "PR #45285 adds Persistent CIMD (Client ID Metadata Document) client creation. Public clients created through CIMD do not run client-policy REGISTER/REGISTERED executors the same way as Admin Console create/save, so configured enforcers (`se",
       "finder_model": "Grok 4.5"
     },
@@ -8557,7 +8557,7 @@
       "lane": "security",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "empty findings",
+      "severity_or_note": "Findings discuss default strip on cross-domain redirects, same-origin ",
       "defect": "Commit `6b2fbb7f` \"Strip credentials on cross-domain redirects and HTTPS-to-HTTP downgrades\" clears request realm / Authorization on cross-origin redirect and sets `future.setRealm(null)`, but the 401 re-auth path (`exitAfterIntercept`) sti",
       "finder_model": "Grok 4.5"
     },
@@ -8585,7 +8585,7 @@
       "lane": "security",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "Findings cover legacy toggle removal, getClients pagination, temp clie",
+      "severity_or_note": "Findings cover null clientId on create, temp-client policy probes, and",
       "defect": "PR #48091 removes the legacy Client API v2 service and lands create/update on `DefaultClientService` without calling `LoginProtocolFactory.setupClientDefaults`. OIDC clients created via Admin API v2 therefore miss `backchannelLogoutSessionR",
       "finder_model": "Grok 4.5"
     },
@@ -8613,7 +8613,7 @@
       "lane": "concurrency",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "Findings discuss PeriodicalTask/shutdown interleaving after desynchron",
+      "severity_or_note": "Findings discuss post-desync shutdown vs concurrent start interleaving",
       "defect": "Incomplete deadlock fix residual. HDDS-14645 (#10378) removed synchronized from BackgroundService.shutdown and moved awaitTermination outside the monitor so PeriodicalTask can enter the critical section \u2014 fixing one PeriodicalTask\u2194shutdown ",
       "finder_model": "Grok 4.5"
     },
@@ -8627,7 +8627,7 @@
       "lane": "concurrency",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "Only instanceof SynchronousExecutorService brittleness",
+      "severity_or_note": "Only finding is instanceof SynchronousExecutorService brittleness for ",
       "defect": "CAMEL-23030 (#21538) avoided StackOverflowError on aggregate completion with SynchronousExecutorService by switching non-transacted path from reactiveExecutor.scheduleSync(task) to schedule(task). Aggregated exchanges lose the transacted fl",
       "finder_model": "Grok 4.5"
     },
@@ -8641,7 +8641,7 @@
       "lane": "concurrency",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "Findings cover close races and maxQueueSize<=0 livelock",
+      "severity_or_note": "Findings cover close()/cancel Closeable leaks, ConcurrentLinkedQueue",
       "defect": "#10691 bounded ParallelIterable.queue to cap memory: when the queue is full, a Task yields and is removed from the executor while still holding external resources (e.g. S3 connections via ManifestReader). Under multi-ParallelIterable load t",
       "finder_model": "Grok 4.5"
     },
@@ -8697,7 +8697,7 @@
       "lane": "concurrency",
       "review_grade": "A",
       "result": "HIT",
-      "severity_or_note": "MEDIUM",
+      "severity_or_note": "HIGH",
       "defect": "HDDS-12596 (#8157) enforced ozone.om.fs.snapshot.max.limit via OmSnapshotManager.snapshotLimitCheck using AtomicInteger inFlightSnapshotCount but reading global snapshot chain size *outside* updateAndGet (check-then-act). Concurrent creates",
       "finder_model": "Grok 4.5"
     },
@@ -8724,8 +8724,8 @@
       "fixing_pr": 25644,
       "lane": "concurrency",
       "review_grade": "A",
-      "result": "MISS",
-      "severity_or_note": "empty findings",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
       "defect": "ConcurrentLongHashMap.Section publishes keys/values/capacity as three separate volatile fields. #18390 attempted to fix optimistic-lock AIOOBE by snapshotting keys/ values into locals, but rehash still publishes the triple non-atomically \u2014 ",
       "finder_model": "Grok 4.5"
     },
@@ -8738,8 +8738,8 @@
       "fixing_pr": 4771,
       "lane": "concurrency",
       "review_grade": "A",
-      "result": "MISS",
-      "severity_or_note": "empty findings",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
       "defect": "Same ConcurrentLongHashMap/Section torn-triple publish race as pulsar-25644. #4066 ported pulsar's incomplete local-snapshot optimistic-lock fix into bookkeeper's ConcurrentLong* collections; residual rehash can still AIOOBE under concurren",
       "finder_model": "Grok 4.5"
     },
@@ -8753,7 +8753,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "empty findings",
+      "severity_or_note": "Findings only note split public getters re-reading the volatile Timest",
       "defect": "#10960 refactors LogSegment maxTimestampSoFar + offsetOfMaxTimestampSoFar into a single volatile TimestampOffset maxTimestampAndOffsetSoFar to avoid torn timestamp/offset reads. Lazy init in readMaxTimestampAndOffsetSoFar still does check-t",
       "finder_model": "Grok 4.5"
     },
@@ -8767,7 +8767,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "empty findings",
+      "severity_or_note": "Findings discuss concurrent leave while iterating _participantInfos an",
       "defect": "#2814 fixed participant ephemeral recreate on any CONNECTED (not only EXPIRED\u2192CONNECTED) and touchLeaderNode, but on expire/reconnect it does not re-register user-registered leadership listeners before recreating the leader node. Race: clie",
       "finder_model": "Grok 4.5"
     },
@@ -8781,7 +8781,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "Findings name timeout+late dual stats recording",
+      "severity_or_note": "Findings name timeout finally vs late receiveDataTable double accounti",
       "defect": "Single AdaptiveServerSelection in-flight counter race. #9801 wired ServerRoutingStatsManager into AsyncQueryResponse so timeout/non-responding servers also decrement numInFlightRequests (bugfix for sticky overload avoidance). Jetty completi",
       "finder_model": "Grok 4.5"
     },
@@ -8795,7 +8795,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "Findings are txn offset commit error codes",
+      "severity_or_note": "api-ops notes OffsetCommit overwrites client topicId from metadata cac",
       "defect": "#21692 (KIP-1251 assignment epochs) adds topicId resolving for OffsetCommit in KafkaApis#handleOffsetCommitRequest: always metadataCache.getTopicId(topic.name) then topic.setTopicId(...). Concurrent metadata updates can race between resolve",
       "finder_model": "Grok 4.5"
     },
@@ -8809,7 +8809,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "Findings cover asyncOpen signature break and BadVersion close path",
+      "severity_or_note": "Findings cover asyncOpen signature break, cursorLedgerStat refresh rac",
       "defect": "#5604 introduces Supplier<Boolean> mlOwnershipChecker and calls ledger.mlOwnershipChecker.get() synchronously inside ManagedCursorImpl.persistPositionMetaStore on the BookKeeper ordered worker thread. When the supplier later blocks (ownersh",
       "finder_model": "Grok 4.5"
     },
@@ -8822,8 +8822,8 @@
       "fixing_pr": 14927,
       "lane": "concurrency",
       "review_grade": "B",
-      "result": "MISS",
-      "severity_or_note": "Findings name fuzzyListenContextMap publish-outside-lock",
+      "result": "HIT",
+      "severity_or_note": "MEDIUM",
       "defect": "ClientWorker.ConfigRpcTransportClient.multiTaskExecutor is a plain HashMap with non-atomic containsKey+put in ensureSyncExecutor. Concurrent callers for the same taskId each create a ThreadPoolExecutor; only the last put is retained \u2192 perma",
       "finder_model": "Grok 4.5"
     }
