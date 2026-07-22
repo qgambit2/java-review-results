@@ -1,11 +1,11 @@
 {
   "campaign": "JRS mined regression-pair recall",
   "updated_utc": "2026-07-21",
-  "headline": "448/630 maintainer-adjudicated regressions detected at the introducing PR",
+  "headline": "450/630 maintainer-adjudicated regressions detected at the introducing PR",
   "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs. Finder model is per-pair (see finder_model field) \u2014 batches 1\u20137 Opus 4.8 (n=1\u201370), batches 8+ Grok 4.5 (n=71+); see finder_model per pair (Grok 4.5 n=560, Opus 4.8 n=70).",
   "total": 630,
-  "hits": 448,
-  "misses": 182,
+  "hits": 450,
+  "misses": 180,
   "pairs": [
     {
       "n": 1,
@@ -7437,7 +7437,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "adjacent seek coverage/timeout; not non-empty poll seek-skip",
+      "severity_or_note": "v2 files isolation/offset/timeout residuals",
       "defect": "#18337 rewrote `KafkaPartitionLevelConsumer.fetchMessages` (kafka 3.0 + 4.0) to skip re-seek when the caller repeats the same `startOffset` (read_committed empty-poll progress). The seek-skip is also applied after a *non-empty* poll whose r",
       "finder_model": "Grok 4.5"
     },
@@ -7451,7 +7451,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "toStreamCache NPE; not Response metadata/headers drop",
+      "severity_or_note": "Findings flag toStreamCache NPE on null entity and narrow StreamCache ",
       "defect": "#19376 (CAMEL-22414) added `CxfConverter.toStreamCache(Response)` that converts the entity via `toInputStream` + type converter and never copies `Response.getMediaType()` / protocol headers onto the exchange before the `Response` is consume",
       "finder_model": "Grok 4.5"
     },
@@ -7479,7 +7479,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "HIT",
-      "severity_or_note": "HIGH",
+      "severity_or_note": "MEDIUM",
       "defect": "#9566 moved `notifyMessageArriveInBatch=true` from `RocksDBMessageStore` ctor into `RocksDBConsumeQueueStore` ctor via `messageStore.setNotifyMessageArriveInBatch(true)`. The flag lives on shared `DefaultMessageStore`. `CombineConsumeQueueS",
       "finder_model": "Grok 4.5"
     },
@@ -7521,7 +7521,7 @@
       "lane": "correctness",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "adjacent EPOCH type discussion; not cast regression",
+      "severity_or_note": "EPOCH WEEKS NPE and Object return-type discussion are adjacent",
       "defect": "dateTimeConvert return type cast regression from #11839.",
       "finder_model": "Grok 4.5"
     },
@@ -7549,7 +7549,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "HIT",
-      "severity_or_note": "HIGH",
+      "severity_or_note": "MEDIUM",
       "defect": "Direct commit \"Fixed - UUID serialization by Jackson codecs. #6828\" (2026-01-21, no PR) adds `UuidMixin` with `@JsonTypeInfo(use = Id.CLASS)` and registers it in `JsonJacksonCodec.init()`. `TypedJsonJacksonCodec` no-ops `initTypeInclusion()",
       "finder_model": "Grok 4.5"
     },
@@ -7577,7 +7577,7 @@
       "lane": "data",
       "review_grade": "A",
       "result": "HIT",
-      "severity_or_note": "HIGH",
+      "severity_or_note": "CRITICAL",
       "defect": "UpgradeCoordinator progress tracking (added in #5357) compared stored ZooKeeper/root/metadata progress against the loop-invariant `currentVersion` instead of the per-step `upgradeVersion`. Every upgrader after the first is treated as alread",
       "finder_model": "Grok 4.5"
     },
@@ -7633,7 +7633,7 @@
       "lane": "data",
       "review_grade": "A",
       "result": "HIT",
-      "severity_or_note": "HIGH",
+      "severity_or_note": "MEDIUM",
       "defect": "Source-filtering in `XContentMapValues` (document `_source` transform on read path) was changed so array items are only accepted when a previous include pattern matches. That change also dropped empty arrays after exclusion filtering, while",
       "finder_model": "Grok 4.5"
     },
@@ -7661,7 +7661,7 @@
       "lane": "data",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "limitHint overflow; not FrameChannelMerger finished()",
+      "severity_or_note": "Findings are limitHint int overflow / SuperSorter hard-enforce",
       "defect": "FrameChannelMerger (MSQ global-sort / frame merge path) used `remainingChannels` as a count of non-null current frames. Between `nextFrame()` and the next await/populate, a blocked channel nulled its frame entry so `finished()` could spurio",
       "finder_model": "Grok 4.5"
     },
@@ -7675,7 +7675,7 @@
       "lane": "data",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "IT phase matrix; not getNextTriggerWatermark offset",
+      "severity_or_note": "Findings about window property grouping ordinals and late-slice timers",
       "defect": "`TimeWindowUtils.getNextTriggerWatermark()` (event-time window aggregate state/timer path) was introduced/optimized without accounting for non-zero window offsets. Cascaded event-time WindowAggregate with offset never registers the correct ",
       "finder_model": "Grok 4.5"
     },
@@ -7689,7 +7689,7 @@
       "lane": "data",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "empty findings",
+      "severity_or_note": "Only design@LOW on hasInnerHits lazy alloc",
       "defect": "\"Removing unused fetch sub phase processor initialization\" skipped initializing fetch sub-phase processors (InnerHits / ScriptFields) in cases still required when nested inner hits appear under aggregations' top_hits. After 2.13.0, top_hits",
       "finder_model": "Grok 4.5"
     },
@@ -7731,7 +7731,7 @@
       "lane": "concurrency",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "empty findings",
+      "severity_or_note": "Empty findings",
       "defect": "NonStickyEventExecutorGroup.NonStickyOrderedEventExecutor, when hitting maxTaskExecutePerRun, clears executingThread (CAS to null) then calls executor.execute(this) to reschedule. If execute throws, the catch only sets state back to RUNNING",
       "finder_model": "Grok 4.5"
     },
@@ -7759,7 +7759,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "requestInFlight wedge; not backoffDeadlineMs clobber",
+      "severity_or_note": "Findings focus on requestInFlight wedge on unexpected response types",
       "defect": "RPCProducerIdManager.maybeRequestNextBlock() calls sendRequest() then unconditionally backoffDeadlineMs.set(NO_RETRY). sendRequest is async; response-path handleUnsuccessfulResponse() may set backoffDeadlineMs = now+RETRY_BACKOFF first, the",
       "finder_model": "Grok 4.5"
     },
@@ -7773,7 +7773,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "empty findings",
+      "severity_or_note": "Findings note request-path backoff clear fixed and residual timeout/co",
       "defect": "Residual race in RPCProducerIdManager after #21279: maybeRequestNextBlock still reads backoffDeadlineMs *before* CAS on requestInFlight. Response handler sets backoff then clears requestInFlight; a racer can pass the backoff check, then CAS",
       "finder_model": "Grok 4.5"
     },
@@ -7787,7 +7787,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "adjacent HashSet races; not EXPIRED reconnect",
+      "severity_or_note": "Findings are HashSet races, close CME, isLeader NPE",
       "defect": "LeaderElectionClient ConnectStateListener only recreated participant ephemeral nodes on EXPIRED\u2192CONNECTED. Race with native ZooKeeper reconnect (session not yet expired) left participant ZNode missing while still claiming leadership (heap-d",
       "finder_model": "Grok 4.5"
     },
@@ -7800,8 +7800,8 @@
       "fixing_pr": 24766,
       "lane": "concurrency",
       "review_grade": "B",
-      "result": "MISS",
-      "severity_or_note": "AS2 CHM races; not BeanProcessor DCL",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
       "defect": "AbstractBeanProcessor.getCustomAdapter: non-volatile processor/lookupProcessorDone plus incomplete double-check \u2014 sets lookupProcessorDone=true *before* tryConvertTo and does not re-check under lock, so concurrent threads can miss conversio",
       "finder_model": "Grok 4.5"
     },
@@ -7829,7 +7829,7 @@
       "lane": "concurrency",
       "review_grade": "A",
       "result": "HIT",
-      "severity_or_note": "HIGH",
+      "severity_or_note": "MEDIUM",
       "defect": "Lazy ORC init moved FileSystem classloader-sensitive init into OrcInputFormat.initialize(conf) and called it from every createReader(). Concurrent ParallelIndexTask subtasks in one JVM race Thread.currentThread().setContextClassLoader + Fil",
       "finder_model": "Grok 4.5"
     },
@@ -7857,7 +7857,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "empty findings (sub for camel-16105 binary)",
+      "severity_or_note": "Findings note system-user readiness privilege and prepareForShutdown s",
       "defect": "SigtermTerminationHandler.blockTermination registers cluster-state listener before seeding ReadyChecker.currentNodes; listener and shutdown threads race setCurrentNodes so a fresher node set is clobbered \u2192 readiness check dropped \u2192 hang. Fi",
       "finder_model": "Grok 4.5"
     },
@@ -7885,7 +7885,7 @@
       "lane": "security",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "batch size DoS; not user-bearer Evaluations auth",
+      "severity_or_note": "Findings are empty-array response shape, unbounded evaluations list Do",
       "defect": "PR #47838 adds the AuthZEN **Evaluations** (batch) endpoint and authenticates with `Tokens.getAccessToken(session)` only \u2014 any valid bearer including end-user tokens can query the PDP. Same fail-open auth as the single Evaluation API (#4763",
       "finder_model": "Grok 4.5"
     },
@@ -7899,7 +7899,7 @@
       "lane": "security",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "PATCH validation; not unbounded maxOperations",
+      "severity_or_note": "Findings cover SCIM filter query",
       "defect": "PR #46561 adds SCIM PATCH support (`AbstractScimResourceTypeProvider.patch`) that iterates every operation without a size cap. `ServiceProviderConfig.Bulk.maxOperations` exists but is never enforced on PATCH \u2014 an attacker can send unbounded",
       "finder_model": "Grok 4.5"
     },
@@ -7913,7 +7913,7 @@
       "lane": "security",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "empty findings",
+      "severity_or_note": "Findings are ADMIN_FINE_GRAINED_AUTHZ_V2 feature-flag not consulted / ",
       "defect": "Under FGAP v2, `GroupResource.addChild` required manage on the **parent** only. When reparenting an existing group by id, it never called `auth.groups().requireManage(child)`. A delegated admin with manage on a low-privilege group can repar",
       "finder_model": "Grok 4.5"
     },
@@ -7927,7 +7927,7 @@
       "lane": "security",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "open-download feature; not Kerberos-gated no-op",
+      "severity_or_note": "Findings name download flag defaulting to general unauth boolean (wide",
       "defect": "Commit `29038c4f81` (RANGER-3623) adds `failUnauthenticatedDownloadIfNotAllowed()` and config `ranger.admin.allow.unauthenticated.download.access`, but wraps the session/flag check in `if (UserGroupInformation.isSecurityEnabled())`. Outside",
       "finder_model": "Grok 4.5"
     },
@@ -7983,7 +7983,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "parent cancel wiring; not setOnCancelCallback race",
+      "severity_or_note": "Findings name incomplete parentTask wiring (QueryRequestContext",
       "defect": "Single async cancel race on AnalyticsQueryTask. Task is registered cancellable (taskManager.register) before setOnCancelCallback is wired (after async SEARCH planning). Cancel in that window runs onCancelled while callback still null \u2192 sile",
       "finder_model": "Grok 4.5"
     },
@@ -7997,7 +7997,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "under-report framing; not O(N\u00b7K) topList cost",
+      "severity_or_note": "Empty findings across performance/correctness/design",
       "defect": "#14363 implements `DisjunctionDISIApproximation.docIDRunEnd()` by calling `topList()`/`computeTopList()` then maxing `docIDRunEnd` across top clauses. For multi-clause MUST_NOT (interleaved keyword terms) `ReqExclBulkScorer` invokes this pe",
       "finder_model": "Grok 4.5"
     },
@@ -8025,7 +8025,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "HIT",
-      "severity_or_note": "HIGH",
+      "severity_or_note": "MEDIUM",
       "defect": "#110633 (manage_roles / regex has-privilege style checks) builds index-group automatons via `indexGroupAutomatons`. Expensive `Automatons.unionAndMinimize` combine path was left **outside** the `combine` conditional, so ordinary has-privile",
       "finder_model": "Grok 4.5"
     },
@@ -8039,7 +8039,7 @@
       "lane": "performance",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "missingValue NPE; not sort-default rebuild cost",
+      "severity_or_note": "Findings are missingValue",
       "defect": "#135886 wires `index.sort.*` settings through `stringListSettingWithDefaultProvider` / listSetting default providers (`IndexSortConfigDefaults::getDefaultSort*`). The first cut rebuilt default lists / sort specs on the many-shards settings ",
       "finder_model": "Grok 4.5"
     },
@@ -8053,7 +8053,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "adjacent bulkFormat; not LazyField supplier retain",
+      "severity_or_note": "Correctness flags LazyField unsynchronized concurrent first get (race ",
       "defect": "#3209 introduces `LazyField<T>` with `private final Supplier<T> supplier` retained forever after `get()` caches the value. Chained lazy computations (e.g. GlobalIndexResult.or/and) keep full supplier closure graphs alive \u2192 unbounded memory ",
       "finder_model": "Grok 4.5"
     },
@@ -8067,7 +8067,7 @@
       "lane": "performance",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "INT4 sparse sizing; not full-file withSlice cost",
+      "severity_or_note": "Sole finding is INT4 bulk-sparse query size check using packed length ",
       "defect": "BBQ/INT4 bulk scorers scored via `IndexInputUtils.withSlice(input, input.length(), \u2026)`, mapping (or heap-copying) the **entire** vector data file for every bulk scoring call when zero-copy mmap was unavailable. Fix #145779 rewrites scorers ",
       "finder_model": "Grok 4.5"
     },
@@ -8080,8 +8080,8 @@
       "fixing_pr": 91462,
       "lane": "performance",
       "review_grade": "A",
-      "result": "MISS",
-      "severity_or_note": "empty findings",
+      "result": "HIT",
+      "severity_or_note": "MEDIUM",
       "defect": "#90672 \u201cRefactor & tidy up uses of Strings class\u201d rewrites `hasText`/`validFileName` to `CharSequence.chars()` stream scans. Those helpers sit in many-shards hot loops (snapshotting); `hasText` went from near-zero to 2%+ CPU. Fix #91462 res",
       "finder_model": "Grok 4.5"
     },
@@ -8095,7 +8095,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "HIT",
-      "severity_or_note": "HIGH",
+      "severity_or_note": "MEDIUM",
       "defect": "Incomplete ConcurrentHashMap migration: ExponentialHistogram OTLP support added IndexProviderFactory with static HashMap + computeIfAbsent (and emptySnapshotCache LinkedHashMap path) used during concurrent DistributionSummary registration \u2192",
       "finder_model": "Grok 4.5"
     },
@@ -8109,7 +8109,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "MISS",
-      "severity_or_note": "empty findings",
+      "severity_or_note": "Findings praise writeAndFlush failure calling errorOut (hang fix) and ",
       "defect": "PerChannelBookieClient.readV3Response does completionObjects.get(key), schedules async handler that may release/recycle the CompletionValue, then remove(key). Timeout scanner can observe a recycled entry still in the map \u2192 NPE on nulled fie",
       "finder_model": "Grok 4.5"
     },
@@ -8123,7 +8123,7 @@
       "lane": "concurrency",
       "review_grade": "B",
       "result": "HIT",
-      "severity_or_note": "HIGH",
+      "severity_or_note": "MEDIUM",
       "defect": "Residual half-close vs onMessage race on gRPC @RunOnVirtualThread under unified HTTP transport. BlockingServerInterceptor defers startCall (and call.request(N)) onto a virtual/worker thread while onHalfClose is not gated \u2192 under load replay",
       "finder_model": "Grok 4.5"
     },
