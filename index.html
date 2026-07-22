@@ -929,6 +929,170 @@
 </tbody>
         </table>
       </div>
+      <div class="pager" id="pair-pager" aria-label="Pairs table pagination">
+        <span class="pg-info" id="pg-info"></span>
+        <button type="button" id="pg-prev" aria-label="Previous page">Prev</button>
+        <span id="pg-nums" style="display:inline-flex;flex-wrap:wrap;gap:.3rem;"></span>
+        <button type="button" id="pg-next" aria-label="Next page">Next</button>
+        <label class="pg-size">Per page
+          <select id="pg-size" aria-label="Rows per page">
+            <option value="25" selected>25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </label>
+      </div>
+      <p class="sec-sub" style="margin-top:.75rem;font-size:.82rem;">Grade &mdash; how directly the defect sits on the introducing diff: <b>A</b> a pointable wrong line, <b>B</b> in the added code but subtler, <b>C</b> the wrongness lives in a file the diff doesn't touch. Two candidates were dropped before scoring as mis-attributed by the fix PR (verified byte-identical to their parent) and aren't counted. <a href="mined-pairs.json">Raw data (JSON) &rarr;</a></p>
+    </section>
+
+    <section id="improves">
+      <div class="sec-head"><span class="sec-mark">&#9670;</span><h2>How it improves</h2></div>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.35rem;">A miss on a mined pair isn't a dead end &mdash; the maintainers already adjudicated it, so it's a training signal. Each upgrade below was driven by a specific missed regression from the table above, and validated against clean code before it shipped.</p>
+      <div class="uplog">
+        <div class="up">
+          <div class="meta"><span class="miss">missed the severity</span><span class="pairref">apache/pulsar #24784, #24533</span><span class="ver">v0.37.2</span></div>
+          <h4>Severity, rated by consequence</h4>
+          <p>The reviewer flagged a shutdown-path resource leak but rated it LOW. Now a throw on a cleanup or shutdown path is rated by what it costs on an unclean shutdown, not by how rarely it fires &mdash; and a defect that's inert under the default config but live under a supported extension point isn't discounted for that alone.</p>
+        </div>
+        <div class="up">
+          <div class="meta"><span class="miss">missed the race</span><span class="pairref">apache/pulsar #25352</span><span class="ver">v0.37.3</span></div>
+          <h4>Async lifecycle interleavings</h4>
+          <p>A change moved producer-creation callbacks onto an executor; a client timeout&#8209;then&#8209;retry then raced the delayed callback into building an orphan producer. Now, when a diff shifts async timing around a request lifecycle, the reviewer enumerates the out-of-diff events &mdash; timeout, cancel, retry, close &mdash; that could newly interleave.</p>
+        </div>
+        <div class="up">
+          <div class="meta"><span class="miss">missed the ordering</span><span class="pairref">apache/pulsar #20990</span><span class="ver">v0.37.5</span></div>
+          <h4>Reordered side effects</h4>
+          <p>A moved decrement ran an unblock check before the count it reads was updated, leaving a consumer blocked forever at a boundary config. Now a diff that changes <em>when</em> a side effect happens relative to code that observes it is checked against every intermediate reader.</p>
+        </div>
+        <div class="up">
+          <div class="meta"><span class="miss">missed the staleness</span><span class="pairref">apache/pulsar #22411 &middot; elasticsearch #138489</span><span class="ver">v0.38.1</span></div>
+          <h4>Stale snapshot across a concurrent writer</h4>
+          <p>An optimistic-lock version snapshot was moved to after the value it guards, so a concurrent writer could slip in between. Now the reviewer treats &ldquo;safely published&rdquo; as an answer to <em>torn</em> reads, not <em>staleness</em>: a snapshot read against a companion updated non-atomically can be stale even under a lock.</p>
+        </div>
+        <div class="up">
+          <div class="meta"><span class="miss">missed the breadth</span><span class="pairref">apache/camel #22490</span><span class="ver">v0.38.4</span></div>
+          <h4>Deserialization allow-list breadth</h4>
+          <p>A hardening change added a deserialization filter, and the reviewer accepted it as &ldquo;better than none.&rdquo; But a recursive <code>java.**</code> / <code>javax.**</code> allow-list still admits DNS/SSRF and JNDI gadget classes. Now the reviewer knows an allow-list isn't safe just for being narrower than nothing &mdash; it has to enumerate the concrete types the endpoint deserializes.</p>
+        </div>
+        <div class="up">
+          <div class="meta"><span class="miss">missed the cost</span><span class="pairref">apache/hadoop #1932 &middot; apache/lucene #13199</span><span class="ver">v0.38.5</span></div>
+          <h4>Performance, waved through as a constant factor</h4>
+          <p>A genuinely super&#8209;linear or wasteful operation sat right on the diff &mdash; a buffer that reallocated on nearly every append, a search tree built eagerly and usually never touched &mdash; but the reviewer dismissed it as &ldquo;still geometric&rdquo; or &ldquo;just caching.&rdquo; Now a dismissal owes the same rigor as a finding: before waving a cost through, the reviewer reads the actual growth target instead of assuming it, asks whether a cached value is really used, and names the caller that makes a path hot &mdash; because assuming the benign case is how these regressions ship.</p>
+        </div>
+        <div class="up">
+          <div class="meta"><span class="miss">missed the second resource</span><span class="pairref">keycloak #6912 (CVE&#8209;2026&#8209;9099)</span><span class="ver">v0.38.6</span></div>
+          <h4>Authorization on every resource, not just the named one</h4>
+          <p>A group&#8209;reparent endpoint checked manage permission on the destination parent but not on the group being moved, so an admin over one low&#8209;privilege group could pull a privileged group beneath it and inherit its members. Now, for a handler that moves, reparents, links, merges, or grants across two resources, the reviewer enumerates every resource whose state changes and confirms each client&#8209;supplied id is authorized &mdash; a check on the operation's named object doesn't cover a second one it acts on. Validated on a <em>second, unseen</em> operation: the same edit caught the identical gap in Keycloak's scope&#8209;mapping endpoints (CVE&#8209;2026&#8209;9795).</p>
+        </div>
+        <div class="up">
+          <div class="meta"><span class="miss">missed the complete under lock</span><span class="pairref">apache/kafka #17957</span><span class="ver">v0.38.7</span></div>
+          <h4>Complete the future after the unlock, not inside it</h4>
+          <p>A share&#8209;partition init path re&#8209;acquired the write lock in <code>whenComplete</code> (correct for state) and then called <code>future.complete</code> <em>while still holding that lock</em>. Dependent stages re&#8209;entered other locks and deadlocked. The reviewer treated &ldquo;re&#8209;lock in whenComplete&rdquo; as hygiene and cleared the real defect. Now completing a future (or counting down a latch) inside a locked region is an explicit finding: re&#8209;lock to mutate state is fine; release the lock, then complete. Validated on a <em>second, unseen</em> surface: Pulsar's <code>synchronized completeHandleFuture</code> (same mechanism, different product).</p>
+        </div>
+        <div class="up">
+          <div class="meta"><span class="miss">missed the schema-sized walk</span><span class="pairref">elastic/elasticsearch #112173</span><span class="ver">v0.38.8</span></div>
+          <h4>Linear over a mapping-sized set is not free</h4>
+          <p>Synthetic&#8209;source reconstruction started calling <code>advanceToDoc</code> on <em>every</em> registered stored&#8209;field loader for every document &mdash; including empty ones. The cost is linear, so the reviewer waved it through as a constant factor dominated by the existing field walk. Under hundreds of mapped fields that second full pass is a real per&#8209;hit regression. Now a dismissal of &ldquo;only linear&rdquo; has to name both the multiplier and the call frequency: new O(|F|) work on a proven per&#8209;doc path, where |F| scales with the mapping, is a finding. A/B on the motivating miss recovered it @MEDIUM; the clean fixture still produced zero performance findings.</p>
+        </div>
+      </div>
+      <p class="sec-sub" style="margin-top:.85rem;font-size:.82rem;">Every edit was A/B-tested on the real diff that motivated it and checked against clean code for new false positives before shipping.</p>
+    </section>
+
+    <section id="s1">
+      <div class="sec-head"><span class="sec-num">01</span><h2>The two-sided result</h2></div>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">A useful reviewer has to do both jobs. Measured separately, on independent code.</p>
+      <div class="board">
+        <div class="card recall">
+          <div class="q">Question A · recall</div>
+          <h3>Catches real bugs</h3>
+          <div class="big">2 / 2 caught</div>
+          <p>Two bugs that Apache maintainers had found and fixed were reintroduced by reversing their fix. The swarm flagged both, and a skeptic agent confirmed each against the code — grading one <b>more severe</b> than the maintainers' own PR title had.</p>
+        </div>
+        <div class="card precision">
+          <div class="q">Question B · precision / false-positive rate</div>
+          <h3>Stays quiet on clean code</h3>
+          <div class="big">5 / 5 looks good</div>
+          <p>Five real PRs reviewed as submitted returned <span class="pill good">LOOKS GOOD</span> on all five, with zero false positives — surfacing only three minor, accurate, low-severity notes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="s2">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Recall — the two reintroduced bugs</h2></div>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">Each finding survived an adversarial verifier told to refute it, before it counted.</p>
+
+      <div class="finding">
+        <div class="top">
+          <span class="id">dolphinscheduler #18331</span>
+          <span class="type-tag">concurrency</span>
+          <span class="pill warn">REQUEST CHANGES</span>
+          <span class="tag-conf">▸ refutation attempted → CONFIRMED</span>
+        </div>
+        <h4>A shared <code>static HashMap</code> reverted from <code>ConcurrentHashMap</code></h4>
+        <p>The map is mutated by <code>synchronized</code> login/logout but iterated lock-free by a Kerberos-renewal daemon. All <b>5 of 5</b> finders independently flagged the <code>ConcurrentModificationException</code> race; the verifier confirmed it <span class="sev HIGH">HIGH</span>. Notably it reasoned that the sibling map was <em>correctly</em> left a <code>HashMap</code> — so it understood the model, not just the pattern.</p>
+        <p class="note"><b>Tell-tale:</b> the finders rediscovered the exact regression test Apache added in the real fix — without ever being told this was a concurrency change.</p>
+      </div>
+
+      <div class="finding">
+        <div class="top">
+          <span class="id">dolphinscheduler #18300</span>
+          <span class="type-tag">security · IDOR</span>
+          <span class="pill crit">BLOCKED</span>
+          <span class="tag-conf">▸ refutation attempted → CONFIRMED ×2</span>
+        </div>
+        <h4>Dropped access-token owner check → account takeover</h4>
+        <p>The pre-fix code <em>looked</em> guarded. Two independent finders traced the guard to a dead end — <code>permissionCheck(...) { return true; }</code> — and followed the chain to a token→identity join, concluding any user could mint a token for an admin. Both verifiers confirmed <span class="sev CRITICAL">CRITICAL</span> by quoting that one-line method. Gated verdict: <span class="pill crit">BLOCKED</span>.</p>
+        <p class="note"><b>Deeper than the fix:</b> the maintainers' PR title was the terse "enforce access token owner checks" — the swarm surfaced it as a critical privilege-escalation chain, and its recommended fix matched what they shipped.</p>
+      </div>
+    </section>
+
+    <section id="s3">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Precision — five PRs reviewed as submitted</h2></div>
+      <p class="sec-sub" style="margin-top:-.6rem;margin-bottom:1.25rem;">Already merged and human-reviewed. The right answer is mostly "looks good" — the test is whether it agrees, quietly.</p>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Pull request</th><th>Type</th><th>Verdict</th><th>Gating findings (verified)</th><th>Non-gating</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="mono">#18284</span><br><span class="repo">apache/dolphinscheduler</span></td>
+              <td><span class="type-tag">feature</span></td>
+              <td><span class="pill good">LOOKS GOOD</span></td>
+              <td class="what">1 <span class="sev LOW">LOW</span> — real N+1 in a loop.<br>1 pre-existing issue <b>correctly dropped</b>.</td>
+              <td class="repo">3 low/nit</td>
+            </tr>
+            <tr>
+              <td><span class="mono">#18296</span><br><span class="repo">apache/dolphinscheduler</span></td>
+              <td><span class="type-tag">fix</span></td>
+              <td><span class="pill good">LOOKS GOOD</span></td>
+              <td class="what">—</td>
+              <td class="repo">1 nit</td>
+            </tr>
+            <tr>
+              <td><span class="mono">#10091</span><br><span class="repo">halo-dev/halo</span></td>
+              <td><span class="type-tag">feature</span></td>
+              <td><span class="pill good">LOOKS GOOD</span></td>
+              <td class="what">1 <span class="sev LOW">LOW</span> — real plugin-lifecycle race.</td>
+              <td class="repo">2 low/nit</td>
+            </tr>
+            <tr>
+              <td><span class="mono">#16309</span><br><span class="repo">apache/dubbo</span></td>
+              <td><span class="type-tag">fix</span></td>
+              <td><span class="pill good">LOOKS GOOD</span></td>
+              <td class="what">1 <span class="sev LOW">LOW</span> — real uncaught-exception path.</td>
+              <td class="repo">3 low/nit</td>
+            </tr>
+            <tr>
+              <td><span class="mono">#39072</span><br><span class="repo">apache/shardingsphere</span></td>
+              <td><span class="type-tag">fix</span></td>
+              <td><span class="pill good">LOOKS GOOD</span></td>
+              <td class="what">—</td>
+              <td class="repo">2 low/nit</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p class="sec-sub" style="margin-top:1rem;">Across all five, the gating reviewers raised only a handful of findings — <b>every one LOW, every one real, none refuted</b> — plus one pre-existing issue correctly attributed to history, not the diff. <b>Re-running the whole batch reproduced the result: 5&nbsp;/&nbsp;5 LOOKS GOOD and zero false positives again.</b> The exact minor notes shifted between runs — the finders are independent and stochastic — but the verdict did not. The non-gating notes are grounded consistency questions — sentinel <code>0</code> vs <code>-1</code>, a duplicated host:port heuristic, test-naming drift — not bug claims. <span class="repo">(Table shows a representative run.)</span></p>
     </section>
 
