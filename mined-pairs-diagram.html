@@ -1,0 +1,334 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1001px; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+    background: linear-gradient(180deg, #f7f8fc 0%, #eef1f8 100%);
+    color: #0f172a;
+    width: 1080px;
+    height: 1001px;
+    padding: 44px 48px 36px;
+    display: flex;
+    flex-direction: column;
+  }
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #4f46e5;
+  }
+  .eyebrow .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    background: #4f46e5;
+  }
+  .eyebrow .sep { color: #94a3b8; font-weight: 600; }
+  h1 {
+    margin-top: 14px;
+    font-size: 46px;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -.02em;
+  }
+  .lede {
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 1.35;
+    color: #475569;
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 22px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 18px;
+    border: 1.5px solid rgba(15, 23, 42, .08);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .045);
+    padding: 20px 20px 18px;
+  }
+  .card.planted {
+    border-color: rgba(234, 88, 12, .18);
+    background: linear-gradient(180deg, #fff 0%, #fffaf5 100%);
+  }
+  .card.mined {
+    border-color: rgba(22, 163, 74, .22);
+    background: linear-gradient(180deg, #fff 0%, #f4fbf6 100%);
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 7px 11px;
+    border-radius: 999px;
+  }
+  .planted .badge { color: #c2410c; background: #ffedd5; }
+  .mined .badge { color: #15803d; background: #dcfce7; }
+  .card h2 {
+    margin-top: 12px;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    line-height: 1.15;
+  }
+  .card .ask {
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1.35;
+    color: #64748b;
+    font-style: italic;
+  }
+  .points {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .point {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 16px;
+    line-height: 1.35;
+    color: #1e293b;
+  }
+  .point .mark {
+    flex: 0 0 24px;
+    height: 24px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    margin-top: 1px;
+  }
+  .planted .point .mark { background: #ffedd5; color: #c2410c; }
+  .mined .point .mark { background: #dcfce7; color: #15803d; }
+  .pill {
+    margin-top: 14px;
+    border-radius: 12px;
+    padding: 11px 12px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+  }
+  .planted .pill {
+    background: #fff7ed;
+    color: #9a3412;
+    border: 1px solid #fed7aa;
+  }
+  .mined .pill {
+    background: #ecfdf5;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+  }
+
+  /* numbered steps — same rhythm as the swarm diagram */
+  .steps {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .step-row {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .num {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: #4f46e5;
+    color: #fff;
+    font-weight: 800;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 14px rgba(79, 70, 229, .28);
+  }
+  .line {
+    flex: 1;
+    width: 3px;
+    background: #c7d2fe;
+    margin: 5px 0 0;
+    border-radius: 2px;
+    min-height: 8px;
+  }
+  .step-row:last-child .line { display: none; }
+  .panel {
+    background: #fff;
+    border: 1.5px solid rgba(15, 23, 42, .08);
+    border-radius: 14px;
+    padding: 14px 16px 13px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, .04);
+  }
+  .panel h3 {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    margin-bottom: 3px;
+  }
+  .panel p {
+    font-size: 15px;
+    line-height: 1.35;
+    color: #475569;
+  }
+  .panel .callout {
+    margin-top: 8px;
+    border-radius: 10px;
+    padding: 9px 11px;
+    font-size: 14px;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+  .callout.warn {
+    background: #fff1f2;
+    color: #9f1239;
+    border: 1px solid #fecdd3;
+  }
+  .callout.ok {
+    background: #ecfdf5;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+  }
+  .callout.bias {
+    background: #eef2ff;
+    color: #312e81;
+    border: 1px solid #c7d2fe;
+  }
+
+  .foot {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .foot .url {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .foot .tag {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+  <div class="eyebrow">
+    <span class="dot"></span>
+    JAVA-REVIEW
+    <span class="sep">·</span>
+    HOW WE MEASURE
+  </div>
+
+  <h1>Planted bugs vs mined pairs</h1>
+  <p class="lede">
+    Fixtures are a tripwire. Real maintainer regressions are the proof —
+    especially when an LLM didn’t invent the answer key.
+  </p>
+
+  <div class="cols">
+    <div class="card planted">
+      <div class="badge">△ Planted fixtures</div>
+      <h2>Bugs you wrote</h2>
+      <p class="ask">“Can it still catch what we already know?”</p>
+      <div class="points">
+        <div class="point">
+          <div class="mark">1</div>
+          <div>You (or a model) chose the shapes — legible, canonical defects.</div>
+        </div>
+        <div class="point">
+          <div class="mark">2</div>
+          <div>If an LLM planted it, a finder shares the same “what a bug looks like” prior.</div>
+        </div>
+        <div class="point">
+          <div class="mark">3</div>
+          <div>Great weekly alarm. Easy to overfit. Measures the mirror.</div>
+        </div>
+      </div>
+      <div class="pill">Useful tripwire — not the quality claim</div>
+    </div>
+
+    <div class="card mined">
+      <div class="badge">✓ Mined pairs</div>
+      <h2>Bugs the world shipped</h2>
+      <p class="ask">“Would it have caught a real regression?”</p>
+      <div class="points">
+        <div class="point">
+          <div class="mark">1</div>
+          <div>Introducing PR + later fix PR — maintainers paid for the ground truth.</div>
+        </div>
+        <div class="point">
+          <div class="mark">2</div>
+          <div>Human-shaped under ship pressure — not authored to be found.</div>
+        </div>
+        <div class="point">
+          <div class="mark">3</div>
+          <div>Blind finders. HIT only if they name the maintainer defect.</div>
+        </div>
+      </div>
+      <div class="pill">The honest recall number</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step-row">
+      <div class="rail"><div class="num">1</div><div class="line"></div></div>
+      <div class="panel">
+        <h3>Replay the introducing PR</h3>
+        <p>Run the reviewer only on the diff that let the bug in — never on the fix.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="rail"><div class="num">2</div><div class="line"></div></div>
+      <div class="panel">
+        <h3>Finders stay blind</h3>
+        <p>No defect write-up, no fix PR, no answer key in the prompt.</p>
+        <div class="callout bias">Bias break: generators and finders share priors. A planted suite can become an echo chamber.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="rail"><div class="num">3</div><div class="line"></div></div>
+      <div class="panel">
+        <h3>Score against the maintainer fix</h3>
+        <p>HIT only if a filed finding names the defect the maintainers proved. Adjacent bugs and empty findings are MISSes.</p>
+        <div class="callout ok">438/630 maintainer-adjudicated regressions at the introducing PR · quote-backed · no sticky prior</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="url">qgambit2.github.io/java-review-results/#pairs</span>
+    <span class="tag">tripwire + mined pairs · both needed</span>
+  </div>
+</body>
+</html>
