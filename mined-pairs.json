@@ -1,11 +1,11 @@
 {
   "campaign": "JRS mined regression-pair recall",
   "updated_utc": "2026-07-22",
-  "headline": "503/728 maintainer-adjudicated regressions detected at the introducing PR",
-  "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs. Finder model is per-pair (see finder_model field) \u2014 batches 1\u20137 Opus 4.8 (n=1\u201370), batches 8+ Grok 4.5 (n=71+); see finder_model per pair (Grok 4.5 n=658, Opus 4.8 n=70). Scoring regime is also per-pair (scoring field): 'self-scored' segments (n=71\u2013220, 291\u2013370) were scored by the mining orchestrator with the fix PR open and are pending blind re-audit \u2014 the one sampled window of that regime dropped 23% on blind re-score; n=221\u2013290 is blind-rescored; n\u2265371 is quote-backed (bank_mined_pair.py, scored_blind); n=531\u2013728 additionally re-ran under the second-pass finder prompt. Treat the headline as a mixed-method upper bound, not one measurement.",
-  "total": 728,
-  "hits": 503,
-  "misses": 225,
+  "headline": "504/730 maintainer-adjudicated regressions detected at the introducing PR",
+  "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs. Finder model is per-pair (see finder_model field) \u2014 batches 1\u20137 Opus 4.8 (n=1\u201370), batches 8+ Grok 4.5 (n=71+); see finder_model per pair (Grok 4.5 n=660, Opus 4.8 n=70). Scoring regime is also per-pair (scoring field): 'self-scored' segments (n=71\u2013220, 291\u2013370) were scored by the mining orchestrator with the fix PR open and are pending blind re-audit \u2014 the one sampled window of that regime dropped 23% on blind re-score; n=221\u2013290 is blind-rescored; n\u2265371 is quote-backed (bank_mined_pair.py, scored_blind); n=531\u2013730 additionally re-ran under the second-pass finder prompt. Treat the headline as a mixed-method upper bound, not one measurement.",
+  "total": 730,
+  "hits": 504,
+  "misses": 226,
   "pairs": [
     {
       "n": 1,
@@ -10924,6 +10924,36 @@
       "result": "MISS",
       "severity_or_note": "no target match / cleared / empty",
       "defect": "Parquet 1.15 no-arg builder loads full Hadoop Configuration on every reader init",
+      "finder_model": "Grok 4.5",
+      "scoring": "hard-gate+second-pass"
+    },
+    {
+      "n": 729,
+      "batch": "n=729-730 (2026-07-23)",
+      "repo": "apache/pulsar",
+      "key": "pulsar-17371",
+      "introducing_pr": 17371,
+      "fixing_pr": 25732,
+      "lane": "correctness",
+      "review_grade": "A",
+      "result": "MISS",
+      "severity_or_note": "adjacent shadow lifecycle; retain leak not filed",
+      "defect": "ShadowReplicator.replicateEntries retains headersAndPayload ByteBuf before sendAsync; with empty-payload shadow path producer does not own/release that buffer \u2192 Netty LEAK (extra refCnt after Entry release). Fix #25732 removes the retain.",
+      "finder_model": "Grok 4.5",
+      "scoring": "hard-gate+second-pass"
+    },
+    {
+      "n": 730,
+      "batch": "n=729-730 (2026-07-23)",
+      "repo": "eclipse-openj9/openj9",
+      "key": "openj9-23890",
+      "introducing_pr": 23890,
+      "fixing_pr": 24049,
+      "lane": "correctness",
+      "review_grade": "A",
+      "result": "HIT",
+      "severity_or_note": "HIGH",
+      "defect": "postCompilationTasks tracks unstored AOT bytes with ineligibleForRelocatableCompile == RELOCATABLE_COMPILE_OK, but TR_NoStoreAOT overwrites to AOT_INELIGIBLE_NO_STORE_AOT so unstored count stays 0. Fix also accepts NO_STORE_AOT. Introduced ",
       "finder_model": "Grok 4.5",
       "scoring": "hard-gate+second-pass"
     }
