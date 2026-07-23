@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- evidence-rev: 577/880-2026-07-23 v0.38.12 null-on-new-branch slice -->
+<!-- evidence-rev: 577/880-2026-07-23 v0.38.12 null-on-new-branch + stockpile fuel -->
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1388,7 +1388,7 @@
 <div class="up">
   <div class="meta">
     <span class="miss">missed null on a newly opened path</span>
-    <span class="pairref">ebean-2309 · rocketmq-3619 · pinot-16615 · paimon-6046</span>
+    <span class="pairref">ebean-2309 · rocketmq-3619 · paimon-6046 · beam-24757 · quarkus-26783</span>
     <span class="ver">v0.38.12</span>
   </div>
   <h4>Null on a path this PR newly opens</h4>
@@ -1397,8 +1397,9 @@
      unbox, method call) while a flag-off, upgrade, or sibling arm can still
      supply null. The correctness brief and failure catalog now name that tell
      explicitly. Clean fixture 0 FPs; same-day A/B OLD 4/5 → NEW 5/5 (rocketmq
-     NEW-only lift on topic/group pre-size); fresh unseen pairs paimon-6046 and
-     doris-22923 HIT. Campaign motivating pairs stay MISS in the headline count.</p>
+     NEW-only lift on topic/group pre-size); fresh unseen pairs <strong>4/6 HIT</strong>
+     (paimon-6046, doris-22923, beam-24757, quarkus-26783). Campaign motivating
+     pairs stay MISS in the headline count.</p>
 </div>
 
 
