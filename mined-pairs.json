@@ -11882,7 +11882,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "no target match / adjacent / empty",
+      "severity_or_note": "shipped v0.38.12 slice (campaign stays MISS)",
       "defect": "PR #3498 added temp-table column annotations via column.getSqlTypeCode(metadata) without null-guard. For PersistentTableBulkIdStrategy's hib_sess_id column, getSqlTypeCode(metadata) NPEs. Fix null-checks sqlTypeCode and sets Types.VARCHAR o",
       "finder_model": "Grok 4.5",
       "scoring": "hard-gate+second-pass"
@@ -11942,7 +11942,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "no target match / adjacent / empty",
+      "severity_or_note": "shipped v0.38.12 slice (campaign stays MISS)",
       "defect": "#16615 adds disableSummary so rebalance can skip summary (summaryResult=null). Later summaryResult.getSegmentInfo() runs unguarded \u2192 NPE when summary disabled. Fix #17723 null-guards the read.",
       "finder_model": "Grok 4.5",
       "scoring": "hard-gate+second-pass"
@@ -12137,7 +12137,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "no target match / adjacent / empty",
+      "severity_or_note": "shipped v0.38.12 slice (campaign stays MISS)",
       "defect": "#11092 multi-strategy FUNNEL_COUNT extractors dereference null DictIdsWrapper when WHERE empties segment \u2192 server NPE. Fix #18089 returns empty bitmaps/sets for null wrapper.",
       "finder_model": "Grok 4.5",
       "scoring": "hard-gate+second-pass"
@@ -12512,7 +12512,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "no target match / adjacent / empty",
+      "severity_or_note": "shipped v0.38.12 slice (campaign stays MISS)",
       "defect": "#3619 rewrote buildStatsKey to pre-size StringBuilder with topic.length()+group.length(). When topic or group is null (msg-back path), length() NPEs. Fix null-guards before sizing.",
       "finder_model": "Grok 4.5",
       "scoring": "hard-gate+second-pass"
@@ -12782,7 +12782,7 @@
       "lane": "correctness",
       "review_grade": "A",
       "result": "MISS",
-      "severity_or_note": "no target match / adjacent / empty",
+      "severity_or_note": "shipped v0.38.12 slice (campaign stays MISS)",
       "defect": "#2309's ScalarTypeJsonList/Set.formatValue called value.isEmpty() without null check. Setting a JSON List/Set property to null then persisting NPEs. Fix removes the isEmpty short-circuit and lets EJson.write handle null/empty.",
       "finder_model": "Grok 4.5",
       "scoring": "hard-gate+second-pass"
