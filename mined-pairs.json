@@ -1,8 +1,8 @@
 {
   "campaign": "JRS mined regression-pair recall",
-  "updated_utc": "2026-07-22",
+  "updated_utc": "2026-07-23",
   "headline": "577/880 maintainer-adjudicated regressions detected at the introducing PR",
-  "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs. Finder model is per-pair (see finder_model field) \u2014 batches 1\u20137 Opus 4.8 (n=1\u201370), batches 8+ Grok 4.5 (n=71+); see finder_model per pair (Grok 4.5 n=810, Opus 4.8 n=70). Scoring regime is also per-pair (scoring field): 'self-scored' segments (n=71\u2013220, 291\u2013370) were scored by the mining orchestrator with the fix PR open and are pending blind re-audit \u2014 the one sampled window of that regime dropped 23% on blind re-score; n=221\u2013290 is blind-rescored; n\u2265371 is quote-backed (bank_mined_pair.py, scored_blind); n=531\u2013730 additionally re-ran under the second-pass finder prompt. Treat the headline as a mixed-method upper bound, not one measurement.",
+  "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs. Finder model is per-pair (see finder_model field) \u2014 batches 1\u20137 Opus 4.8 (n=1\u201370), batches 8+ Grok 4.5 (n=71+); see finder_model per pair (Grok 4.5 n=810, Opus 4.8 n=70). Scoring regime is also per-pair (scoring field): 'self-scored' segments (n=71\u2013220, 291\u2013370) were scored by the mining orchestrator with the fix PR open and are pending blind re-audit \u2014 the one sampled window of that regime dropped 23% on blind re-score; n=221\u2013290 is blind-rescored; n\u2265371 is quote-backed (bank_mined_pair.py, scored_blind); n=531+ re-ran under the second-pass / Layer B surface_complete finder prompt. Treat the headline as a mixed-method upper bound, not one measurement. Recent hard-gate rate window n=781\u2013880 (batches 80\u201389): 42/100 (42%). Miss postmortem: evals/batch80-89-miss-postmortem-2026-07-23.md (adjacent-target dominant; empty minority). Soft shortlist R9 multi-sibling/dual-path.",
   "total": 880,
   "hits": 577,
   "misses": 303,
@@ -13208,5 +13208,13 @@
       "scoring": "hard-gate+second-pass"
     }
   ],
-  "notes": "review_grade A/B = defect on the introducing diff's surface, C = cross-file, per evals/mined-pairs-candidates.md. 'deeper-than-fix' unadjudicated findings are deliberately NOT in these headline fields. Mis-graded candidates dropped pre-scoring are not counted. finder_model is the model that ran the finders for that banked HIT/MISS \u2014 do not mix models when quoting a single recall rate without disclosing the split. 2026-07-22 audit: four v0.38.9 post-slice re-banks reverted to their mined-time MISS (a slice's motivating pairs stay MISS \u2014 the uplift belongs in the How-it-improves card, not the recall count), and 12 batch-54\u201358 sticky-prior HITs re-banked to their second-pass re-run MISS results for consistency with the batch 59\u201363 replace policy."
+  "recent_hard_gate_window": {
+    "n_start": 781,
+    "n_end": 880,
+    "hits": 42,
+    "total": 100,
+    "label": "batches 80\u201389 Layer B hard-gate",
+    "postmortem": "evals/batch80-89-miss-postmortem-2026-07-23.md"
+  },
+  "notes": "review_grade A/B = defect on the introducing diff's surface, C = cross-file, per evals/mined-pairs-candidates.md. 'deeper-than-fix' unadjudicated findings are deliberately NOT in these headline fields. Mis-graded candidates dropped pre-scoring are not counted. finder_model is the model that ran the finders for that banked HIT/MISS \u2014 do not mix models when quoting a single recall rate without disclosing the split. 2026-07-22 audit: four v0.38.9 post-slice re-banks reverted to their mined-time MISS (a slice's motivating pairs stay MISS \u2014 the uplift belongs in the How-it-improves card, not the recall count), and 12 batch-54\u201358 sticky-prior HITs re-banked to their second-pass re-run MISS results for consistency with the batch 59\u201363 replace policy. Recent hard-gate rate window n=781\u2013880 (batches 80\u201389): 42/100 (42%). Miss postmortem: evals/batch80-89-miss-postmortem-2026-07-23.md (adjacent-target dominant; empty minority). Soft shortlist R9 multi-sibling/dual-path."
 }
