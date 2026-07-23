@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- evidence-rev: 577/880-2026-07-23 batch85-89 -->
+<!-- evidence-rev: 577/880-2026-07-23 v0.38.11 multi-sibling slice -->
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1366,6 +1366,23 @@
      incomplete-fix for correctness). Blind A/B recovered four motivating pairs
      (os-15579, keycloak-47838, netty-13237, es-107567). es-150027 dual-path still
      partial — sibling early-return filed, maintainer maxDoc cap not yet.</p>
+</div>
+
+<div class="up">
+  <div class="meta">
+    <span class="miss">missed multi-sibling residual</span>
+    <span class="pairref">pinot-7707 · nacos-14751 · pinot-12502 · es-112026</span>
+    <span class="ver">v0.38.11</span>
+  </div>
+  <h4>Multi-sibling residual + dual-path + empty-then-remove</h4>
+  <p>Rate-decade MISSes and high-HIT re-runs clustered on multi-sibling intros:
+     finders filed a real secondary bug and missed the maintainer residual
+     (CHM empty-then-remove after a partial race fix, dual-path TLS/ClientAuth,
+     continueOnError drop, inverted compare). The finder prompt now prioritizes
+     those residual families after any first finding; concurrency/correctness/security
+     briefs name the tells. Clean fixture 0 FPs; historical pre→post product rescore
+     recovered 6/18 prior flips; generalization on banked MISSes es-112026 and
+     ozone-9150. Does not claim residual rate decades are fixed — only this pattern family.</p>
 </div>
 
         <div class="up">
