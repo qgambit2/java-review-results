@@ -315,6 +315,12 @@
   .lane-track { height: 8px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; overflow: hidden; min-width: 0; }
   .lane-fill { display: block; height: 100%; background: var(--good); }
   .lane-frac { font-size: .8rem; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  /* attribution strata: the labels carry a definition, so they need the room */
+  .lanes.strata { max-width: 47rem; }
+  .lanes.strata .lane { grid-template-columns: 21rem minmax(0, 1fr) 4rem; }
+  .lanes.strata .lane.note .lane-track { border: none; background: none; }
+  .lanes.strata .lane.note .lane-name, .lanes.strata .lane.note .lane-frac { color: var(--muted); font-style: italic; }
+  @media (max-width: 620px) { .lanes.strata .lane { grid-template-columns: 1fr; gap: .2rem; } .lanes.strata .lane-name { white-space: normal; } .lanes.strata .lane-frac { text-align: left; } }
   .filters { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: 1.15rem 0 .8rem; }
   .filters .flabel { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-right: .2rem; }
   .filters button { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .02em; padding: .26rem .6rem; border-radius: 6px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2); cursor: pointer; }
@@ -364,6 +370,7 @@
       <li><a href="#pairs"><span class="n">◆</span> The 890 pairs</a></li>
       <li><a href="#lanes"><span class="n">·</span> By specialty</a></li>
       <li><a href="#surface"><span class="n">·</span> By surface-directness</a></li>
+      <li><a href="#attribution"><span class="n">·</span> By attribution stratum</a></li>
       <li><a href="#improves"><span class="n">&#9670;</span> How it improves</a></li>
       <li class="grp">Field test</li>
       <li><a href="#s1"><span class="n">01</span> Two-sided result</a></li>
@@ -436,6 +443,18 @@
 <div class="lane"><span class="lane-name">B · one helper</span><span class="lane-track"><span class="lane-fill" style="width:55%"></span></span><span class="lane-frac mono">114/208</span></div>
 <div class="lane"><span class="lane-name">C · subtle</span><span class="lane-track"><span class="lane-fill" style="width:33%"></span></span><span class="lane-frac mono">2/6</span></div>
 <div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:65%"></span></span><span class="lane-frac mono"><b>582/890</b></span></div>
+</div>
+
+      <h3 id="attribution" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Recall by attribution stratum</h3>
+      <p class="sec-sub" style="margin-bottom:.9rem;">A mined pair is only a fair test if the defect the fixing PR repairs is <em>visible from the introducing diff</em>. A mechanical screen (no model call) compares the two diffs line by line across all 890 pairs and sorts each by how the fix relates to what the intro actually wrote. <b>28.2% of the misses are not clean in&#8209;diff tests, against 16.2% of the hits</b> &mdash; so part of the headline is test validity rather than capability, and the honest read is the split below, not one number. Nothing is deleted to produce it: <em>arms&#8209;sibling</em> and <em>unattributed</em> pairs are harder tests, not broken ones. Excluding only the 3 provably&#8209;invalid pairs from both sides moves the headline 65.4% &rarr; 65.5% &mdash; which is the point: the audit buys a clearer picture, not a better percentage. Method, per&#8209;lane composition, and the wrong&#8209;ref defect it caught: <a href="https://github.com/qgambit2/java-review/blob/main/results/2026-07-24-pair-validity-audit/README.md">pair&#8209;validity audit</a>.</p>
+
+            <div class="lanes strata" aria-label="Recall by attribution stratum">
+<div class="lane"><span class="lane-name">in-diff · defect on the shown surface</span><span class="lane-track"><span class="lane-fill" style="width:69%"></span></span><span class="lane-frac mono">486/707</span></div>
+<div class="lane"><span class="lane-name">arms-sibling · breakage in an untouched file</span><span class="lane-track"><span class="lane-fill" style="width:55%"></span></span><span class="lane-frac mono">47/85</span></div>
+<div class="lane"><span class="lane-name">unattributed · fix repairs nothing the intro wrote</span><span class="lane-track"><span class="lane-fill" style="width:49%"></span></span><span class="lane-frac mono">46/93</span></div>
+<div class="lane"><span class="lane-name">invalid · not a regression of this intro</span><span class="lane-track"><span class="lane-fill" style="width:33%"></span></span><span class="lane-frac mono">1/3</span></div>
+<div class="lane total"><span class="lane-name"><b>fair-test subset (in-diff)</b></span><span class="lane-track"><span class="lane-fill" style="width:69%"></span></span><span class="lane-frac mono"><b>486/707</b></span></div>
+<div class="lane note"><span class="lane-name">unscreened / unresolvable ref</span><span class="lane-track"></span><span class="lane-frac mono">2</span></div>
 </div>
 
       <div class="filters">
