@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- evidence-rev: 627/937-2026-07-25 batches 91-92 (first Opus 5 pairs); decade tripwire passed 5/5 -->
+<!-- evidence-rev: 628/938-2026-07-26 batches 91-92 (first Opus 5 pairs); decade tripwire passed 5/5 -->
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -367,7 +367,7 @@
     <ul>
       <li><a href="#top"><span class="n">·</span> Overview</a></li>
       <li class="grp">Mined pairs</li>
-      <li><a href="#pairs"><span class="n">◆</span> The 937 pairs</a></li>
+      <li><a href="#pairs"><span class="n">◆</span> The 938 pairs</a></li>
       <li><a href="#lanes"><span class="n">·</span> By specialty</a></li>
       <li><a href="#surface"><span class="n">·</span> By surface-directness</a></li>
       <li><a href="#attribution"><span class="n">·</span> By attribution stratum</a></li>
@@ -397,7 +397,7 @@
 
       <div class="headline-stats">
         <div class="hstat good fade d2">
-          <span class="num">627 / 937</span>
+          <span class="num">628 / 938</span>
           <span class="lbl">known bugs caught<br>both adversarially confirmed</span>
         </div>
         <div class="hstat clean fade d2">
@@ -413,7 +413,7 @@
 
       <div class="headline-stats">
         <div class="hstat good">
-          <span class="num">627 / 937</span>
+          <span class="num">628 / 938</span>
           <span class="lbl">maintainer-fixed regressions caught<br>at the PR that introduced them</span>
         </div>
         <div class="hstat clean">
@@ -421,47 +421,47 @@
           <span class="lbl">fabricated findings<br>across all eight hundred eighty-seven runs</span>
         </div>
       </div>
-<p class="sec-sub" style="margin:.6rem 0 0;font-size:.9rem;">Finder model is disclosed per row: batches 1&ndash;7 <b>Opus 4.8</b> n=1&ndash;70: <b>44/70 (63%)</b>; batches 8&ndash;90 <b>Grok 4.5</b> n=71&ndash;890: <b>537/817 (66%)</b>; batches 91&ndash;92 <b>Opus 5</b> n=891&ndash;940: <b>46/50 (92%)</b>. Campaign total <b>627/937 (67%)</b>. Treat mixed-model aggregates carefully &mdash; and treat that 92% as <em>n=50</em>, not as a rate: it is one model on 50 pairs, the newest and smallest stratum here, and it is not comparable to the Grok window without controlling for which pairs were mined.</p>
+<p class="sec-sub" style="margin:.6rem 0 0;font-size:.9rem;">Finder model is disclosed per row: batches 1&ndash;7 <b>Opus 4.8</b> n=1&ndash;70: <b>44/70 (63%)</b>; batches 8&ndash;90 <b>Grok 4.5</b> n=71&ndash;890: <b>537/817 (66%)</b>; batches 91&ndash;92 <b>Opus 5</b> n=891&ndash;941: <b>47/51 (92%)</b>. Campaign total <b>628/938 (67%)</b>. Treat mixed-model aggregates carefully &mdash; and treat that 92% as <em>n=51</em>, not as a rate: it is one model on 51 pairs, the newest and smallest stratum here, and it is not comparable to the Grok window without controlling for which pairs were mined.</p>
 
       <h3 id="lanes" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Detection by specialty</h3>
-      <p class="sec-sub" style="margin-bottom:.9rem;">Campaign <b>627/937 (67%)</b> after batches 91&ndash;92, the first pairs scored on <b>Opus 5</b> (<b>46/50 HIT</b>). The four misses are the informative part. In three of them the reviewer <em>read the changed code and affirmatively cleared it</em> &mdash; <code>solr-529</code> as &ldquo;a faithful port&rdquo;, and in <code>pulsar-23062</code> all three reviewers cleared the very executor change that arms the deadlock, reading &ldquo;it still runs on the same executor&rdquo; as reassurance. In <code>springframework-6e97587</code> a reviewer named the exact defect in its own coverage attestation and triaged it away as low severity. <code>pulsar-23901</code> is additionally a weak test &mdash; the flawed pattern predates the change under review &mdash; and is discounted rather than counted against capability. Batch 91 was a clean <b>10/10</b>, which fires the campaign&rsquo;s perfect-decade gate: a blind re-score of 5 of those 10 &mdash; ground truth and raw finder output only, verdict and rationale stripped &mdash; <a href="https://github.com/qgambit2/java-review/blob/main/results/2026-07-25-batch91-decade-tripwire/index.md">agreed 5/5</a>. One proposed pair was discarded as a duplicate of an already-mined PR and is not counted. Prior: batch 90 post-restructure Grok smoke <b>5/10</b>, 85&ndash;89 was 23/50. Strict quote-backed target recall; scoring per pair. <b>Recent hard-gate window (batches 80–89): 42/100 (42%)</b> — residual public gold under Layer&nbsp;B; do not read the drop from a high decade (e.g. 69–73 at 82%) as a silent product regression without the <a href="https://github.com/qgambit2/java-review/blob/main/evals/batch80-89-miss-postmortem-2026-07-23.md">miss postmortem</a> (adjacent-target 39/58 MISSes, empty 12/58).</p>
+      <p class="sec-sub" style="margin-bottom:.9rem;">Campaign <b>628/938 (67%)</b> after batches 91&ndash;92, the first pairs scored on <b>Opus 5</b> (<b>47/51 HIT</b>). The four misses are the informative part. In three of them the reviewer <em>read the changed code and affirmatively cleared it</em> &mdash; <code>solr-529</code> as &ldquo;a faithful port&rdquo;, and in <code>pulsar-23062</code> all three reviewers cleared the very executor change that arms the deadlock, reading &ldquo;it still runs on the same executor&rdquo; as reassurance. In <code>springframework-6e97587</code> a reviewer named the exact defect in its own coverage attestation and triaged it away as low severity. <code>pulsar-23901</code> is additionally a weak test &mdash; the flawed pattern predates the change under review &mdash; and is discounted rather than counted against capability. Batch 91 was a clean <b>10/10</b>, which fires the campaign&rsquo;s perfect-decade gate: a blind re-score of 5 of those 10 &mdash; ground truth and raw finder output only, verdict and rationale stripped &mdash; <a href="https://github.com/qgambit2/java-review/blob/main/results/2026-07-25-batch91-decade-tripwire/index.md">agreed 5/5</a>. One proposed pair was discarded as a duplicate of an already-mined PR and is not counted. Prior: batch 90 post-restructure Grok smoke <b>5/10</b>, 85&ndash;89 was 23/50. Strict quote-backed target recall; scoring per pair. <b>Recent hard-gate window (batches 80–89): 42/100 (42%)</b> — residual public gold under Layer&nbsp;B; do not read the drop from a high decade (e.g. 69–73 at 82%) as a silent product regression without the <a href="https://github.com/qgambit2/java-review/blob/main/evals/batch80-89-miss-postmortem-2026-07-23.md">miss postmortem</a> (adjacent-target 39/58 MISSes, empty 12/58).</p>
       
             <div class="lanes" aria-label="Recall by specialty">
-<div class="lane"><span class="lane-name">correctness</span><span class="lane-track"><span class="lane-fill" style="width:67%"></span></span><span class="lane-frac mono">157/235</span></div>
+<div class="lane"><span class="lane-name">correctness</span><span class="lane-track"><span class="lane-fill" style="width:67%"></span></span><span class="lane-frac mono">158/236</span></div>
 <div class="lane"><span class="lane-name">concurrency</span><span class="lane-track"><span class="lane-fill" style="width:69%"></span></span><span class="lane-frac mono">137/198</span></div>
 <div class="lane"><span class="lane-name">security</span><span class="lane-track"><span class="lane-fill" style="width:70%"></span></span><span class="lane-frac mono">117/166</span></div>
 <div class="lane"><span class="lane-name">data</span><span class="lane-track"><span class="lane-fill" style="width:66%"></span></span><span class="lane-frac mono">107/162</span></div>
 <div class="lane"><span class="lane-name">performance</span><span class="lane-track"><span class="lane-fill" style="width:62%"></span></span><span class="lane-frac mono">109/176</span></div>
-<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:67%"></span></span><span class="lane-frac mono"><b>627/937</b></span></div>
+<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:67%"></span></span><span class="lane-frac mono"><b>628/938</b></span></div>
 </div>
 
       <h3 id="surface" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Recall by surface-directness</h3>
       <p class="sec-sub" style="margin-bottom:.9rem;">Grade is how pointable the introduced bug is on the diff: <b>A</b> a single wrong line, <b>B</b> visible after reading one helper, <b>C</b> cross&#8209;file or subtle. Recall tracks it &mdash; the honest read on the headline: the aggregate drifts down as we deliberately mine <em>harder, subtler</em> pairs, not because detection got worse. The residual hard case is a grade&#8209;A bug whose <em>cost</em> is real but emergent &mdash; a fold, a downstream fast&#8209;path, an uncached branch &mdash; visible only when you model the caller.</p>
       
             <div class="lanes" aria-label="Recall by surface-directness">
-<div class="lane"><span class="lane-name">A · pointable</span><span class="lane-track"><span class="lane-fill" style="width:70%"></span></span><span class="lane-frac mono">493/703</span></div>
+<div class="lane"><span class="lane-name">A · pointable</span><span class="lane-track"><span class="lane-fill" style="width:70%"></span></span><span class="lane-frac mono">494/704</span></div>
 <div class="lane"><span class="lane-name">B · one helper</span><span class="lane-track"><span class="lane-fill" style="width:58%"></span></span><span class="lane-frac mono">131/225</span></div>
 <div class="lane"><span class="lane-name">C · subtle</span><span class="lane-track"><span class="lane-fill" style="width:33%"></span></span><span class="lane-frac mono">3/9</span></div>
-<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:67%"></span></span><span class="lane-frac mono"><b>627/937</b></span></div>
+<div class="lane total"><span class="lane-name"><b>total</b></span><span class="lane-track"><span class="lane-fill" style="width:67%"></span></span><span class="lane-frac mono"><b>628/938</b></span></div>
 </div>
 
       <h3 id="attribution" style="font-size:1.05rem;margin:2rem 0 .3rem;letter-spacing:-.01em;">Recall by attribution stratum</h3>
       <p class="sec-sub" style="margin-bottom:.9rem;">A mined pair is only a fair test if the defect the fixing PR repairs is <em>visible from the introducing diff</em>. A mechanical screen (no model call) compares the two diffs line by line across every pair and sorts each by how the fix relates to what the intro actually wrote. <b>28.2% of the misses are not clean in&#8209;diff tests, against 16.2% of the hits</b> &mdash; so part of the headline is test validity rather than capability, and the honest read is the split below, not one number. Only <b>3 pairs were provably invalid</b> (one fix branched before its intro merged; one bank named the same PR as both intro and fix; one fix merged seven weeks <em>before</em> its intro) &mdash; those were removed from <em>both</em> sides, taking the corpus from 890 to 887 and the headline from 65.4% to 65.5%. That is the point: the audit buys a clearer picture, not a better percentage. Nothing else was deleted &mdash; <em>arms&#8209;sibling</em> and <em>unattributed</em> pairs are harder tests, not broken ones, so they stay and are reported as strata. Method, per&#8209;lane composition, and the wrong&#8209;ref defect it caught: <a href="https://github.com/qgambit2/java-review/blob/main/results/2026-07-24-pair-validity-audit/README.md">pair&#8209;validity audit</a>.</p>
 
             <div class="lanes strata" aria-label="Recall by attribution stratum">
-<div class="lane"><span class="lane-name">in-diff · defect on the shown surface</span><span class="lane-track"><span class="lane-fill" style="width:70%"></span></span><span class="lane-frac mono">523/748</span></div>
+<div class="lane"><span class="lane-name">in-diff · defect on the shown surface</span><span class="lane-track"><span class="lane-fill" style="width:70%"></span></span><span class="lane-frac mono">524/749</span></div>
 <div class="lane"><span class="lane-name">arms-sibling · breakage in an untouched file</span><span class="lane-track"><span class="lane-fill" style="width:56%"></span></span><span class="lane-frac mono">49/87</span></div>
 <div class="lane"><span class="lane-name">unattributed · fix repairs nothing the intro wrote</span><span class="lane-track"><span class="lane-fill" style="width:51%"></span></span><span class="lane-frac mono">48/95</span></div>
-<div class="lane total"><span class="lane-name"><b>fair-test subset (in-diff)</b></span><span class="lane-track"><span class="lane-fill" style="width:70%"></span></span><span class="lane-frac mono"><b>523/748</b></span></div>
+<div class="lane total"><span class="lane-name"><b>fair-test subset (in-diff)</b></span><span class="lane-track"><span class="lane-fill" style="width:70%"></span></span><span class="lane-frac mono"><b>524/749</b></span></div>
 <div class="lane note"><span class="lane-name">unscreened / unresolvable ref</span><span class="lane-track"></span><span class="lane-frac mono">7</span></div>
 </div>
 
       <div class="filters">
         <span class="flabel">Show</span>
-        <button type="button" data-f="all" class="on">All 937</button>
+        <button type="button" data-f="all" class="on">All 938</button>
         <button type="button" data-f="HIT">Hits</button>
         <button type="button" data-f="MISS">Misses</button>
-        <span class="rowcount" id="rowcount">Showing 937 pairs</span>
+        <span class="rowcount" id="rowcount">Showing 938 pairs</span>
       </div>
       <div class="table-scroll">
         <table>
@@ -1404,6 +1404,7 @@
 <tr data-result="HIT" data-lane="performance" data-model="Opus 5" data-attribution="in-diff"><td class="mono nowrap"><span class="repo">apache/</span>lucene<span class="prnums">#1017→#11825</span></td><td><span class="type-tag">performance</span></td><td class="mono grade">A</td><td class="mono nowrap model">Opus 5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">1-of-3; correctness+design both cleared the un-hoisted visitor</span></td><td class="what">In lucene/core/src/java/org/apache/lucene/document/SpatialQuery.java, #1017&#x27;s own diff deleted the…</td></tr>
 <tr data-result="HIT" data-lane="performance" data-model="Opus 5" data-attribution="unattributed"><td class="mono nowrap"><span class="repo">apache/</span>druid<span class="prnums">#6677→#8024</span></td><td><span class="type-tag">performance</span></td><td class="mono grade">B</td><td class="mono nowrap model">Opus 5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">3/3; WEAK adjudication (maintainer issue comment, not the fix body)</span></td><td class="what">#6677 (&#x27;FileUtils: Sync directory entry too on writeAtomically&#x27;) re-routed CompressionUtils.zip(...)…</td></tr>
 <tr data-result="HIT" data-lane="security" data-model="Opus 5" data-attribution="in-diff"><td class="mono nowrap"><span class="repo">opensearch-project/</span>security<span class="prnums">#1698→#2052</span></td><td><span class="type-tag">security</span></td><td class="mono grade">A</td><td class="mono nowrap model">Opus 5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">3/3; OVERSIZED 62-file intro (R1+R8) + a disclosed fabricated-payload incident</span></td><td class="what">In src/main/java/org/opensearch/security/tools/SecurityAdmin.java, method execute(String[]), the…</td></tr>
+<tr data-result="HIT" data-lane="correctness" data-model="Opus 5" data-attribution="in-diff"><td class="mono nowrap"><span class="repo">apache/</span>seatunnel<span class="prnums">#3499→#5579</span></td><td><span class="type-tag">correctness</span></td><td class="mono grade">A</td><td class="mono nowrap model">Opus 5</td><td class="nowrap"><span class="pill good">HIT</span> <span class="rnote">2-of-3; design cleared the inverted order; WEAK adjudication stratum</span></td><td class="what">SeaTunnelRowDebeziumDeserializationConverters.convert(): `Object fieldValue = struct.get(fieldName);`…</td></tr>
 </tbody>
         </table>
       </div>

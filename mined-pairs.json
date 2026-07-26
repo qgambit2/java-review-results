@@ -1,10 +1,10 @@
 {
   "campaign": "JRS mined regression-pair recall",
   "updated_utc": "2026-07-23",
-  "headline": "627/937 maintainer-adjudicated regressions detected at the introducing PR",
-  "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs. Finder model is per-pair (see finder_model field) \u2014 batches 1\u20137 Opus 4.8 (n=1\u201370), batches 8+ Grok 4.5 (n=71+); see finder_model per pair (Grok 4.5 n=817, Opus 4.8 n=70, Opus 5 n=50). Scoring regime is also per-pair (scoring field): 'self-scored' segments (n=71\u2013220, 291\u2013370) were scored by the mining orchestrator with the fix PR open and are pending blind re-audit \u2014 the one sampled window of that regime dropped 23% on blind re-score; n=221\u2013290 is blind-rescored; n\u2265371 is quote-backed (bank_mined_pair.py, scored_blind); n=531+ re-ran under the second-pass / Layer B surface_complete finder prompt. Treat the headline as a mixed-method upper bound, not one measurement. Recent hard-gate rate window n=781\u2013880 (batches 80\u201389): 42/99 (42%). Miss postmortem: mining/ledgers/batch80-89-miss-postmortem-2026-07-23.md (adjacent-target dominant; empty minority). Soft shortlist R9 multi-sibling/dual-path.",
-  "total": 937,
-  "hits": 627,
+  "headline": "628/938 maintainer-adjudicated regressions detected at the introducing PR",
+  "method": "Run the shipped jrs:java-review-agent finders on the diff that INTRODUCED a bug, score recall against the defect the maintainers' later fix PR proves. Finders-only (upper-bound recall). 0 fabrications across all runs. Finder model is per-pair (see finder_model field) \u2014 batches 1\u20137 Opus 4.8 (n=1\u201370), batches 8+ Grok 4.5 (n=71+); see finder_model per pair (Grok 4.5 n=817, Opus 4.8 n=70, Opus 5 n=51). Scoring regime is also per-pair (scoring field): 'self-scored' segments (n=71\u2013220, 291\u2013370) were scored by the mining orchestrator with the fix PR open and are pending blind re-audit \u2014 the one sampled window of that regime dropped 23% on blind re-score; n=221\u2013290 is blind-rescored; n\u2265371 is quote-backed (bank_mined_pair.py, scored_blind); n=531+ re-ran under the second-pass / Layer B surface_complete finder prompt. Treat the headline as a mixed-method upper bound, not one measurement. Recent hard-gate rate window n=781\u2013880 (batches 80\u201389): 42/99 (42%). Miss postmortem: mining/ledgers/batch80-89-miss-postmortem-2026-07-23.md (adjacent-target dominant; empty minority). Soft shortlist R9 multi-sibling/dual-path.",
+  "total": 938,
+  "hits": 628,
   "misses": 310,
   "pairs": [
     {
@@ -15258,7 +15258,7 @@
     },
     {
       "n": 901,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "quarkusio/quarkus",
       "key": "quarkus-33984",
       "introducing_pr": 33984,
@@ -15275,7 +15275,7 @@
     },
     {
       "n": 902,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "quarkusio/quarkus",
       "key": "quarkus-43308",
       "introducing_pr": 43308,
@@ -15292,7 +15292,7 @@
     },
     {
       "n": 903,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "spring-projects/spring-boot",
       "key": "springboot-b02f7ddea3",
       "introducing_pr": "b02f7ddea361",
@@ -15309,7 +15309,7 @@
     },
     {
       "n": 904,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "spring-projects/spring-framework",
       "key": "springframework-41cd6879bd",
       "introducing_pr": "41cd6879bde4",
@@ -15326,7 +15326,7 @@
     },
     {
       "n": 905,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "spring-projects/spring-framework",
       "key": "springframework-e58ba2c665",
       "introducing_pr": "e58ba2c66593",
@@ -15343,7 +15343,7 @@
     },
     {
       "n": 906,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/pulsar",
       "key": "pulsar-11737",
       "introducing_pr": 11737,
@@ -15360,7 +15360,7 @@
     },
     {
       "n": 907,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/bookkeeper",
       "key": "bookkeeper-2794",
       "introducing_pr": 2794,
@@ -15377,7 +15377,7 @@
     },
     {
       "n": 908,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "mybatis/mybatis-3",
       "key": "mybatis-3349",
       "introducing_pr": 3349,
@@ -15394,7 +15394,7 @@
     },
     {
       "n": 909,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "mybatis/mybatis-3",
       "key": "mybatis-2804",
       "introducing_pr": 2804,
@@ -15411,7 +15411,7 @@
     },
     {
       "n": 910,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/hudi",
       "key": "hudi-755",
       "introducing_pr": 755,
@@ -15428,7 +15428,7 @@
     },
     {
       "n": 911,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/pulsar",
       "key": "pulsar-20337",
       "introducing_pr": 20337,
@@ -15445,7 +15445,7 @@
     },
     {
       "n": 912,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "micronaut-projects/micronaut-core",
       "key": "micronaut-5306",
       "introducing_pr": 5306,
@@ -15462,7 +15462,7 @@
     },
     {
       "n": 913,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/kafka",
       "key": "kafka-16837",
       "introducing_pr": 16837,
@@ -15479,7 +15479,7 @@
     },
     {
       "n": 914,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/iceberg",
       "key": "iceberg-11052",
       "introducing_pr": 11052,
@@ -15496,7 +15496,7 @@
     },
     {
       "n": 915,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/flink",
       "key": "flink-22928",
       "introducing_pr": 22928,
@@ -15513,7 +15513,7 @@
     },
     {
       "n": 916,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "trinodb/trino",
       "key": "trino-9766",
       "introducing_pr": 9766,
@@ -15530,7 +15530,7 @@
     },
     {
       "n": 917,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "trinodb/trino",
       "key": "trino-13178",
       "introducing_pr": 13178,
@@ -15547,7 +15547,7 @@
     },
     {
       "n": 918,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/solr",
       "key": "solr-529",
       "introducing_pr": 529,
@@ -15564,7 +15564,7 @@
     },
     {
       "n": 919,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "datahub-project/datahub",
       "key": "datahub-10932",
       "introducing_pr": 10932,
@@ -15581,7 +15581,7 @@
     },
     {
       "n": 920,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "quarkusio/quarkus",
       "key": "quarkus-34420",
       "introducing_pr": 34420,
@@ -15598,7 +15598,7 @@
     },
     {
       "n": 921,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/kafka",
       "key": "kafka-13424",
       "introducing_pr": 13424,
@@ -15615,7 +15615,7 @@
     },
     {
       "n": 922,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/seatunnel",
       "key": "seatunnel-11127",
       "introducing_pr": 11127,
@@ -15632,7 +15632,7 @@
     },
     {
       "n": 923,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "spring-projects/spring-framework",
       "key": "springframework-6e97587",
       "introducing_pr": "6e9758700a49",
@@ -15649,7 +15649,7 @@
     },
     {
       "n": 924,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "mybatis/mybatis-3",
       "key": "mybatis-3247",
       "introducing_pr": 3247,
@@ -15666,7 +15666,7 @@
     },
     {
       "n": 925,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/shardingsphere",
       "key": "shardingsphere-35520",
       "introducing_pr": 35520,
@@ -15683,7 +15683,7 @@
     },
     {
       "n": 926,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/shardingsphere",
       "key": "shardingsphere-38411",
       "introducing_pr": 38411,
@@ -15700,7 +15700,7 @@
     },
     {
       "n": 927,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "keycloak/keycloak",
       "key": "keycloak-40272",
       "introducing_pr": 40272,
@@ -15717,7 +15717,7 @@
     },
     {
       "n": 928,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "keycloak/keycloak",
       "key": "keycloak-46062",
       "introducing_pr": 46062,
@@ -15734,7 +15734,7 @@
     },
     {
       "n": 929,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "keycloak/keycloak",
       "key": "keycloak-29967",
       "introducing_pr": 29967,
@@ -15751,7 +15751,7 @@
     },
     {
       "n": 930,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "jenkinsci/jenkins",
       "key": "jenkins-7398",
       "introducing_pr": 7398,
@@ -15768,7 +15768,7 @@
     },
     {
       "n": 931,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/uniffle",
       "key": "uniffle-2735",
       "introducing_pr": 2735,
@@ -15785,7 +15785,7 @@
     },
     {
       "n": 932,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/gravitino",
       "key": "gravitino-8553",
       "introducing_pr": 8553,
@@ -15802,7 +15802,7 @@
     },
     {
       "n": 933,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/pulsar",
       "key": "pulsar-23062",
       "introducing_pr": 23062,
@@ -15819,7 +15819,7 @@
     },
     {
       "n": 934,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/pulsar",
       "key": "pulsar-23901",
       "introducing_pr": 23901,
@@ -15836,7 +15836,7 @@
     },
     {
       "n": 935,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "FasterXML/jackson-databind",
       "key": "jackson-databind-4467",
       "introducing_pr": 4467,
@@ -15853,7 +15853,7 @@
     },
     {
       "n": 936,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "open-telemetry/opentelemetry-java",
       "key": "otel-4325",
       "introducing_pr": 4325,
@@ -15870,7 +15870,7 @@
     },
     {
       "n": 937,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "testcontainers/testcontainers-java",
       "key": "testcontainers-2473",
       "introducing_pr": 2473,
@@ -15887,7 +15887,7 @@
     },
     {
       "n": 938,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/lucene",
       "key": "lucene-1017",
       "introducing_pr": 1017,
@@ -15904,7 +15904,7 @@
     },
     {
       "n": 939,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "apache/druid",
       "key": "druid-6677",
       "introducing_pr": 6677,
@@ -15921,7 +15921,7 @@
     },
     {
       "n": 940,
-      "batch": "n=901-940 Opus 5 batch-92 wave (2026-07-25)",
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
       "repo": "opensearch-project/security",
       "key": "opensearch-security-1698",
       "introducing_pr": 1698,
@@ -15931,6 +15931,23 @@
       "result": "HIT",
       "severity_or_note": "3/3; OVERSIZED 62-file intro (R1+R8) + a disclosed fabricated-payload incident",
       "defect": "In src/main/java/org/opensearch/security/tools/SecurityAdmin.java, method execute(String[]), the `legacy` predicate lost its final conjunct. Before #1698 it read `createLegacyMode || (indexExists && getMappings() != null && getMappings().ge",
+      "finder_model": "Opus 5",
+      "scoring": "hard-gate+second-pass",
+      "attribution": "in-diff",
+      "attribution_verdict": "LOCAL-STRONG"
+    },
+    {
+      "n": 941,
+      "batch": "n=901-941 Opus 5 batch-92 wave (2026-07-25)",
+      "repo": "apache/seatunnel",
+      "key": "seatunnel-3499",
+      "introducing_pr": 3499,
+      "fixing_pr": 5579,
+      "lane": "correctness",
+      "review_grade": "A",
+      "result": "HIT",
+      "severity_or_note": "2-of-3; design cleared the inverted order; WEAK adjudication stratum",
+      "defect": "SeaTunnelRowDebeziumDeserializationConverters.convert(): `Object fieldValue = struct.get(fieldName);` sits ABOVE the `if (field == null)` guard, so struct.get(...) throws for an absent field and the guard can never do its job \u2014 it is dead c",
       "finder_model": "Opus 5",
       "scoring": "hard-gate+second-pass",
       "attribution": "in-diff",
