@@ -15827,7 +15827,7 @@
       "lane": "concurrency",
       "review_grade": "C",
       "result": "MISS",
-      "severity_or_note": "R2 weak test \u2014 the pattern predates the intro; discount in lane recall",
+      "severity_or_note": "full weight \u2014 pattern predates #23901 but the async limiter arms it; 3/3 ran the inversion check and cleared it",
       "defect": "#23901 rewrote PendingReadsManager.PendingRead, introducing attach(CompletableFuture<List<EntryImpl>>) which calls the new private synchronized completeAndRemoveFromCache() on the BK completing thread and then dispatches synchronized readEn",
       "finder_model": "Opus 5",
       "scoring": "hard-gate+second-pass",
