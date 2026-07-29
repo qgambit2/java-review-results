@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<!--
+  LinkedIn attachment for the "12% instructions" post. 1080x1256 portrait,
+  matching og-diagram.png's format and mined-pairs-diagram.html's design language.
+
+  Palette validated with the dataviz skill's validate_palette.js (light, categorical):
+  #4338ca,#0891b2,#166534,#ea580c -> ALL CHECKS PASS, worst adjacent CVD dE 9.6
+  (protan), normal-vision floor 20.5. The green is stepped darker and the orange
+  lighter than the brand's #15803d/#c2410c on purpose: at those steps the pair sat
+  at dE 7.0 (deutan), inside the 6-8 floor band. Do not "restore" them.
+
+  Numbers: 2026-07-29 @ v0.39.1, HEAD 5ba3dcc. Denominator is every line written
+  EXCLUDING the results/ evidence archive and generated json/fixture-java data.
+  Regenerate: git ls-files <dir> | grep -Ev '\.(json|java)$' | xargs wc -l
+-->
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1256px; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+    background: linear-gradient(180deg, #f7f8fc 0%, #eef1f8 100%);
+    color: #0f172a;
+    width: 1080px; height: 1256px;
+    padding: 52px 56px 44px;
+    display: flex; flex-direction: column;
+  }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+
+  .eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 17px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: #4f46e5;
+  }
+  .eyebrow .dot { width: 12px; height: 12px; border-radius: 3px; background: #4f46e5; }
+  .eyebrow .sep { color: #94a3b8; font-weight: 600; }
+
+  h1 { margin-top: 16px; font-size: 52px; line-height: 1.08; font-weight: 800; letter-spacing: -.022em; }
+  .lede { margin-top: 12px; font-size: 21px; line-height: 1.4; color: #475569; max-width: 900px; }
+
+  /* ---- the bar ---- */
+  .barwrap { margin-top: 36px; }
+  .bracket {
+    display: flex; align-items: flex-end; height: 34px;
+    font-size: 16px; font-weight: 700; color: #4338ca;
+  }
+  .bracket .span {
+    width: 20%; border-left: 2px solid #c7cbf2; border-right: 2px solid #c7cbf2;
+    border-top: 2px solid #c7cbf2; border-radius: 8px 8px 0 0;
+    height: 16px; position: relative;
+  }
+  .bracket .span span {
+    position: absolute; top: -22px; left: 0; white-space: nowrap;
+  }
+  .bar { display: flex; height: 104px; gap: 2px; }
+  .seg { position: relative; display: flex; align-items: center; justify-content: center; }
+  .seg:first-child { border-radius: 8px 0 0 8px; }
+  .seg:last-child  { border-radius: 0 8px 8px 0; }
+  .seg .pct {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 34px; font-weight: 700; color: #fff; letter-spacing: -.01em;
+  }
+  .s1 { flex: 12; background: #4338ca; }
+  .s2 { flex: 8;  background: #0891b2; }
+  .s3 { flex: 58; background: #166534; }
+  .s4 { flex: 22; background: #ea580c; }
+
+  /* ---- keyed rows ---- */
+  .rowhead {
+    display: grid; grid-template-columns: 22px 1fr auto auto; gap: 16px;
+    margin-top: 24px; padding: 0 20px 3px;
+    font-size: 13px; font-weight: 700; letter-spacing: .09em;
+    text-transform: uppercase; color: #94a3b8;
+  }
+  .rowhead .hl { text-align: right; min-width: 112px; }
+  .rowhead .hp { text-align: right; min-width: 76px; }
+  .rows { margin-top: 8px; display: flex; flex-direction: column; gap: 12px; }
+  .row {
+    display: grid; grid-template-columns: 22px 1fr auto auto; align-items: baseline;
+    gap: 16px;
+    background: #fff; border-radius: 14px;
+    border: 1.5px solid rgba(15,23,42,.08);
+    box-shadow: 0 6px 18px rgba(15,23,42,.04);
+    padding: 16px 20px;
+  }
+  .chip { width: 22px; height: 22px; border-radius: 6px; align-self: center; }
+  .row .name { font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+  .row .name em { display: block; font-style: normal; font-weight: 400; font-size: 16px; color: #64748b; margin-top: 3px; }
+  .row .lines {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 19px; color: #475569; text-align: right; min-width: 112px;
+  }
+  .row .pc {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 30px; font-weight: 700; text-align: right; min-width: 76px; color: #0f172a;
+  }
+
+  /* ---- stat tiles ---- */
+  .rule {
+    margin-top: 26px;
+    background: linear-gradient(180deg, #fff 0%, #f6f7ff 100%);
+    border: 1.5px solid rgba(67,56,202,.20); border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(15,23,42,.04);
+    padding: 24px 28px;
+  }
+  .rule .q { font-size: 27px; font-weight: 800; letter-spacing: -.018em; line-height: 1.25; color: #312e81; }
+  .rule .a { margin-top: 9px; font-size: 18px; color: #475569; line-height: 1.4; }
+  .tiles { display: flex; gap: 14px; margin-top: 20px; }
+  .tile {
+    flex: 1; background: #fff; border-radius: 16px;
+    border: 1.5px solid rgba(15,23,42,.08);
+    box-shadow: 0 6px 18px rgba(15,23,42,.04);
+    padding: 20px 20px 18px;
+  }
+  .tile .n {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 44px; font-weight: 700; letter-spacing: -.02em; color: #0f172a;
+  }
+  .tile .l { margin-top: 8px; font-size: 16px; line-height: 1.35; color: #64748b; }
+
+  .foot {
+    margin-top: auto; display: flex; justify-content: space-between; align-items: baseline;
+    border-top: 1.5px solid rgba(15,23,42,.09); padding-top: 18px;
+  }
+  .foot .url {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 20px; font-weight: 700; color: #334155;
+  }
+  .foot .tag { font-size: 16px; color: #94a3b8; }
+</style>
+</head>
+<body>
+  <div class="eyebrow"><span class="dot"></span>JAVA REVIEW SWARM <span class="sep">·</span> WHAT I ACTUALLY WROTE</div>
+
+  <h1>Only 12% of my code reviewer<br>is instructions for the AI.</h1>
+  <div class="lede">
+    Every line I've written for a Java code-review system — the reviewer itself, and
+    everything that keeps it honest.
+  </div>
+
+  <div class="barwrap">
+    <div class="bracket"><div class="span"><span>the reviewer &mdash; 20%</span></div></div>
+    <div class="bar">
+      <div class="seg s1"><span class="pct">12%</span></div>
+      <div class="seg s2"></div>
+      <div class="seg s3"><span class="pct">58%</span></div>
+      <div class="seg s4"><span class="pct">22%</span></div>
+    </div>
+  </div>
+
+  <div class="rowhead">
+    <span></span><span></span><span class="hl">lines</span><span class="hp">share</span>
+  </div>
+
+  <div class="rows">
+    <div class="row">
+      <span class="chip" style="background:#4338ca"></span>
+      <span class="name">Written instructions<em>8 specialist reviewer briefs, prompts, severity rubric</em></span>
+      <span class="lines">5,948</span><span class="pc">12%</span>
+    </div>
+    <div class="row">
+      <span class="chip" style="background:#0891b2"></span>
+      <span class="name">Deterministic scripts<em>Code the model never runs &mdash; incl. the 218-line verdict gate</em></span>
+      <span class="lines">4,274</span><span class="pc">8%</span>
+    </div>
+    <div class="row">
+      <span class="chip" style="background:#166534"></span>
+      <span class="name">Verification<em>1,075 tests, planted bugs, clean look-alike code</em></span>
+      <span class="lines">29,463</span><span class="pc">58%</span>
+    </div>
+    <div class="row">
+      <span class="chip" style="background:#ea580c"></span>
+      <span class="name">Mining &amp; tooling<em>Finds real bugs the reviewer missed, in 111 public repos</em></span>
+      <span class="lines">11,166</span><span class="pc">22%</span>
+    </div>
+  </div>
+
+  <div class="rule">
+    <div class="q">If getting it wrong would be invisible, a script owns it.</div>
+    <div class="a">The model gets the judgement. It never gets the arithmetic.</div>
+  </div>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="n">218</div>
+      <div class="l">lines of jq decide<br>block / request&nbsp;changes / approve</div>
+    </div>
+    <div class="tile">
+      <div class="n">34s</div>
+      <div class="l">for 1,075 tests<br>zero model calls</div>
+    </div>
+    <div class="tile">
+      <div class="n">1.22&times;</div>
+      <div class="l">the test suite outweighs<br>the reviewer it tests</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="url">qgambit2.github.io/java-review-results</span>
+    <span class="tag">50,851 lines &middot; excludes the evidence archive</span>
+  </div>
+</body>
+</html>
